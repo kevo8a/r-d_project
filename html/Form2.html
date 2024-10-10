@@ -1,0 +1,159 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario Diseño de Estructura</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <form>
+            <!-- Encabezado -->
+            <div class="mb-3">
+                <label for="solicitadoPor" class="form-label">Solicitado por</label>
+                <input type="text" class="form-control" id="solicitadoPor">
+            </div>
+            <div class="mb-3">
+                <label for="cliente" class="form-label">Cliente</label>
+                <input type="text" class="form-control" id="cliente">
+            </div>
+            <div class="mb-3">
+                <label for="nombreProyecto" class="form-label">Nombre del proyecto/Producto</label>
+                <input type="text" class="form-control" id="nombreProyecto">
+            </div>
+
+            <!-- Tabla de materiales -->
+            <table class="table table-bordered" id="materialTable">
+                <thead class="table-warning">
+                    <tr>
+                        <th scope="col">MTL</th>
+                        <th scope="col">Material</th>
+                        <th scope="col">Calibre Micras (μ)</th>
+                        <th scope="col">Peso por m² (g/m²)</th>
+                        <th scope="col">% Sólidos</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <!-- Se crean 5 filas por defecto -->
+                    <tr>
+                        <td><input type="text" class="form-control"></td>
+                        <td><input type="text" class="form-control"></td>
+                        <td><input type="number" class="form-control calibre" oninput="calculateTotals()"></td>
+                        <td><input type="number" class="form-control peso" oninput="calculateTotals()"></td>
+                        <td><input type="number" class="form-control"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" class="form-control"></td>
+                        <td><input type="text" class="form-control"></td>
+                        <td><input type="number" class="form-control calibre" oninput="calculateTotals()"></td>
+                        <td><input type="number" class="form-control peso" oninput="calculateTotals()"></td>
+                        <td><input type="number" class="form-control"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" class="form-control"></td>
+                        <td><input type="text" class="form-control"></td>
+                        <td><input type="number" class="form-control calibre" oninput="calculateTotals()"></td>
+                        <td><input type="number" class="form-control peso" oninput="calculateTotals()"></td>
+                        <td><input type="number" class="form-control"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" class="form-control"></td>
+                        <td><input type="text" class="form-control"></td>
+                        <td><input type="number" class="form-control calibre" oninput="calculateTotals()"></td>
+                        <td><input type="number" class="form-control peso" oninput="calculateTotals()"></td>
+                        <td><input type="number" class="form-control"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" class="form-control"></td>
+                        <td><input type="text" class="form-control"></td>
+                        <td><input type="number" class="form-control calibre" oninput="calculateTotals()"></td>
+                        <td><input type="number" class="form-control peso" oninput="calculateTotals()"></td>
+                        <td><input type="number" class="form-control"></td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="2" class="text-end">Total</td>
+                        <td><input type="number" class="form-control" id="totalCalibre" disabled value="0.00"></td>
+                        <td><input type="number" class="form-control" id="totalPeso" disabled value="0.00"></td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <!-- Botón para añadir más filas -->
+            <button type="button" class="btn btn-secondary mb-3" onclick="addRow()">Añadir fila</button>
+
+            <!-- Sección de procesos -->
+            <div class="mb-3">
+                <label for="proceso1" class="form-label">Paso 1</label>
+                <input type="text" class="form-control" id="proceso1">
+            </div>
+            <div class="mb-3">
+                <label for="proceso2" class="form-label">Paso 2</label>
+                <input type="text" class="form-control" id="proceso2">
+            </div>
+            <div class="mb-3">
+                <label for="proceso3" class="form-label">Paso 3</label>
+                <input type="text" class="form-control" id="proceso3">
+            </div>
+            <div class="mb-3">
+                <label for="proceso4" class="form-label">Paso 4</label>
+                <input type="text" class="form-control" id="proceso4">
+            </div>
+            <div class="mb-3">
+                <label for="proceso5" class="form-label">Paso 5</label>
+                <input type="text" class="form-control" id="proceso5">
+            </div>
+            <div class="mb-3">
+                <label for="proceso6" class="form-label">Paso 6</label>
+                <input type="text" class="form-control" id="proceso6">
+            </div>
+
+            <!-- Botón de envío -->
+            <button type="submit" class="btn btn-primary">Enviar</button>
+        </form>
+    </div>
+
+    <!-- JavaScript para añadir filas -->
+    <script>
+        function addRow() {
+            var tableBody = document.getElementById('tableBody');
+            var newRow = document.createElement('tr');
+
+            newRow.innerHTML = `
+                    <td><input type="text" class="form-control"></td>
+                    <td><input type="text" class="form-control"></td>
+                    <td><input type="number" class="form-control calibre" oninput="calculateTotals()"></td>
+                    <td><input type="number" class="form-control peso" oninput="calculateTotals()"></td>
+                    <td><input type="number" class="form-control"></td>
+                `;
+            tableBody.appendChild(newRow);
+        }
+
+        // Función para calcular los totales
+        function calculateTotals() {
+            var totalCalibre = 0;
+            var totalPeso = 0;
+
+            // Calcular total de calibre
+            document.querySelectorAll('.calibre').forEach(function (input) {
+                totalCalibre += parseFloat(input.value) || 0;
+            });
+
+            // Calcular total de peso
+            document.querySelectorAll('.peso').forEach(function (input) {
+                totalPeso += parseFloat(input.value) || 0;
+            });
+
+            // Actualizar los campos de total
+            document.getElementById('totalCalibre').value = totalCalibre.toFixed(2);
+            document.getElementById('totalPeso').value = totalPeso.toFixed(2);
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+

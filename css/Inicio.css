@@ -1,0 +1,147 @@
+/* Estilos básicos */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Work Sans', sans-serif; /* Usar Work Sans como fuente */
+}
+
+body {
+  background-color: #f0f4f8; /* Fondo suave */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* Estilo de la barra de navegación */
+header {
+  background-color: #55d6aa; /* Color de fondo para la barra de navegación */
+  padding: 10px 0; /* Espaciado vertical */
+}
+
+header::after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+nav {
+  display: flex;
+  justify-content: center; /* Centrar los elementos de navegación */
+}
+
+nav ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex; /* Usar flexbox para una alineación horizontal */
+}
+
+nav li {
+  margin: 0 20px; /* Espaciado horizontal entre los elementos */
+}
+
+nav a {
+  color: white; /* Color del texto */
+  text-decoration: none; /* Sin subrayado */
+  font-weight: bold; /* Hacer el texto más destacado */
+  font-size: 14px;
+}
+
+nav a:hover {
+  color: #000; /* Cambiar color al pasar el mouse */
+}
+
+/* Título principal */
+h1 {
+  text-align: center;
+  color: #0033A1; /* Azul corporativo de Amcor */
+  margin-bottom: 30px;
+  font-size: 28px;
+}
+
+/* Contenedor principal */
+.form-selection-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 900px; /* Limitar el ancho máximo */
+  margin: 20px auto; /* Margen superior e inferior, centrar horizontalmente */
+}
+
+/* Contenedor de opciones de formulario */
+.form-options {
+  display: flex;
+  justify-content: center; /* Centrar las tarjetas */
+  align-items: center;
+  width: 100%;
+}
+
+/* Estilo de las tarjetas (formulario) */
+.form-card {
+  background-color: white; /* Color de fondo de la tarjeta */
+  padding: 20px; /* Espaciado interno */
+  width: 300px; /* Ancho fijo para todas las tarjetas */
+  border-radius: 10px; /* Bordes redondeados */
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); /* Sombra para dar profundidad */
+  text-align: center; /* Centrar el texto */
+  margin: 10px; /* Espaciado entre tarjetas */
+  transition: transform 0.3s, box-shadow 0.3s; /* Transición suave */
+}
+
+.form-card img {
+  max-width: 100px; /* Ajustar el tamaño de la imagen */
+  margin-bottom: 20px;
+}
+
+.form-card h2 {
+  font-size: 20px;
+  color: #0033A1; /* Azul corporativo de Amcor */
+  margin-bottom: 10px;
+}
+
+.form-card p {
+  color: #4A4A4A;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+/* Estilo del botón */
+.form-btn {
+  display: inline-block;
+  padding: 12px 20px;
+  background-color: #0033A1; /* Azul del botón */
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.form-btn:hover {
+  background-color: #002275; /* Color más oscuro al pasar el mouse */
+}
+
+/* Adaptación a pantallas pequeñas */
+@media (max-width: 768px) {
+  .form-options {
+    flex-direction: column; /* Cambiar a columna en pantallas pequeñas */
+  }
+
+  .form-card {
+    width: 80%; /* Hacer las tarjetas más anchas en pantallas pequeñas */
+    margin-bottom: 20px;
+  }
+}
+
+/* Estilo del pie de página */
+footer {
+  text-align: center;
+  padding: 20px 0;
+  color: #4A4A4A;
+  font-size: 12px;
+  margin-top: 30px; /* Margen superior para separar del contenido */
+}
