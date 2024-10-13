@@ -1,8 +1,14 @@
 <?php
+session_start();
+require '../php/db_connection.php';
+
+// Procesar los datos del formulario
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Recibir los datos del formulario
+    // Obtener los datos desde el formulario
     $cliente = $_POST['cliente'];
     $solicitante = $_POST['solicitante'];
+    $id_user = $_POST['id_user'];
+    $estatus = $_POST['estatus'];
     $nombre_proyecto = $_POST['nombre_proyecto'];
     $numero_rfq = $_POST['numero_rfq'];
     $formato_entrega = $_POST['formato_entrega'];
@@ -26,18 +32,52 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $traslape = $_POST['traslape'];
     $tolerancia_traslape = $_POST['tolerancia_traslape'];
     $codigo_sostenibilidad = $_POST['codigo_sostenibilidad'] ?? null;
-    $ficha_tecnica = isset($_POST['ficha_tecnica']) ? "Sí" : "No";
-    $muestra_fisica = isset($_POST['muestra_fisica']) ? "Sí" : "No";
-    $plano_mecanico = isset($_POST['plano_mecanico']) ? "Sí" : "No";
-    $pdf_arte = isset($_POST['pdf_arte']) ? "Sí" : "No";
+    $ficha_tecnica = isset($_POST['ficha_tecnica']) ? 1 : 0; // 1 para Sí, 0 para No
+    $muestra_fisica = isset($_POST['muestra_fisica']) ? 1 : 0;
+    $plano_mecanico = isset($_POST['plano_mecanico']) ? 1 : 0;
+    $pdf_arte = isset($_POST['pdf_arte']) ? 1 : 0;
 
-    // Validación de adjuntos
-    if ($ficha_tecnica == "No" && $muestra_fisica == "No") {
-        echo "Debe adjuntar la ficha técnica o la muestra física.";
-        exit;
+    // Generar un id_form1 único (puedes ajustar esto según tus necesidades)
+    $id_form1 = uniqid('form1_');
+
+    // Preparar y vincular la declaración SQL
+    $stmt = $conn->prepare("
+        INSERT INTO form1 (
+            id_form1, status_form1, id_user, name_user, name_client, project_name,
+            rfq_number, delivery_format, packaging_format, convenience_element_of_packaging,
+            filling_process, packaging_system, sales_unit, volume_per_order,
+            annual_volume, printing_system, number_of_colors, width_mm,
+            width_tolerance_mm, photo_distances_mm,
+            photo_distances_tolerance_mm, thickness_microns, thickness_tolerance_microns,
+            weight_gm2, weight_tolerance_gm2, length_mm, length_tolerance_mm,
+            gusset_mm, gusset_tolerance_mm, overlap_mm, overlap_tolerance_mm,
+            sustainability_code, technical_sheet, physical_sample,
+            mechanical_plan, mechanical_plan_sheet
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,  ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ");
+
+    // Vincular parámetros
+    $stmt->bind_param("ssissssssssssiifffifffifiiiii", 
+        $id_form1, $estatus, $id_user, $solicitante, $cliente, 
+        $nombre_proyecto, $numero_rfq, $formato_entrega, $formato_empaque,
+        $elemento_conveniencia, $proceso_llenado, $sistema_empaque,
+        $unidad_venta, $volumen_pedido, $volumen_anual, $sistema_impresion,
+        $numero_colores, $ancho, $tolerancia_ancho,
+        $fotodistancias, $tolerancia_fotodistancias, $largo,
+        $tolerancia_largo, $fuelle, $tolerancia_fuelle, $traslape,
+        $tolerancia_traslape, $codigo_sostenibilidad, $ficha_tecnica,
+        $muestra_fisica, $plano_mecanico, $pdf_arte
+    );
+
+    // Ejecutar la declaración
+    if ($stmt->execute()) {
+        echo "Datos guardados correctamente.";
+    } else {
+        echo "Error al guardar los datos: " . $stmt->error;
     }
 
-    // Aquí puedes procesar los datos como enviarlos por correo o guardarlos en una base de datos
-
-    echo "Formulario enviado con éxito.";
+    // Cerrar la declaración y la conexión
+    $stmt->close();
+    $conn->close();
 }
+?>

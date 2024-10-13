@@ -11,8 +11,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = mysqli_real_escape_string($conn, $email);
     $password = mysqli_real_escape_string($conn, $password);
 
-    // Consulta SQL para buscar el usuario en la tabla 'user' sin hash en la contraseña
-    $sql = "SELECT * FROM users WHERE email = '$email' AND password = '$password'";
+    // Hash de la contraseña ingresada para compararla con la base de datos
+    $password_hash = md5($password);
+
+    // Consulta SQL para buscar el usuario en la tabla 'user'
+    $sql = "SELECT * FROM users WHERE email = '$email' AND password = '$password_hash'";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {

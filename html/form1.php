@@ -1,6 +1,16 @@
 ﻿<?php
-// Iniciar la sesión antes de cualquier salida HTML
+// Iniciar la sesión
 session_start();
+
+// Verificar si el usuario está logueado
+if (!isset($_SESSION['user_id'])) {
+    // Redirigir al usuario a la página de inicio de sesión si no está logueado
+    header("Location: login.php");
+    exit();
+}
+$user_id = $_SESSION['user_id'];
+$name = $_SESSION['user_name'];
+$last_name = $_SESSION['user_last_name'];
 ?>
 
 <!DOCTYPE html>
@@ -56,21 +66,19 @@ session_start();
             <!-- Nav Item - Formularios Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForms"
-                  aria-expanded="true" aria-controls="collapseForms">
+                    aria-expanded="true" aria-controls="collapseForms">
                     <i class="fas fa-fw fa-wrench"></i>
                     <span>Formularios</span>
                 </a>
-                <div id="collapseForms" class="collapse" aria-labelledby="headingForms"
-                    data-parent="#accordionSidebar">
+                <div id="collapseForms" class="collapse" aria-labelledby="headingForms" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Opciones de Formularios:</h6>
                         <a class="collapse-item" href="inicio.php">Crear Formulario</a>
-                        <a class="collapse-item" href="list_form1.php">Forms Cotización</a>
+                        <a class="collapse-item" href="ver_estatus_formularios.php">Ver Estatus de Formularios</a>
                         <a class="collapse-item" href="aprobar_formularios.php">Aprobar Formularios</a>
                     </div>
                 </div>
             </li>
-
 
             <!-- Nav Item - Usuarios Collapse Menu -->
             <li class="nav-item">
@@ -141,27 +149,48 @@ session_start();
                     <form action="send_form1.php" method="POST">
                         <div class="row">
                             <!-- Cliente -->
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="mb-3">
                                     <label for="cliente" class="form-label">Cliente</label>
                                     <input type="text" class="form-control" id="cliente" name="cliente" required>
                                 </div>
                             </div>
                             <!-- Solicitante -->
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="mb-3">
                                     <label for="solicitante" class="form-label">Solicitante</label>
-                                    <input type="text" class="form-control" id="solicitante" name="solicitante"
-                                        required>
+                                    <input type="text" class="form-control" id="solicitante" name="solicitante" value="<?php echo htmlspecialchars($name).' '. htmlspecialchars($last_name); ?>" readonly>
                                 </div>
                             </div>
-
+                            <!-- id user -->
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="id_user" class="form-label">ID del Usuario</label>
+                                    <input type="text" class="form-control" id="id_user" name="id_user" value="<?php echo htmlspecialchars($user_id); ?>" readonly>
+                                </div>
+                            </div>
                             <!-- Nombre de proyecto -->
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="mb-3">
                                     <label for="nombre_proyecto" class="form-label">Nombre del Proyecto/Producto</label>
                                     <input type="text" class="form-control" id="nombre_proyecto" name="nombre_proyecto"
                                         required>
+                                </div>
+                            </div>
+                            <!-- estatus -->
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="estatus" class="form-label">Estatus</label>
+                                    <input type="text" class="form-control" id="estatus" name="estatus" value = "En proceso"
+                                    readonly>
+                                </div>
+                            </div>
+                            <!-- folio -->
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="folio" class="form-label">Folio</label>
+                                    <input type="text" class="form-control" id="folio" name="folio" value = "12"
+                                    readonly>
                                 </div>
                             </div>
                             <!-- Numero de RFQ -->
@@ -247,7 +276,6 @@ session_start();
                                 </div>
                             </div>
                             <!-- Volumen por Pedido -->
-
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="volumen_pedido" class="form-label">Volumen por Pedido</label>
@@ -330,6 +358,37 @@ session_start();
                                         name="tolerancia_fotodistancias">
                                 </div>
                             </div>
+                            <!-- Calibre (micras) -->
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="calibre" class="form-label">Calibre (micras))</label>
+                                    <input type="number" class="form-control" id="calibre" name="calibre">
+                                </div>
+                            </div>
+                            <!-- Tolerancia Calibre (micras) -->
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="tolerancia_calibre" class="form-label">Tolerancia Calibre (micras)</label>
+                                    <input type="number" class="form-control" id="tolerancia_calibre"
+                                        name="tolerancia_calibre">
+                                </div>
+                            </div>
+                            <!-- Peso (gm-2) -->
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="peso" class="form-label">Peso (gm-2)</label>
+                                    <input type="number" class="form-control" id="peso"
+                                        name="peso">
+                                </div>
+                            </div>
+                            <!-- Tolerancia Peso (gm-2) -->
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="tolerancia_peso" class="form-label">Tolerancia Peso (gm-2)</label>
+                                    <input type="number" class="form-control" id="tolerancia_peso"
+                                        name="tolerancia_peso">
+                                </div>
+                            </div>
                             <!-- Espacio -->
                             <div class="col-md-6">
                             </div>
@@ -403,7 +462,7 @@ session_start();
                         </div>
 
 
-                        <!-- Código de sostenibilidad -->
+                        <!--Check Código de sostenibilidad -->
                         <div class="col-md-6">
                             <div class="form-check mb-3">
                                 <input class="form-check-input" type="checkbox" id="check_sostenibilidad"
@@ -519,30 +578,41 @@ session_start();
     }
 
     function toggleFotodistancias() {
-        const checkDisenoContinuo = document.getElementById("check_diseno_continuo");
-        const fotodistancias = document.getElementById("fotodistancias");
-        const toleranciaFotodistancias = document.getElementById("tolerancia_fotodistancias");
-        if (checkDisenoContinuo.checked) {
-            fotodistancias.disabled = true;
-            toleranciaFotodistancias.disabled = true;
-        } else {
-            fotodistancias.disabled = false;
-            toleranciaFotodistancias.disabled = false;
-        }
+    const checkDisenoContinuo = document.getElementById("check_diseno_continuo");
+    const fotodistancias = document.getElementById("fotodistancias");
+    const toleranciaFotodistancias = document.getElementById("tolerancia_fotodistancias");
+
+    if (checkDisenoContinuo.checked) {
+        fotodistancias.disabled = true;
+        fotodistancias.value = "";  // Borrar el valor
+        toleranciaFotodistancias.disabled = true;
+        toleranciaFotodistancias.value = "";  // Borrar el valor
+    } else {
+        fotodistancias.disabled = false;
+        toleranciaFotodistancias.disabled = false;
     }
+}
 
-    function toggleDimensionesBolsa() {
-        const esBolsa = document.getElementById("es_bolsa").value;
-        const bolsaFields = document.getElementsByClassName("bolsa_fields");
+function toggleDimensionesBolsa() {
+    const esBolsa = document.getElementById("es_bolsa").value;
+    const bolsaFields = document.getElementsByClassName("bolsa_fields");
 
-        for (let i = 0; i < bolsaFields.length; i++) {
-            if (esBolsa === "No") {
-                bolsaFields[i].style.display = "none";
-            } else {
-                bolsaFields[i].style.display = "block";
+    for (let i = 0; i < bolsaFields.length; i++) {
+        const inputFields = bolsaFields[i].getElementsByTagName("input");
+        
+        if (esBolsa === "No") {
+            bolsaFields[i].style.display = "none";
+            
+            // Limpiar los valores de los campos input dentro de cada bolsa_fields
+            for (let j = 0; j < inputFields.length; j++) {
+                inputFields[j].value = "";
             }
+        } else {
+            bolsaFields[i].style.display = "block";
         }
     }
+}
+
 
     function toggleCodigoSostenibilidad() {
         const checkSostenibilidad = document.getElementById("check_sostenibilidad");
