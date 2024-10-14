@@ -250,7 +250,7 @@ $last_name = $_SESSION['user_last_name'];
                                 </div>
                             </div>
                             <!-- Formato de Empaque -->
-                            <!-- <div class="col-md-6">
+                            <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="formato_empaque" class="form-label">Formato del Empaque</label>
                                     <select class="form-select" id="formato_empaque" name="formato_empaque" required>
@@ -260,10 +260,10 @@ $last_name = $_SESSION['user_last_name'];
                                         <option value="ColdSeal">ColdSeal</option>
                                     </select>
                                 </div>
-                            </div> -->
+                            </div>
 
                             <!-- Elemento de Conveniencia -->
-                            <!-- <div class="col-md-6">
+                            <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="elemento_conveniencia" class="form-label">Elemento de Conveniencia del
                                         Empaque</label>
@@ -275,9 +275,9 @@ $last_name = $_SESSION['user_last_name'];
                                         <option value="Corte Laser">Corte Laser</option>
                                     </select>
                                 </div>
-                            </div> -->
+                            </div>
                             <!-- Proceso de Llenado -->
-                            <!-- <div class="col-md-6">
+                            <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="proceso_llenado" class="form-label">Proceso de Llenado</label>
                                     <select class="form-select" id="proceso_llenado" name="proceso_llenado" required>
@@ -287,9 +287,9 @@ $last_name = $_SESSION['user_last_name'];
                                         <option value="Choque Térmico">Choque Térmico</option>
                                     </select>
                                 </div>
-                            </div> -->
+                            </div>
                             <!-- Sistema de Empaque -->
-                            <!-- <div class="col-md-6">
+                            <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="sistema_empaque" class="form-label">Sistema de Empaque</label>
                                     <select class="form-select" id="sistema_empaque" name="sistema_empaque" required>
@@ -299,9 +299,9 @@ $last_name = $_SESSION['user_last_name'];
                                         <option value="Doypack">Doypack</option>
                                     </select>
                                 </div>
-                            </div> -->
+                            </div>
                             <!-- Unidad de Venta -->
-                            <!-- <div class="col-md-6">
+                            <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="unidad_venta" class="form-label">Unidad de Venta</label>
                                     <select class="form-select" id="unidad_venta" name="unidad_venta" required>
@@ -310,26 +310,25 @@ $last_name = $_SESSION['user_last_name'];
                                         <option value="Metros">Metros</option>
                                     </select>
                                 </div>
-                            </div> -->
+                            </div>
                             <!-- Volumen por Pedido -->
-                            <!-- <div class="col-md-6">
+                            <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="volumen_pedido" class="form-label">Volumen por Pedido</label>
                                     <input type="number" class="form-control" id="volumen_pedido" name="volumen_pedido"
                                         required>
                                 </div>
-                            </div> -->
-
+                            </div>
                             <!-- Volumen Anual -->
-                            <!-- <div class="col-md-6">
+                            <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="volumen_anual" class="form-label">Volumen Anual</label>
                                     <input type="number" class="form-control" id="volumen_anual" name="volumen_anual"
                                         required>
                                 </div>
-                            </div> -->
+                            </div>
                             <!-- Sistema de Impresión -->
-                            <!-- <div class="col-md-6">
+                            <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="sistema_impresion" class="form-label">Sistema de Impresión</label>
                                     <select class="form-select" id="sistema_impresion" name="sistema_impresion"
@@ -339,7 +338,7 @@ $last_name = $_SESSION['user_last_name'];
                                         <option value="Sin impresión">Sin impresión</option>
                                     </select>
                                 </div>
-                            </div> -->
+                            </div>
                             <!-- Numero de Colores -->
                             <!-- <div class="col-md-6">
                                 <div class="mb-3">

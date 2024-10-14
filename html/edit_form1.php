@@ -62,7 +62,7 @@ $last_name = $_SESSION['user_last_name'];
             <div id="content">
                 <div class="container">
                     <h1 class="text-center mb-4">Editar Formulario de Cotización</h1>
-                    <form>
+                    <form action="update_form1.php" method="POST">
                         <input type="hidden" name="id_formulario" value="<?php echo $id_formulario; ?>">
                         <div class="row">
 
@@ -70,8 +70,8 @@ $last_name = $_SESSION['user_last_name'];
                             <div class="col-md-4">
                                 <div class="mb-3">
                                     <label for="cliente" class="form-label">Cliente</label>
-                                    <select class="form-control" id="cliente" name="cliente" disabled>
-                                        <option value="" disabled>Selecciona un cliente</option>
+                                    <select class="form-control" id="cliente" name="cliente" required>
+                                        <option value="" disabled selected>Selecciona un cliente</option>
                                         <?php
                                         require '../php/db_connection.php';
 
@@ -115,7 +115,7 @@ $last_name = $_SESSION['user_last_name'];
                                 <div class="mb-3">
                                     <label for="nombre_proyecto" class="form-label">Nombre del Proyecto/Producto</label>
                                     <input type="text" class="form-control" id="nombre_proyecto" name="nombre_proyecto"
-                                        value="<?php echo htmlspecialchars($form_data['project_name']); ?>" readonly>
+                                        value="<?php echo htmlspecialchars($form_data['project_name']); ?>" required>
                                 </div>
                             </div>
 
@@ -131,9 +131,9 @@ $last_name = $_SESSION['user_last_name'];
                             <!-- Número de RFQ -->
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="numero_rfq" class="form-label">Número de RFQ</label>
+                                RFQ</label>
                                     <input type="number" class="form-control" id="numero_rfq" name="numero_rfq"
-                                        value="<?php echo htmlspecialchars($form_data['rfq_number']); ?>" readonly>
+                                        value="<?php echo htmlspecialchars($form_data['rfq_number']); ?>" required>
                                 </div>
                             </div>
 
@@ -141,7 +141,7 @@ $last_name = $_SESSION['user_last_name'];
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="formato_entrega" class="form-label">Formato de Entrega</label>
-                                    <select class="form-control" id="formato_entrega" name="formato_entrega" disabled>
+                                    <select class="form-control" id="formato_entrega" name="formato_entrega" required>
                                         <option value="Rollo/Bobina" <?php echo ($form_data['delivery_format'] == 'Rollo/Bobina') ? 'selected' : ''; ?>>Rollo/Bobina</option>
                                         <option value="Sachet" <?php echo ($form_data['delivery_format'] == 'Sachet') ? 'selected' : ''; ?>>Sachet</option>
                                         <option value="Bolsa Preformada" <?php echo ($form_data['delivery_format'] == 'Bolsa Preformada') ? 'selected' : ''; ?>>Bolsa Preformada</option>
@@ -153,7 +153,7 @@ $last_name = $_SESSION['user_last_name'];
                             <!-- Botón Enviar -->
                             <div class="col-md-12">
                                 <div class="text-center">
-                                    <button type="button" class="btn btn-primary" onclick="window.history.back();">Volver</button>
+                                    <button type="submit" class="btn btn-primary">Actualizar Cotización</button>
                                 </div>
                             </div>
 

@@ -13,6 +13,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nombre_proyecto = $_POST['nombre_proyecto'] ?? '';
     $numero_rfq = $_POST['numero_rfq'] ?? '';
     $formato_entrega = $_POST['formato_entrega'] ?? '';
+    $formato_empaque = $_POST['formato_empaque'] ?? '';
+    $elemento_conveniencia = $_POST['elemento_conveniencia'] ?? '';
+    $proceso_llenado = $_POST['proceso_llenado'] ?? '';
+    $sistema_empaque = $_POST['sistema_empaque'] ?? '';
+    $unidad_venta = $_POST['unidad_venta'] ?? '';
+    $volumen_pedido = $_POST['volumen_pedido'] ?? 0;
+    $volumen_anual = $_POST['volumen_anual'] ?? 0;
+    $sistema_impresion = $_POST['sistema_impresion'] ?? '';
 
     // Validar datos obligatorios
     if (empty($id_user)) {
@@ -33,18 +41,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             id_form1, status_form1,
             id_user, name_user,
             name_client, project_name,
-            rfq_number, delivery_format
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            rfq_number, delivery_format,
+            packaging_format, convenience_element_of_packaging,
+            filling_process, packaging_system,
+            sales_unit, volume_per_order,
+            annual_volume, printing_system
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     "); 
 
     // Vincular parámetros
     mysqli_stmt_bind_param(
         $stmt, 
-        "ssisssis", 
+        "ssisssissssssiis", 
         $id_form1, $estatus,
         $id_user, $solicitante,
         $cliente, $nombre_proyecto,
-        $numero_rfq, $formato_entrega
+        $numero_rfq, $formato_entrega,
+        $formato_empaque, $elemento_conveniencia,
+        $proceso_llenado, $sistema_empaque,
+        $unidad_venta, $volumen_pedido,
+        $volumen_anual, $sistema_impresion
     );
 
     // Ejecutar la declaración
