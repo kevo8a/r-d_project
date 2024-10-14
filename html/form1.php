@@ -149,12 +149,15 @@ $last_name = $_SESSION['user_last_name'];
                     <form action="send_form1.php" method="POST">
                         <div class="row">
                             <!-- Cliente -->
-                            <!-- <div class="col-md-4">
+                            <div class="col-md-4">
                                 <div class="mb-3">
                                     <label for="cliente" class="form-label">Cliente</label>
-                                    <input type="text" class="form-control" id="cliente" name="cliente" required>
+                                    <select class="form-control" id="cliente" name="cliente" required>
+                                        <option value="" disabled selected>Selecciona un cliente</option>
+                                    </select>
                                 </div>
-                            </div> -->
+                            </div>
+
                             <!-- Solicitante -->
                             <div class="col-md-4">
                                 <div class="mb-3">
@@ -173,13 +176,13 @@ $last_name = $_SESSION['user_last_name'];
                                 </div>
                             </div>
                             <!-- Nombre de proyecto -->
-                            <!-- <div class="col-md-4">
+                            <div class="col-md-4">
                                 <div class="mb-3">
                                     <label for="nombre_proyecto" class="form-label">Nombre del Proyecto/Producto</label>
                                     <input type="text" class="form-control" id="nombre_proyecto" name="nombre_proyecto"
                                         required>
                                 </div>
-                            </div> -->
+                            </div>
                             <!-- estatus -->
                             <div class="col-md-4">
                                 <div class="mb-3">
@@ -620,7 +623,28 @@ $last_name = $_SESSION['user_last_name'];
             codigoSostenibilidad.disabled = true;
         }
     }
+    
     </script>
+    <script>
+// Función para cargar los clientes
+function loadClients() {
+    fetch('get_clients.php')
+        .then(response => response.json())
+        .then(data => {
+            const select = document.getElementById('cliente');
+            data.forEach(client => {
+                const option = document.createElement('option');
+                option.value = client;
+                option.textContent = client;
+                select.appendChild(option);
+            });
+        })
+        .catch(error => console.error('Error al cargar los clientes:', error));
+}
+
+// Cargar los clientes al cargar la página
+document.addEventListener('DOMContentLoaded', loadClients);
+</script>
     </div>
 </body>
 

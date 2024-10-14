@@ -1,0 +1,71 @@
+    // 
+    // $numero_rfq = $_POST['numero_rfq'] ?? '';
+    // $formato_entrega = $_POST['formato_entrega'] ?? '';
+    // $formato_empaque = $_POST['formato_empaque'] ?? '';
+    // $elemento_conveniencia = $_POST['elemento_conveniencia'] ?? '';
+    // $proceso_llenado = $_POST['proceso_llenado'] ?? '';
+    // $sistema_empaque = $_POST['sistema_empaque'] ?? '';
+    // $unidad_venta = $_POST['unidad_venta'] ?? '';
+    // $volumen_pedido = $_POST['volumen_pedido'] ?? 0;
+    // $volumen_anual = $_POST['volumen_anual'] ?? 0;
+    // $sistema_impresion = $_POST['sistema_impresion'] ?? '';
+    // $numero_colores = $_POST['numero_colores'] ?? 0;
+    // $ancho = $_POST['ancho'] ?? 0;
+    // $tolerancia_ancho = $_POST['tolerancia_ancho'] ?? 0;
+    // $fotodistancias = $_POST['fotodistancias'] ?? null; // Si está vacío es null
+    // $tolerancia_fotodistancias = $_POST['tolerancia_fotodistancias'] ?? null;
+    // $largo = $_POST['largo'] ?? 0;
+    // $tolerancia_largo = $_POST['tolerancia_largo'] ?? 0;
+    // $fuelle = $_POST['fuelle'] ?? 0;
+    // $tolerancia_fuelle = $_POST['tolerancia_fuelle'] ?? 0;
+    // $traslape = $_POST['traslape'] ?? 0;
+    // $tolerancia_traslape = $_POST['tolerancia_traslape'] ?? 0;
+    // $codigo_sostenibilidad = $_POST['codigo_sostenibilidad'] ?? null;
+    // $ficha_tecnica = isset($_POST['ficha_tecnica']) ? 1 : 0; // 1 para Sí, 0 para No
+    // $muestra_fisica = isset($_POST['muestra_fisica']) ? 1 : 0;
+    // $plano_mecanico = isset($_POST['plano_mecanico']) ? 1 : 0;
+    // $pdf_arte = isset($_POST['pdf_arte']) ? 1 : 0;
+
+    // Validación de datos obligatorios
+    // $required_fields = [$cliente, $solicitante, $estatus, $nombre_proyecto, $numero_rfq];
+    // foreach ($required_fields as $field) {
+    //     if (empty($field)) {
+    //         echo "Todos los campos obligatorios deben estar llenos.";
+    //         exit;
+    //     }
+        
+        
+                    
+
+            // rfq_number, delivery_format, 
+            // packaging_format, convenience_element_of_packaging,
+            // filling_process, packaging_system, 
+            // sales_unit, volume_per_order,
+            // annual_volume, printing_system, 
+            // number_of_colors, width_mm,
+            // width_tolerance_mm, photo_distances_mm,
+            // photo_distances_tolerance_mm, length_mm, 
+            // length_tolerance_mm, gusset_mm, 
+            // gusset_tolerance_mm, overlap_mm, 
+            // overlap_tolerance_mm, sustainability_code, 
+            // technical_sheet, physical_sample,
+            // mechanical_plan, mechanical_plan_sheet
+    // Vincular parámetros (31+2 campos en total)
+        
+        
+        // ,       // i, s
+        //    // s, s
+        // $numero_rfq, $formato_entrega,// i, s
+        // $formato_empaque, $elemento_conveniencia, // s, s
+        // $proceso_llenado, $sistema_empaque, // s, s
+        // $unidad_venta, $volumen_pedido, // s, i
+        // $volumen_anual, $sistema_impresion, // i, s
+        // $numero_colores, $ancho,        // i, f
+        // $tolerancia_ancho, $fotodistancias, // f, f
+        // $tolerancia_fotodistancias, $largo,// f, f
+        // $tolerancia_largo, $fuelle,    // f, f
+        // $tolerancia_fuelle, $traslape, // f, f
+        // $tolerancia_traslape, $codigo_sostenibilidad,// f, i
+        // $ficha_tecnica, $muestra_fisica, // i, i
+        // $plano_mecanico, $pdf_arte     // i, i
+    // Ejecutar la declaración

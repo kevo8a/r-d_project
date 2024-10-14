@@ -9,15 +9,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $solicitante = $_POST['solicitante'] ?? '';
     $id_user = $_POST['id_user'] ?? '';
     $estatus = $_POST['estatus'] ?? '';
+    $cliente = $_POST['cliente'] ?? '';
+    $nombre_proyecto = $_POST['nombre_proyecto'] ?? ''; // Añadir esta línea
+
     
     // Validar datos obligatorios
     if (empty($id_user)) {
         echo "El campo id_user es obligatorio.";
-        exit;
-    }
-
-    if (empty($estatus)) {
-        echo "El campo estatus es obligatorio.";
         exit;
     }
 
@@ -32,14 +30,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt = $conn->prepare("
         INSERT INTO form1 (
             id_form1, status_form1,
-            id_user, name_user
-        ) VALUES (?, ?, ?, ?)
+            id_user, name_user,
+            name_client, project_name
+        ) VALUES (?, ?, ?, ?, ?, ?)
     "); 
 
     $stmt->bind_param(
-        "ssis", 
+        "ssisss", 
         $id_form1, $estatus,
-        $id_user, $solicitante
+        $id_user, $solicitante,
+        $cliente, $nombre_proyecto,
     );
 
     // Ejecutar la declaración
