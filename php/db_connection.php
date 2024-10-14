@@ -5,9 +5,10 @@ $password = "";       // Contraseña del usuario root (por defecto está vacía 
 $database = "rnd_project";  // Nombre de la base de datos
 
 // Crear la conexión
-$conn = new mysqli($host, $user, $password, $database);
+$conn = mysqli_connect($host, $user, $password, $database);
 
 // Verificar la conexión
-if ($conn->connect_error) {
-    die("Conexión fallida: " . $conn->connect_error);
+if (!$conn) {
+    die("Conexión fallida: " . mysqli_connect_error());
 }
+?>

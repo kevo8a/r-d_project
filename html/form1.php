@@ -149,11 +149,41 @@ $last_name = $_SESSION['user_last_name'];
                     <form action="send_form1.php" method="POST">
                         <div class="row">
                             <!-- Cliente -->
-                            <div class="col-md-4">
+                             <div class="col-md-4">
                                 <div class="mb-3">
                                     <label for="cliente" class="form-label">Cliente</label>
                                     <select class="form-control" id="cliente" name="cliente" required>
                                         <option value="" disabled selected>Selecciona un cliente</option>
+
+                                        <?php
+                                        // Habilitar la visualización de errores
+                                        error_reporting(E_ALL);
+                                        ini_set('display_errors', 1);
+
+                                        // Incluir el archivo de conexión a la base de datos
+                                        require '../php/db_connection.php'; // Asegúrate de que la ruta sea correcta
+
+                                        // Intentar obtener los clientes
+                                        $sql = "SELECT name FROM client";
+                                        $result = mysqli_query($conn, $sql); // Cambié $mysqli a $conn
+
+                                        // Verificar si la consulta fue exitosa
+                                        if (!$result) {
+                                            echo '<option value="" disabled>Error en la consulta: ' . mysqli_error($conn) . '</option>'; // Cambié $mysqli a $conn
+                                        } else {
+                                            // Comprobar si hay resultados
+                                            if (mysqli_num_rows($result) > 0) {
+                                                while ($row = mysqli_fetch_assoc($result)) {
+                                                    echo '<option value="' . htmlspecialchars($row['name']) . '">' . htmlspecialchars($row['name']) . '</option>';
+                                                }
+                                            } else {
+                                                echo '<option value="" disabled>No se encontraron clientes</option>';
+                                            }
+                                        }
+
+                                        // Cerrar la conexión
+                                        mysqli_close($conn); // Cambié $mysqli a $conn
+                                        ?>
                                     </select>
                                 </div>
                             </div>
@@ -199,16 +229,16 @@ $last_name = $_SESSION['user_last_name'];
                                 </div>
                             </div> -->
                             <!-- Numero de RFQ -->
-                            <!-- <div class="col-md-6">
+                            <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="numero_rfq" class="form-label">Número de RFQ</label>
                                     <input type="number" class="form-control" id="numero_rfq" name="numero_rfq"
                                         required>
                                 </div>
-                            </div> -->
+                            </div>
 
                             <!-- Formato de Entrega -->
-                            <!-- <div class="col-md-6">
+                            <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="formato_entrega" class="form-label">Formato de Entrega</label>
                                     <select class="form-select" id="formato_entrega" name="formato_entrega" required>
@@ -218,7 +248,7 @@ $last_name = $_SESSION['user_last_name'];
                                         <option value="Tubular">Tubular</option>
                                     </select>
                                 </div>
-                            </div> -->
+                            </div>
                             <!-- Formato de Empaque -->
                             <!-- <div class="col-md-6">
                                 <div class="mb-3">

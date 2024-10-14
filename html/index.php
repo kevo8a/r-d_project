@@ -1,6 +1,13 @@
 <?php
-// Iniciar la sesión antes de cualquier salida HTML
+// Iniciar la sesión
 session_start();
+include '../php/db_connection.php';
+// Verificar si el usuario está logueado
+if (!isset($_SESSION['user_id'])) {
+    // Redirigir al usuario a la página de inicio de sesión si no está logueado
+    header("Location: ../html/login.php");
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
