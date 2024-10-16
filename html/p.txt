@@ -1,12 +1,9 @@
     // 
     // 
 
-    // $unidad_venta = $_POST['unidad_venta'] ?? '';
-    // $volumen_pedido = $_POST['volumen_pedido'] ?? 0;
-    // $volumen_anual = $_POST['volumen_anual'] ?? 0;
-    // $sistema_impresion = $_POST['sistema_impresion'] ?? '';
-    // $numero_colores = $_POST['numero_colores'] ?? 0;
-    // $ancho = $_POST['ancho'] ?? 0;
+    // 
+    //
+
     // $tolerancia_ancho = $_POST['tolerancia_ancho'] ?? 0;
     // $fotodistancias = $_POST['fotodistancias'] ?? null; // Si está vacío es null
     // $tolerancia_fotodistancias = $_POST['tolerancia_fotodistancias'] ?? null;
@@ -36,9 +33,9 @@
             // 
             // 
             // 
-            // sales_unit, volume_per_order,
-            // annual_volume, printing_system, 
-            // number_of_colors, width_mm,
+            // 
+            // 
+         
             // width_tolerance_mm, photo_distances_mm,
             // photo_distances_tolerance_mm, length_mm, 
             // length_tolerance_mm, gusset_mm, 
@@ -53,9 +50,9 @@
         // ,// i, s
         // // s, s
         // , // s, s
-        // $unidad_venta, $volumen_pedido, // s, i
-        // $volumen_anual, $sistema_impresion, // i, s
-        // $numero_colores, $ancho,        // i, f
+        //  // s, i
+        //  // i, s
+        //        // i, f
         // $tolerancia_ancho, $fotodistancias, // f, f
         // $tolerancia_fotodistancias, $largo,// f, f
         // $tolerancia_largo, $fuelle,    // f, f

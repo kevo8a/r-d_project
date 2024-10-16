@@ -315,7 +315,7 @@ $last_name = $_SESSION['user_last_name'];
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="volumen_pedido" class="form-label">Volumen por Pedido</label>
-                                    <input type="number" class="form-control" id="volumen_pedido" name="volumen_pedido"
+                                    <input type="number" class="form-control" id="volumen_pedido" name="volumen_pedido" 
                                         required>
                                 </div>
                             </div>
@@ -340,13 +340,13 @@ $last_name = $_SESSION['user_last_name'];
                                 </div>
                             </div>
                             <!-- Numero de Colores -->
-                            <!-- <div class="col-md-6">
+                           <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="numero_colores" class="form-label">Número de Colores</label>
                                     <input type="number" class="form-control" id="numero_colores" name="numero_colores"
                                         required>
                                 </div>
-                            </div> -->
+                            </div> 
 
 
                             <!-- Dimensiones -->
@@ -354,87 +354,88 @@ $last_name = $_SESSION['user_last_name'];
                                 <h3>Dimensiones</h3>
                             </div>
 
-                            <!-- Ancho-->
-                            <!-- <div class="col-md-6">
+                            <!-- Ancho -->
+                            <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="ancho" class="form-label">Ancho (mm)</label>
-                                    <input type="number" class="form-control" id="ancho" name="ancho" required>
+                                    <input type="number" class="form-control" id="ancho" name="ancho" step="any" required>
                                 </div>
-                            </div> -->
+                            </div>
+
                             <!-- Tolerancia de ancho -->
-                            <!-- <div class="col-md-6">
+                            <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="tolerancia_ancho" class="form-label">Tolerancia Ancho (mm)</label>
-                                    <input type="number" class="form-control" id="tolerancia_ancho"
+                                    <input type="number" class="form-control" id="tolerancia_ancho" step="any"
                                         name="tolerancia_ancho" required>
                                 </div>
-                            </div> -->
+                            </div>
                             <!-- Check Diseño Continuo -->
-                            <!-- <div class="col-md-2">
+                            <div class="col-md-2">
                                 <div class="form-check mb-3">
                                     <input class="form-check-input" type="checkbox" id="check_diseno_continuo"
                                         name="check_diseno_continuo" onchange="toggleFotodistancias()">
                                     <label class="form-check-label" for="check_diseno_continuo">Diseño Continuo</label>
                                 </div>
-                            </div> -->
+                            </div>
                             <!-- Fotodistancias -->
-                            <!-- <div class="col-md-5">
+                            <div class="col-md-5">
                                 <div class="mb-3">
                                     <label for="fotodistancias" class="form-label">Fotodistancias (mm)</label>
-                                    <input type="number" class="form-control" id="fotodistancias" name="fotodistancias">
+                                    <input type="number" class="form-control" id="fotodistancias" name="fotodistancias" step="any"> 
                                 </div>
-                            </div> -->
+                            </div>
                             <!-- Tolerancia de fotodistancias -->
-                            <!-- <div class="col-md-5">
+                            <div class="col-md-5">
                                 <div class="mb-3">
                                     <label for="tolerancia_fotodistancias" class="form-label">Tolerancia Fotodistancias
                                         (mm)</label>
                                     <input type="number" class="form-control" id="tolerancia_fotodistancias"
-                                        name="tolerancia_fotodistancias">
+                                        name="tolerancia_fotodistancias" step="any">
                                 </div>
-                            </div> -->
+                            </div>
                             <!-- Calibre (micras) -->
-                            <!-- <div class="col-md-6">
+                            <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="calibre" class="form-label">Calibre (micras))</label>
-                                    <input type="number" class="form-control" id="calibre" name="calibre">
+                                    <input type="number" class="form-control" id="calibre" name="calibre" step="any">
                                 </div>
-                            </div> -->
+                            </div>
                             <!-- Tolerancia Calibre (micras) -->
-                            <!-- <div class="col-md-6">
+                            <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="tolerancia_calibre" class="form-label">Tolerancia Calibre
                                         (micras)</label>
                                     <input type="number" class="form-control" id="tolerancia_calibre"
-                                        name="tolerancia_calibre">
+                                        name="tolerancia_calibre" step="any">
                                 </div>
-                            </div> -->
+                            </div>
                             <!-- Peso (gm-2) -->
-                            <!-- <div class="col-md-6">
+                            <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="peso" class="form-label">Peso (gm-2)</label>
-                                    <input type="number" class="form-control" id="peso" name="peso">
+                                    <input type="number" class="form-control" id="peso" name="peso" step="any">
                                 </div>
-                            </div> -->
+                            </div>
                             <!-- Tolerancia Peso (gm-2) -->
-                            <!-- <div class="col-md-6">
+                            <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="tolerancia_peso" class="form-label">Tolerancia Peso (gm-2)</label>
-                                    <input type="number" class="form-control" id="tolerancia_peso"
+                                    <input type="number" class="form-control" id="tolerancia_peso" step="any"
                                         name="tolerancia_peso">
                                 </div>
-                            </div> -->
+                            </div>
                             <!-- Espacio -->
-                            <!-- <div class="col-md-6">
+                            <div class="col-md-6">
                             </div>
                             <div class="col-md-11 text-center">
 
                                 <h3>
                                     <p></p>Dimensiones Bolsa
                                 </h3>
-                            </div> -->
+                            </div>
                             <!-- Dimensiones de la Bolsa -->
-                            <!-- <div class="col-md-1">
+                            <div class="col-md-1">
                                 <div class="mb-1">
                                     <label for="es_bolsa" class="form-label">¿Es Bolsa?</label>
                                     <select class="form-select" id="es_bolsa" name="es_bolsa"
@@ -443,37 +444,36 @@ $last_name = $_SESSION['user_last_name'];
                                         <option value="No">No</option>
                                     </select>
                                 </div>
-                            </div> -->
+                            </div>
 
                             <!-- Largo -->
-                            <!-- <div class="col-md-6 bolsa_fields"">
+                            <div class="col-md-6 bolsa_fields"">
                                 <div class=" mb-3">
                                 <label for="largo" class="form-label">Largo (mm)</label>
-                                <input type="number" class="form-control" id="largo" name="largo" required>
-                            </div> -->
+                                <input type="number" class="form-control" id="largo" name="largo" step="any" required >
+                            </div>
                             <!-- Tolerancia largo -->
-                            <!-- <div class="col-md-6 bolsa_fields">
+                            <div class="col-md-6 bolsa_fields">
                             <div class="mb-3">
                                 <label for="tolerancia_largo" class="form-label">Tolerancia Largo (mm)</label>
-                                <input type="number" class="form-control" id="tolerancia_largo" name="tolerancia_largo"
+                                <input type="number" class="form-control" id="tolerancia_largo" name="tolerancia_largo" step="any"
                                     required>
                             </div>
-                        </div> -->
                             <!-- Fuelle -->
-                            <!-- <div class="col-md-6 bolsa_fields">
+                            <div class="col-md-6 bolsa_fields">
                             <div class="mb-3">
                                 <label for="fuelle" class="form-label">Fuelle (mm)</label>
-                                <input type="number" class="form-control" id="fuelle" name="fuelle" required>
+                                <input type="number" class="form-control" id="fuelle" name="fuelle" step="any" required>
                             </div>
-                        </div> -->
-                            <!-- Tolerancia Fuelle -->
-                            <!-- <div class="col-md-6 bolsa_fields">
-                            <div class="mb-3">
-                                <label for="tolerancia_fuelle" class="form-label">Tolerancia Fuelle (mm)</label>
-                                <input type="number" class="form-control" id="tolerancia_fuelle"
-                                    name="tolerancia_fuelle" required>
+                            </div> 
+                                <!-- Tolerancia Fuelle -->
+                                <div class="col-md-6 bolsa_fields">
+                                <div class="mb-3">
+                                    <label for="tolerancia_fuelle" class="form-label">Tolerancia Fuelle (mm)</label>
+                                    <input type="number" class="form-control" id="tolerancia_fuelle"
+                                        name="tolerancia_fuelle" step="any" required>
+                                </div>
                             </div>
-                        </div> -->
                             <!-- Traslape -->
                             <!-- <div class="col-md-6 bolsa_fields">
                             <div class="mb-3">
@@ -554,8 +554,8 @@ $last_name = $_SESSION['user_last_name'];
                                     <button type="submit" class="btn btn-primary">Enviar
                                         Cotización</button>
                                 </div>
-                            </div>
-                        </div>
+                            </div>                    
+                    </div>
                 </div>
             </div>
 
