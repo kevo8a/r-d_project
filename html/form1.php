@@ -146,7 +146,7 @@ $last_name = $_SESSION['user_last_name'];
                 <!-- Main Content -->
                 <div class="container">
                     <h1 class="text-center mb-4">Formulario de Cotización</h1>
-                    <form action="send_form1.php" method="POST">
+                    <form action="../php/send_form1.php" method="POST">
                         <div class="row">
                             <!-- Cliente -->
                              <div class="col-md-4">
@@ -222,12 +222,12 @@ $last_name = $_SESSION['user_last_name'];
                                 </div>
                             </div>
                             <!-- folio -->
-                            <!-- <div class="col-md-4">
+                            <div class="col-md-4">
                                 <div class="mb-3">
                                     <label for="folio" class="form-label">Folio</label>
-                                    <input type="text" class="form-control" id="folio" name="folio" value="12" readonly>
+                                    <input type="text" class="form-control" id="folio" name="folio" readonly>
                                 </div>
-                            </div> -->
+                            </div>
                             <!-- Numero de RFQ -->
                             <div class="col-md-6">
                                 <div class="mb-3">
@@ -438,8 +438,7 @@ $last_name = $_SESSION['user_last_name'];
                             <div class="col-md-1">
                                 <div class="mb-1">
                                     <label for="es_bolsa" class="form-label">¿Es Bolsa?</label>
-                                    <select class="form-select" id="es_bolsa" name="es_bolsa"
-                                        onchange="toggleDimensionesBolsa()" required>
+                                    <select class="form-select" id="es_bolsa" name="es_bolsa" onchange="toggleDimensionesBolsa()" required>
                                         <option value="Sí">Sí</option>
                                         <option value="No">No</option>
                                     </select>
@@ -447,115 +446,121 @@ $last_name = $_SESSION['user_last_name'];
                             </div>
 
                             <!-- Largo -->
-                            <div class="col-md-6 bolsa_fields"">
-                                <div class=" mb-3">
-                                <label for="largo" class="form-label">Largo (mm)</label>
-                                <input type="number" class="form-control" id="largo" name="largo" step="any" required >
-                            </div>
-                            <!-- Tolerancia largo -->
                             <div class="col-md-6 bolsa_fields">
-                            <div class="mb-3">
-                                <label for="tolerancia_largo" class="form-label">Tolerancia Largo (mm)</label>
-                                <input type="number" class="form-control" id="tolerancia_largo" name="tolerancia_largo" step="any"
-                                    required>
-                            </div>
-                            <!-- Fuelle -->
-                            <div class="col-md-6 bolsa_fields">
-                            <div class="mb-3">
-                                <label for="fuelle" class="form-label">Fuelle (mm)</label>
-                                <input type="number" class="form-control" id="fuelle" name="fuelle" step="any" required>
-                            </div>
-                            </div> 
-                                <!-- Tolerancia Fuelle -->
-                                <div class="col-md-6 bolsa_fields">
                                 <div class="mb-3">
-                                    <label for="tolerancia_fuelle" class="form-label">Tolerancia Fuelle (mm)</label>
-                                    <input type="number" class="form-control" id="tolerancia_fuelle"
-                                        name="tolerancia_fuelle" step="any" required>
+                                    <label for="largo" class="form-label">Largo (mm)</label>
+                                    <input type="number" class="form-control" id="largo" name="largo" step="any" required>
                                 </div>
                             </div>
+
+                            <!-- Tolerancia largo -->
+                            <div class="col-md-6 bolsa_fields">
+                                <div class="mb-3">
+                                    <label for="tolerancia_largo" class="form-label">Tolerancia Largo (mm)</label>
+                                    <input type="number" class="form-control" id="tolerancia_largo" name="tolerancia_largo" step="any" required>
+                                </div>
+                            </div>
+
+                            <!-- Fuelle -->
+                            <div class="col-md-6 bolsa_fields">
+                                <div class="mb-3">
+                                    <label for="fuelle" class="form-label">Fuelle (mm)</label>
+                                    <input type="number" class="form-control" id="fuelle" name="fuelle" step="any" required>
+                                </div>
+                            </div>
+
+                            <!-- Tolerancia Fuelle -->
+                            <div class="col-md-6 bolsa_fields">
+                                <div class="mb-3">
+                                    <label for="tolerancia_fuelle" class="form-label">Tolerancia Fuelle (mm)</label>
+                                    <input type="number" class="form-control" id="tolerancia_fuelle" name="tolerancia_fuelle" step="any" required>
+                                </div>
+                            </div>
+
                             <!-- Traslape -->
-                            <!-- <div class="col-md-6 bolsa_fields">
-                            <div class="mb-3">
-                                <label for="traslape" class="form-label">Traslape (mm)</label>
-                                <input type="number" class="form-control" id="traslape" name="traslape" required>
+                            <div class="col-md-6 bolsa_fields">
+                                <div class="mb-3">
+                                    <label for="traslape" class="form-label">Traslape (mm)</label>
+                                    <input type="number" class="form-control" id="traslape" name="traslape" step="any" required>
+                                </div>
                             </div>
-                        </div> -->
-                            <!-- Toleranciaa Traslape -->
-                            <!-- <div class="col-md-6 bolsa_fields">
-                            <div class="mb-3">
-                                <label for="tolerancia_traslape" class="form-label">Tolerancia Traslape
-                                    (mm)</label>
-                                <input type="number" class="form-control" id="tolerancia_traslape"
-                                    name="tolerancia_traslape" required>
+
+                            <!-- Tolerancia Traslape -->
+                            <div class="col-md-6 bolsa_fields">
+                                <div class="mb-3">
+                                    <label for="tolerancia_traslape" class="form-label">Tolerancia Traslape (mm)</label>
+                                    <input type="number" class="form-control" id="tolerancia_traslape" name="tolerancia_traslape" step="any" required>
+                                </div>
                             </div>
-                        </div> -->
-                            <!--Check Código de sostenibilidad -->
-                            <!-- <div class="col-md-6">
-                            <div class="form-check mb-3">
-                                <input class="form-check-input" type="checkbox" id="check_sostenibilidad"
-                                    name="check_sostenibilidad" onchange="toggleCodigoSostenibilidad()">
-                                <label class="form-check-label" for="check_sostenibilidad">Check código de
-                                    sostenibilidad</label>
+
+                            <!-- Check Código de sostenibilidad -->
+                            <div class="col-md-6">
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="check_sostenibilidad" name="check_sostenibilidad" onchange="toggleCodigoSostenibilidad()">
+                                    <label class="form-check-label" for="check_sostenibilidad">Check código de sostenibilidad</label>
+                                </div>
                             </div>
-                        </div> -->
-                            <!-- Codigo de sostenibilidad-->
-                            <!-- <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="codigo_sostenibilidad" class="form-label">Código de
-                                    Sostenibilidad</label>
-                                <input type="text" class="form-control" id="codigo_sostenibilidad"
-                                    name="codigo_sostenibilidad" disabled>
+
+                            <!-- Código de sostenibilidad -->
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="codigo_sostenibilidad" class="form-label">Código de Sostenibilidad</label>
+                                    <input type="text" class="form-control" id="codigo_sostenibilidad" name="codigo_sostenibilidad" disabled>
+                                </div>
                             </div>
-                        </div> -->
-                            <!-- -->
-                            <!-- <div class="col-md-12 text-center">
-                            <h3>Check de Adjuntos</h3>
-                        </div> -->
-                            <!-- Ficha ficha_tecnica -->
-                            <!-- <div class="col-md-6">
-                            <div class="form-check mb-3">
-                                <input class="form-check-input" type="checkbox" id="ficha_tecnica" name="ficha_tecnica">
-                                <label class="form-check-label" for="ficha_tecnica">Ficha Técnica</label>
+
+                            <!-- Adjuntos -->
+                            <div class="col-md-12 text-center">
+                                <h3>Check de Adjuntos</h3>
                             </div>
-                        </div> -->
-                            <!-- Muestra fisica -->
-                            <!-- <div class="col-md-6">
-                            <div class="form-check mb-3">
-                                <input class="form-check-input" type="checkbox" id="muestra_fisica"
-                                    name="muestra_fisica">
-                                <label class="form-check-label" for="muestra_fisica">Muestra Física</label>
+
+                            <!-- Ficha Técnica -->
+                            <div class="col-md-6">
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="ficha_tecnica" name="ficha_tecnica">
+                                    <label class="form-check-label" for="ficha_tecnica">Ficha Técnica</label>
+                                </div>
                             </div>
-                        </div> -->
+
+                            <!-- Muestra Física -->
+                            <div class="col-md-6">
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="muestra_fisica" name="muestra_fisica">
+                                    <label class="form-check-label" for="muestra_fisica">Muestra Física</label>
+                                </div>
+                            </div>
+
                             <!-- Plano Mecánico -->
-                            <!-- <div class="col-md-6">
-                            <div class="form-check mb-3">
-                                <input class="form-check-input" type="checkbox" id="plano_mecanico"
-                                    name="plano_mecanico">
-                                <label class="form-check-label" for="plano_mecanico">Plano Mecánico</label>
+                            <div class="col-md-6">
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="plano_mecanico" name="plano_mecanico">
+                                    <label class="form-check-label" for="plano_mecanico">Plano Mecánico</label>
+                                </div>
                             </div>
-                        </div>  -->
-                            <!-- PDF Arte-->
-                            <!-- <div class="col-md-6">
-                            <div class="form-check mb-3">
-                                <input class="form-check-input" type="checkbox" id="pdf_arte" name="pdf_arte">
-                                <label class="form-check-label" for="pdf_arte">PDF del Arte</label>
+
+                            <!-- PDF Arte -->
+                            <div class="col-md-6">
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="pdf_arte" name="pdf_arte">
+                                    <label class="form-check-label" for="pdf_arte">PDF del Arte</label>
+                                </div>
                             </div>
-                        </div> -->
+
                             <!-- Alerta -->
-                            <!-- <div class="col-md-12 text-center">
-                            <div class="alert alert-warning w-100" role="alert">
-                                Es obligatorio adjuntar la ficha técnica o la muestra física.
+                            <div class="col-md-12 text-center">
+                                <div class="alert alert-warning w-100" role="alert">
+                                    Es obligatorio adjuntar la ficha técnica o la muestra física.
+                                </div>
                             </div>
-                        </div> -->
+
                             <!-- Botón de Envío -->
                             <div class="col-md-12">
                                 <div class="text-center">
-                                    <button type="submit" class="btn btn-primary">Enviar
-                                        Cotización</button>
+                                    <button type="submit" class="btn btn-primary">Enviar Cotización</button>
                                 </div>
-                            </div>                    
-                    </div>
+                            </div>
+
+                        </div>
                 </div>
             </div>
 
@@ -622,7 +627,7 @@ $last_name = $_SESSION['user_last_name'];
         }
     }
 
-    function toggleDimensionesBolsa() {
+        function toggleDimensionesBolsa() {
         const esBolsa = document.getElementById("es_bolsa").value;
         const bolsaFields = document.getElementsByClassName("bolsa_fields");
 
@@ -632,15 +637,22 @@ $last_name = $_SESSION['user_last_name'];
             if (esBolsa === "No") {
                 bolsaFields[i].style.display = "none";
 
-                // Limpiar los valores de los campos input dentro de cada bolsa_fields
+                // Limpiar los valores de los campos input y eliminar el atributo 'required'
                 for (let j = 0; j < inputFields.length; j++) {
                     inputFields[j].value = "";
+                    inputFields[j].removeAttribute("required");
                 }
             } else {
                 bolsaFields[i].style.display = "block";
+
+                // Añadir el atributo 'required' nuevamente
+                for (let j = 0; j < inputFields.length; j++) {
+                    inputFields[j].setAttribute("required", "required");
+                }
             }
         }
     }
+
 
 
     function toggleCodigoSostenibilidad() {

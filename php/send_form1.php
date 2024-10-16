@@ -32,9 +32,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $tolerancia_peso = $_POST['tolerancia_peso']?? '';
     $largo = $_POST['largo']?? '';
     $tolerancia_largo = $_POST['tolerancia_largo']?? '';
-    $fuelle = $_POST['tolerancifuellea_peso']?? '';
+    $fuelle = $_POST['fuelle']?? '';
     $tolerancia_fuelle = $_POST['tolerancia_fuelle']?? '';
-
+    $traslape = $_POST['traslape']?? '';
+    $tolerancia_traslape = $_POST['tolerancia_traslape']?? '';
+    $codigo_sostenibilidad = $_POST['codigo_sostenibilidad']?? '';
+    $ficha_tecnica = isset($_POST['ficha_tecnica']) ? 1 : 0; // 1 para Sí, 0 para No
+    $muestra_fisica = isset($_POST['muestra_fisica']) ? 1 : 0;
+    $plano_mecanico = isset($_POST['plano_mecanico']) ? 1 : 0;
+    $pdf_art = isset($_POST['pdf_arte']) ? 1 : 0;
 
     // Validar datos obligatorios
     if (empty($id_user)) {
@@ -64,18 +70,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             width_tolerance_mm, photo_distances_mm,
             photo_distances_tolerance_mm,
             thickness_microns, thickness_tolerance_microns,
-            weight_gm2,weight_tolerance_gm2,
+            weight_gm2, weight_tolerance_gm2,
             length_mm, length_tolerance_mm,
-            gusset_mm, gusset_tolerance_mm
-            
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
-          ?, ?, ?, ?, ?, ?, ?, ?))
+            gusset_mm, gusset_tolerance_mm,
+            overlap_mm, overlap_tolerance_mm,
+            sustainability_code,
+            technical_sheet, physical_sample,
+            mechanical_plan, pdf_art
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     "); 
 
     // Vincular parámetros
     mysqli_stmt_bind_param(
         $stmt, 
-        "ssisssissssssiisidddddddddddd", 
+        "ssisssissssssiisiddddddddddddssibbbb", 
         $id_form1, $estatus,
         $id_user, $solicitante,
         $cliente, $nombre_proyecto,
@@ -90,12 +98,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $calibre, $tolerancia_calibre,
         $peso, $tolerancia_peso,
         $largo, $tolerancia_largo,
-        $fuelle, $tolerancia_fuelle
+        $fuelle, $tolerancia_fuelle,
+        $traslape, $tolerancia_traslape,
+        $codigo_sostenibilidad,
+        $ficha_tecnica, $muestra_fisica,
+        $plano_mecanico, $pdf_art
     );
 
     // Ejecutar la declaración
     if (mysqli_stmt_execute($stmt)) {
-        echo "Datos guardados correctamente.";
+        // Redirigir a una ruta después de guardar correctamente
+        header("Location: ../html/list_form1.php");  // Cambia 'ruta_deseada.php' a la ruta que prefieras
+        exit(); // Asegúrate de terminar el script después de redirigir
     } else {
         echo "Error al guardar los datos: " . mysqli_stmt_error($stmt);
     }

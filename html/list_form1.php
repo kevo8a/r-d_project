@@ -76,8 +76,8 @@ $result = $conn->query($sql);
                                         // Botón de Ver Completo
                                         echo "<td><a href='show_form1.php?id=" . $row['id'] . "' class='btn btn-outline-primary btn-sm'>Ver completo</a> ";
                                         // Botón de Editar
-                                        echo "<a href='edit_form1.php?id=" . $row['id'] . "' class='btn btn-outline-warning btn-sm'>Editar</a></td>"; 
-                                        echo "</tr>";
+                                        // echo "<a href='edit_form1.php?id=" . $row['id'] . "' class='btn btn-outline-warning btn-sm'>Editar</a></td>"; 
+                                        // echo "</tr>";
                                     }
                                 } else {
                                     echo "<tr><td colspan='6' class='text-center'>No hay formularios creados</td></tr>";
