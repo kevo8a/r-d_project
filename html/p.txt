@@ -1,63 +1,95 @@
-    // 
-    // 
 
-    // 
-    //
+    -- Create database
+CREATE DATABASE rnd_project;
+USE rnd_project;
 
-    // $tolerancia_ancho = $_POST['tolerancia_ancho'] ?? 0;
-    // $fotodistancias = $_POST['fotodistancias'] ?? null; // Si está vacío es null
-    // $tolerancia_fotodistancias = $_POST['tolerancia_fotodistancias'] ?? null;
-    // $largo = $_POST['largo'] ?? 0;
-    // $tolerancia_largo = $_POST['tolerancia_largo'] ?? 0;
-    // $fuelle = $_POST['fuelle'] ?? 0;
-    // $tolerancia_fuelle = $_POST['tolerancia_fuelle'] ?? 0;
-    // $traslape = $_POST['traslape'] ?? 0;
-    // $tolerancia_traslape = $_POST['tolerancia_traslape'] ?? 0;
-    // $codigo_sostenibilidad = $_POST['codigo_sostenibilidad'] ?? null;
-    // $ficha_tecnica = isset($_POST['ficha_tecnica']) ? 1 : 0; // 1 para Sí, 0 para No
-    // $muestra_fisica = isset($_POST['muestra_fisica']) ? 1 : 0;
-    // $plano_mecanico = isset($_POST['plano_mecanico']) ? 1 : 0;
-    // $pdf_arte = isset($_POST['pdf_arte']) ? 1 : 0;
+-- Table 'rol'
+CREATE TABLE rol (
+    id INT PRIMARY KEY,
+    description VARCHAR(255)
+);
 
-    // Validación de datos obligatorios
-    // $required_fields = [$cliente, $solicitante, $estatus, $nombre_proyecto, $numero_rfq];
-    // foreach ($required_fields as $field) {
-    //     if (empty($field)) {
-    //         echo "Todos los campos obligatorios deben estar llenos.";
-    //         exit;
-    //     }
-        
-        
-                    
+-- Table 'users'
+CREATE TABLE users (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    id_user INT UNIQUE,
+    name VARCHAR(255),
+    last_name VARCHAR(255),
+    email VARCHAR(255),
+    password VARCHAR(255),
+    id_rol INT,
+    site VARCHAR(255),
+    FOREIGN KEY (id_rol) REFERENCES rol(id)
+);
 
-            // 
-            // 
-            // 
-            // 
-            // 
-         
-            // width_tolerance_mm, photo_distances_mm,
-            // photo_distances_tolerance_mm, length_mm, 
-            // length_tolerance_mm, gusset_mm, 
-            // gusset_tolerance_mm, overlap_mm, 
-            // overlap_tolerance_mm, sustainability_code, 
-            // technical_sheet, physical_sample,
-            // mechanical_plan, mechanical_plan_sheet
-    // Vincular parámetros (31+2 campos en total)
-        
-        
+-- Table 'client'
+CREATE TABLE client (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255) UNIQUE,  -- Added UNIQUE constraint
+    email VARCHAR(255)
+);
 
-        // ,// i, s
-        // // s, s
-        // , // s, s
-        //  // s, i
-        //  // i, s
-        //        // i, f
-        // $tolerancia_ancho, $fotodistancias, // f, f
-        // $tolerancia_fotodistancias, $largo,// f, f
-        // $tolerancia_largo, $fuelle,    // f, f
-        // $tolerancia_fuelle, $traslape, // f, f
-        // $tolerancia_traslape, $codigo_sostenibilidad,// f, i
-        // $ficha_tecnica, $muestra_fisica, // i, i
-        // $plano_mecanico, $pdf_arte     // i, i
-    // Ejecutar la declaración
+-- Table 'form1'
+CREATE TABLE form1 (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    id_form1 VARCHAR(255) UNIQUE,  -- Changed to VARCHAR(255) and added UNIQUE constraint
+    status_form1 VARCHAR(255),
+    id_user INT,
+    name_user VARCHAR(255),
+    site_user VARCHAR(255),
+    name_client VARCHAR(255),
+    project_name VARCHAR(255),
+    rfq_number INT,
+    delivery_format VARCHAR(255),
+    packaging_format VARCHAR(255),
+    convenience_element_of_packaging VARCHAR(255),
+    filling_process VARCHAR(255),
+    packaging_system VARCHAR(255),
+    sales_unit VARCHAR(255),
+    volume_per_order INT,
+    annual_volume INT,
+    printing_system VARCHAR(255),
+    number_of_colors INT,
+    width_mm FLOAT,
+    width_tolerance_mm FLOAT,
+    photo_distances_mm FLOAT,
+    photo_distances_tolerance_mm FLOAT,
+    thickness_microns FLOAT,
+    thickness_tolerance_microns FLOAT,
+    weight_gm2 FLOAT,
+    weight_tolerance_gm2 FLOAT,
+    length_mm FLOAT,
+    length_tolerance_mm FLOAT,
+    gusset_mm FLOAT,
+    gusset_tolerance_mm FLOAT,
+    overlap_mm FLOAT,
+    overlap_tolerance_mm FLOAT,
+    sustainability_code INT,
+    technical_sheet BOOLEAN,
+    physical_sample BOOLEAN,
+    mechanical_plan BOOLEAN,
+    mechanical_plan_sheet BOOLEAN,
+    FOREIGN KEY (id_user) REFERENCES users(id_user),
+    FOREIGN KEY (name_client) REFERENCES client(name)
+);
+
+-- Insert sample values into 'rol'
+INSERT INTO rol (id, description) VALUES 
+(1, 'Admin'),
+(2, 'User');
+
+-- Insert sample values into 'users'
+INSERT INTO users (id_user, name, last_name, email, password, id_rol, site)
+VALUES 
+(3664, 'John', 'Doe', 'john.doe@example.com', 'password123', 1, 'New York'),
+(4567, 'Jane', 'Smith', 'jane.smith@example.com', 'password456', 2, 'London');
+
+-- Insert sample values into 'client'
+INSERT INTO client (name, email) VALUES 
+('Acme Corp', 'contact@acme.com'),
+('Globex', 'info@globex.com');
+
+-- Insert sample values into 'form1'
+INSERT INTO form1 (id_form1, status_form1, id_user, name_user, site_user, name_client, project_name, rfq_number, delivery_format, packaging_format, convenience_element_of_packaging, filling_process, packaging_system, sales_unit, volume_per_order, annual_volume, printing_system, number_of_colors, width_mm, width_tolerance_mm, continuous_design_check, photo_distances_mm, photo_distances_tolerance_mm, thickness_microns, thickness_tolerance_microns, weight_gm2, weight_tolerance_gm2, length_mm, length_tolerance_mm, gusset_mm, gusset_tolerance_mm, overlap_mm, overlap_tolerance_mm, sustainability_code, technical_sheet, physical_sample, mechanical_plan, mechanical_plan_sheet)
+VALUES 
+('101', 'Complete', 3664, 'John Doe', 'New York', 'Acme Corp', 'Project A', 12345, 'PDF', 'Box', 'Plastic', 'Sealed', 'Shrink Wrap', 'Unit', 1000, 5000, 'Flexo', 4, 150.5, 0.5, TRUE, 12.5, 0.2, 25, 1, 350, 10, 50, 1, 10, 0.5, 2.5, 0.1, 101, TRUE, TRUE, TRUE, FALSE);
