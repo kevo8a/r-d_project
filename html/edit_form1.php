@@ -1,13 +1,8 @@
 <?php
-// Iniciar la sesión
-session_start();
+// Conectar a la base de datos
+require '../php/db_connection.php';
+include '../php/auth.php';
 
-// Verificar si el usuario está logueado
-if (!isset($_SESSION['user_id'])) {
-    // Redirigir al usuario a la página de inicio de sesión si no está logueado
-    header("Location: login.php");
-    exit();
-}
 
 // Obtener el id del formulario de la URL
 if (!isset($_GET['id'])) {
@@ -15,9 +10,6 @@ if (!isset($_GET['id'])) {
 }
 
 $id_formulario = $_GET['id'];
-
-// Conectar a la base de datos
-require '../php/db_connection.php';
 
 // Consultar los datos del formulario por su ID
 $sql = "SELECT * FROM form1 WHERE id = ?";
@@ -30,16 +22,10 @@ $result = mysqli_stmt_get_result($stmt);
 if ($result->num_rows === 0) {
     die('Formulario no encontrado.');
 }
-
 // Obtener los datos del formulario
 $form_data = mysqli_fetch_assoc($result);
-
 mysqli_close($conn);
 
-// Obtener datos de sesión del usuario
-$user_id = $_SESSION['user_id'];
-$name = $_SESSION['user_name'];
-$last_name = $_SESSION['user_last_name'];
 ?>
 
 <!DOCTYPE html>
