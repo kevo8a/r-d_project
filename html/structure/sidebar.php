@@ -1,7 +1,7 @@
 <!-- Sidebar -->
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
     <!-- Sidebar - Brand -->
-    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/r&d/html/index.php">
         <div class="sidebar-brand-icon rotate-n-15">
             <i class="fas fa-laugh-wink"></i>
         </div>
@@ -29,8 +29,8 @@
         <div id="collapseForms" class="collapse" aria-labelledby="headingForms" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Opciones de Formularios:</h6>
-                <a class="collapse-item" href="../html/inicio.php">Crear Formulario</a>
-                <a class="collapse-item" href="../forms/list_form1.php">Forms Cotización</a>
+                <a class="collapse-item" href="/r&d./html/inicio.php">Crear Formulario</a>
+                <a class="collapse-item" href="/r&d/html/forms/form1_list.php">Forms Cotización</a>
                 <a class="collapse-item" href="aprobar_formularios.php">Aprobar Formularios</a>
             </div>
         </div>

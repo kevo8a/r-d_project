@@ -1,16 +1,6 @@
 ﻿<?php
-// Iniciar la sesión
-session_start();
-
-// Verificar si el usuario está logueado
-if (!isset($_SESSION['user_id'])) {
-    // Redirigir al usuario a la página de inicio de sesión si no está logueado
-    header("Location: login.php");
-    exit();
-}
-$user_id = $_SESSION['user_id'];
-$name = $_SESSION['user_name'];
-$last_name = $_SESSION['user_last_name'];
+include '../../php/db_connection.php';
+include '../../php/auth.php';
 ?>
 
 <!DOCTYPE html>
@@ -25,14 +15,16 @@ $last_name = $_SESSION['user_last_name'];
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Custom fonts for this template-->
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <!-- Custom fonts for this template -->
+    <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
-    <!-- Custom styles for this template-->
-    <link href="../css/sb-admin-2.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="../../css/sb-admin-2.min.css" rel="stylesheet">
+    <script src="../js/js.js"></script>
+
 </head>
 
 <body id="page-top">
@@ -41,63 +33,7 @@ $last_name = $_SESSION['user_last_name'];
     <div id="wrapper">
 
         <!-- Sidebar -->
-        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-
-            <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
-                <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-laugh-wink"></i>
-                </div>
-                <div class="sidebar-brand-text mx-3">Amcor</div>
-            </a>
-
-            <!-- Divider -->
-            <hr class="sidebar-divider my-0">
-
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Interface
-            </div>
-
-
-            <!-- Nav Item - Formularios Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForms"
-                    aria-expanded="true" aria-controls="collapseForms">
-                    <i class="fas fa-fw fa-wrench"></i>
-                    <span>Formularios</span>
-                </a>
-                <div id="collapseForms" class="collapse" aria-labelledby="headingForms" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Opciones de Formularios:</h6>
-                        <a class="collapse-item" href="inicio.php">Crear Formulario</a>
-                        <a class="collapse-item" href="ver_estatus_formularios.php">Ver Estatus de Formularios</a>
-                        <a class="collapse-item" href="aprobar_formularios.php">Aprobar Formularios</a>
-                    </div>
-                </div>
-            </li>
-
-            <!-- Nav Item - Usuarios Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUsers"
-                    aria-expanded="true" aria-controls="collapseUsers">
-                    <i class="fas fa-fw fa-user"></i>
-                    <span>Usuarios</span>
-                </a>
-                <div id="collapseUsers" class="collapse" aria-labelledby="headingUsers" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Opciones de Usuarios:</h6>
-                        <a class="collapse-item" href="crear_cuenta.php">Crear Cuenta</a>
-                    </div>
-                </div>
-            </li>
-
-
-        </ul>
-        <!-- End of Sidebar -->
+        <?php include '../structure/sidebar.php'; ?>
 
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
@@ -106,50 +42,15 @@ $last_name = $_SESSION['user_last_name'];
             <div id="content">
 
                 <!-- Topbar -->
-                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-                    <!-- Sidebar Toggle (Topbar) -->
-                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                        <i class="fa fa-bars"></i>
-                    </button>
-
-                    <!-- Topbar Navbar -->
-                    <ul class="navbar-nav ml-auto">
-
-                        <!-- User Information -->
-                        <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <?php
-                // Mostrar el nombre del usuario logueado
-                if (isset($_SESSION['user_name']) && isset($_SESSION['user_last_name'])) {
-                    echo '<span class="mr-2 d-none d-lg-inline text-gray-600">Bienvenido, ' 
-                         . $_SESSION['user_name'] . ' ' . $_SESSION['user_last_name'] . '</span>';
-                } else {
-                    echo '<span class="mr-2 d-none d-lg-inline text-gray-600">Invitado</span>';
-                }
-                ?>
-                            </a>
-                            <!-- Dropdown - User Information -->
-                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="userDropdown">
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="logout.php">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Logout
-                                </a>
-                            </div>
-                        </li>
-                    </ul>
-                </nav>
-                <!-- End of Topbar -->
+                <?php include '../structure/navbar.php'; ?>
 
                 <!-- Main Content -->
                 <div class="container">
                     <h1 class="text-center mb-4">Formulario de Cotización</h1>
-                    <form action="../php/send_form1.php" method="POST">
+                    <form action="../../php/send_form1.php" method="POST">
                         <div class="row">
                             <!-- Cliente -->
-                             <div class="col-md-4">
+                            <div class="col-md-4">
                                 <div class="mb-3">
                                     <label for="cliente" class="form-label">Cliente</label>
                                     <select class="form-control" id="cliente" name="cliente" required>
@@ -161,15 +62,15 @@ $last_name = $_SESSION['user_last_name'];
                                         ini_set('display_errors', 1);
 
                                         // Incluir el archivo de conexión a la base de datos
-                                        require '../php/db_connection.php'; // Asegúrate de que la ruta sea correcta
+                                        require '../../php/db_connection.php';
 
                                         // Intentar obtener los clientes
                                         $sql = "SELECT name FROM client";
-                                        $result = mysqli_query($conn, $sql); // Cambié $mysqli a $conn
+                                        $result = mysqli_query($conn, $sql);
 
                                         // Verificar si la consulta fue exitosa
                                         if (!$result) {
-                                            echo '<option value="" disabled>Error en la consulta: ' . mysqli_error($conn) . '</option>'; // Cambié $mysqli a $conn
+                                            echo '<option value="" disabled>Error en la consulta: ' . mysqli_error($conn) . '</option>';
                                         } else {
                                             // Comprobar si hay resultados
                                             if (mysqli_num_rows($result) > 0) {
@@ -182,7 +83,7 @@ $last_name = $_SESSION['user_last_name'];
                                         }
 
                                         // Cerrar la conexión
-                                        mysqli_close($conn); // Cambié $mysqli a $conn
+                                        mysqli_close($conn);
                                         ?>
                                     </select>
                                 </div>
@@ -197,7 +98,8 @@ $last_name = $_SESSION['user_last_name'];
                                         readonly>
                                 </div>
                             </div>
-                            <!-- id user -->
+
+                            <!-- ID Usuario -->
                             <div class="col-md-4">
                                 <div class="mb-3">
                                     <label for="id_user" class="form-label">ID del Usuario</label>
@@ -205,8 +107,8 @@ $last_name = $_SESSION['user_last_name'];
                                         value="<?php echo htmlspecialchars($user_id); ?>" readonly>
                                 </div>
                             </div>
-                            <!-- Nombre de proyecto -->
-                            <div class="col-md-4">
+                                                        <!-- Nombre de proyecto -->
+                                                        <div class="col-md-4">
                                 <div class="mb-3">
                                     <label for="nombre_proyecto" class="form-label">Nombre del Proyecto/Producto</label>
                                     <input type="text" class="form-control" id="nombre_proyecto" name="nombre_proyecto"
@@ -315,7 +217,7 @@ $last_name = $_SESSION['user_last_name'];
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="volumen_pedido" class="form-label">Volumen por Pedido</label>
-                                    <input type="number" class="form-control" id="volumen_pedido" name="volumen_pedido" 
+                                    <input type="number" class="form-control" id="volumen_pedido" name="volumen_pedido"
                                         required>
                                 </div>
                             </div>
@@ -340,13 +242,13 @@ $last_name = $_SESSION['user_last_name'];
                                 </div>
                             </div>
                             <!-- Numero de Colores -->
-                           <div class="col-md-6">
+                            <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="numero_colores" class="form-label">Número de Colores</label>
                                     <input type="number" class="form-control" id="numero_colores" name="numero_colores"
                                         required>
                                 </div>
-                            </div> 
+                            </div>
 
 
                             <!-- Dimensiones -->
@@ -358,7 +260,8 @@ $last_name = $_SESSION['user_last_name'];
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="ancho" class="form-label">Ancho (mm)</label>
-                                    <input type="number" class="form-control" id="ancho" name="ancho" step="any" required>
+                                    <input type="number" class="form-control" id="ancho" name="ancho" step="any"
+                                        required>
                                 </div>
                             </div>
 
@@ -382,7 +285,8 @@ $last_name = $_SESSION['user_last_name'];
                             <div class="col-md-5">
                                 <div class="mb-3">
                                     <label for="fotodistancias" class="form-label">Fotodistancias (mm)</label>
-                                    <input type="number" class="form-control" id="fotodistancias" name="fotodistancias" step="any"> 
+                                    <input type="number" class="form-control" id="fotodistancias" name="fotodistancias"
+                                        step="any">
                                 </div>
                             </div>
                             <!-- Tolerancia de fotodistancias -->
@@ -438,7 +342,8 @@ $last_name = $_SESSION['user_last_name'];
                             <div class="col-md-1">
                                 <div class="mb-1">
                                     <label for="es_bolsa" class="form-label">¿Es Bolsa?</label>
-                                    <select class="form-select" id="es_bolsa" name="es_bolsa" onchange="toggleDimensionesBolsa()" required>
+                                    <select class="form-select" id="es_bolsa" name="es_bolsa"
+                                        onchange="toggleDimensionesBolsa()" required>
                                         <option value="Sí">Sí</option>
                                         <option value="No">No</option>
                                     </select>
@@ -449,7 +354,8 @@ $last_name = $_SESSION['user_last_name'];
                             <div class="col-md-6 bolsa_fields">
                                 <div class="mb-3">
                                     <label for="largo" class="form-label">Largo (mm)</label>
-                                    <input type="number" class="form-control" id="largo" name="largo" step="any" required>
+                                    <input type="number" class="form-control" id="largo" name="largo" step="any"
+                                        required>
                                 </div>
                             </div>
 
@@ -457,7 +363,8 @@ $last_name = $_SESSION['user_last_name'];
                             <div class="col-md-6 bolsa_fields">
                                 <div class="mb-3">
                                     <label for="tolerancia_largo" class="form-label">Tolerancia Largo (mm)</label>
-                                    <input type="number" class="form-control" id="tolerancia_largo" name="tolerancia_largo" step="any" required>
+                                    <input type="number" class="form-control" id="tolerancia_largo"
+                                        name="tolerancia_largo" step="any" required>
                                 </div>
                             </div>
 
@@ -465,7 +372,8 @@ $last_name = $_SESSION['user_last_name'];
                             <div class="col-md-6 bolsa_fields">
                                 <div class="mb-3">
                                     <label for="fuelle" class="form-label">Fuelle (mm)</label>
-                                    <input type="number" class="form-control" id="fuelle" name="fuelle" step="any" required>
+                                    <input type="number" class="form-control" id="fuelle" name="fuelle" step="any"
+                                        required>
                                 </div>
                             </div>
 
@@ -473,7 +381,8 @@ $last_name = $_SESSION['user_last_name'];
                             <div class="col-md-6 bolsa_fields">
                                 <div class="mb-3">
                                     <label for="tolerancia_fuelle" class="form-label">Tolerancia Fuelle (mm)</label>
-                                    <input type="number" class="form-control" id="tolerancia_fuelle" name="tolerancia_fuelle" step="any" required>
+                                    <input type="number" class="form-control" id="tolerancia_fuelle"
+                                        name="tolerancia_fuelle" step="any" required>
                                 </div>
                             </div>
 
@@ -481,7 +390,8 @@ $last_name = $_SESSION['user_last_name'];
                             <div class="col-md-6 bolsa_fields">
                                 <div class="mb-3">
                                     <label for="traslape" class="form-label">Traslape (mm)</label>
-                                    <input type="number" class="form-control" id="traslape" name="traslape" step="any" required>
+                                    <input type="number" class="form-control" id="traslape" name="traslape" step="any"
+                                        required>
                                 </div>
                             </div>
 
@@ -489,23 +399,28 @@ $last_name = $_SESSION['user_last_name'];
                             <div class="col-md-6 bolsa_fields">
                                 <div class="mb-3">
                                     <label for="tolerancia_traslape" class="form-label">Tolerancia Traslape (mm)</label>
-                                    <input type="number" class="form-control" id="tolerancia_traslape" name="tolerancia_traslape" step="any" required>
+                                    <input type="number" class="form-control" id="tolerancia_traslape"
+                                        name="tolerancia_traslape" step="any" required>
                                 </div>
                             </div>
 
                             <!-- Check Código de sostenibilidad -->
                             <div class="col-md-6">
                                 <div class="form-check mb-3">
-                                    <input class="form-check-input" type="checkbox" id="check_sostenibilidad" name="check_sostenibilidad" onchange="toggleCodigoSostenibilidad()">
-                                    <label class="form-check-label" for="check_sostenibilidad">Check código de sostenibilidad</label>
+                                    <input class="form-check-input" type="checkbox" id="check_sostenibilidad"
+                                        name="check_sostenibilidad" onchange="toggleCodigoSostenibilidad()">
+                                    <label class="form-check-label" for="check_sostenibilidad">Check código de
+                                        sostenibilidad</label>
                                 </div>
                             </div>
 
                             <!-- Código de sostenibilidad -->
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="codigo_sostenibilidad" class="form-label">Código de Sostenibilidad</label>
-                                    <input type="text" class="form-control" id="codigo_sostenibilidad" name="codigo_sostenibilidad" disabled>
+                                    <label for="codigo_sostenibilidad" class="form-label">Código de
+                                        Sostenibilidad</label>
+                                    <input type="text" class="form-control" id="codigo_sostenibilidad"
+                                        name="codigo_sostenibilidad" disabled>
                                 </div>
                             </div>
 
@@ -517,7 +432,8 @@ $last_name = $_SESSION['user_last_name'];
                             <!-- Ficha Técnica -->
                             <div class="col-md-6">
                                 <div class="form-check mb-3">
-                                    <input class="form-check-input" type="checkbox" id="ficha_tecnica" name="ficha_tecnica">
+                                    <input class="form-check-input" type="checkbox" id="ficha_tecnica"
+                                        name="ficha_tecnica">
                                     <label class="form-check-label" for="ficha_tecnica">Ficha Técnica</label>
                                 </div>
                             </div>
@@ -525,7 +441,8 @@ $last_name = $_SESSION['user_last_name'];
                             <!-- Muestra Física -->
                             <div class="col-md-6">
                                 <div class="form-check mb-3">
-                                    <input class="form-check-input" type="checkbox" id="muestra_fisica" name="muestra_fisica">
+                                    <input class="form-check-input" type="checkbox" id="muestra_fisica"
+                                        name="muestra_fisica">
                                     <label class="form-check-label" for="muestra_fisica">Muestra Física</label>
                                 </div>
                             </div>
@@ -533,7 +450,8 @@ $last_name = $_SESSION['user_last_name'];
                             <!-- Plano Mecánico -->
                             <div class="col-md-6">
                                 <div class="form-check mb-3">
-                                    <input class="form-check-input" type="checkbox" id="plano_mecanico" name="plano_mecanico">
+                                    <input class="form-check-input" type="checkbox" id="plano_mecanico"
+                                        name="plano_mecanico">
                                     <label class="form-check-label" for="plano_mecanico">Plano Mecánico</label>
                                 </div>
                             </div>
@@ -561,132 +479,28 @@ $last_name = $_SESSION['user_last_name'];
                             </div>
 
                         </div>
+                    </form>
                 </div>
+
             </div>
+            <!-- End of Main Content -->
 
         </div>
-    </div>
+        <!-- End of Content Wrapper -->
 
-
-    </div>
-    </div>
-
-
-
-    </div>
-    </form>
-    </div>
-
-
-    <!-- End of Main Content -->
-    </div>
-    <!-- End of Content Wrapper -->
     </div>
     <!-- End of Page Wrapper -->
 
-    <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script src="../vendor/jquery/jquery.min.js"></script>
+    <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <!-- Core plugin JavaScript -->
+    <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
 
-    <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
+    <!-- Custom scripts for all pages -->
+    <script src="../js/sb-admin-2.min.js"></script>
 
-    <!-- Page level plugins -->
-    <script src="vendor/chart.js/Chart.min.js"></script>
-
-    <!-- Page level custom scripts -->
-    <script src="js/demo/chart-area-demo.js"></script>
-    <script src="js/demo/chart-pie-demo.js"></script>
-    <script>
-    function toggleNumeroColores() {
-        const sistemaImpresion = document.getElementById("sistema_impresion");
-        const numeroColores = document.getElementById("numero_colores");
-        if (sistemaImpresion.value === "Sin impresión") {
-            numeroColores.disabled = true;
-        } else {
-            numeroColores.disabled = false;
-        }
-    }
-
-    function toggleFotodistancias() {
-        const checkDisenoContinuo = document.getElementById("check_diseno_continuo");
-        const fotodistancias = document.getElementById("fotodistancias");
-        const toleranciaFotodistancias = document.getElementById("tolerancia_fotodistancias");
-
-        if (checkDisenoContinuo.checked) {
-            fotodistancias.disabled = true;
-            fotodistancias.value = ""; // Borrar el valor
-            toleranciaFotodistancias.disabled = true;
-            toleranciaFotodistancias.value = ""; // Borrar el valor
-        } else {
-            fotodistancias.disabled = false;
-            toleranciaFotodistancias.disabled = false;
-        }
-    }
-
-        function toggleDimensionesBolsa() {
-        const esBolsa = document.getElementById("es_bolsa").value;
-        const bolsaFields = document.getElementsByClassName("bolsa_fields");
-
-        for (let i = 0; i < bolsaFields.length; i++) {
-            const inputFields = bolsaFields[i].getElementsByTagName("input");
-
-            if (esBolsa === "No") {
-                bolsaFields[i].style.display = "none";
-
-                // Limpiar los valores de los campos input y eliminar el atributo 'required'
-                for (let j = 0; j < inputFields.length; j++) {
-                    inputFields[j].value = "";
-                    inputFields[j].removeAttribute("required");
-                }
-            } else {
-                bolsaFields[i].style.display = "block";
-
-                // Añadir el atributo 'required' nuevamente
-                for (let j = 0; j < inputFields.length; j++) {
-                    inputFields[j].setAttribute("required", "required");
-                }
-            }
-        }
-    }
-
-
-
-    function toggleCodigoSostenibilidad() {
-        const checkSostenibilidad = document.getElementById("check_sostenibilidad");
-        const codigoSostenibilidad = document.getElementById("codigo_sostenibilidad");
-        if (checkSostenibilidad.checked) {
-            codigoSostenibilidad.disabled = false;
-        } else {
-            codigoSostenibilidad.disabled = true;
-        }
-    }
-    
-    </script>
-    <script>
-// Función para cargar los clientes
-function loadClients() {
-    fetch('get_clients.php')
-        .then(response => response.json())
-        .then(data => {
-            const select = document.getElementById('cliente');
-            data.forEach(client => {
-                const option = document.createElement('option');
-                option.value = client;
-                option.textContent = client;
-                select.appendChild(option);
-            });
-        })
-        .catch(error => console.error('Error al cargar los clientes:', error));
-}
-
-// Cargar los clientes al cargar la página
-document.addEventListener('DOMContentLoaded', loadClients);
-</script>
-    </div>
 </body>
 
 </html>

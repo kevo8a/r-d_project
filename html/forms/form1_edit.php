@@ -1,8 +1,7 @@
 <?php
 // Conectar a la base de datos
-require '../php/db_connection.php';
-include '../php/auth.php';
-
+require '../../php/db_connection.php';
+include '../../php/auth.php';
 
 // Obtener el id del formulario de la URL
 if (!isset($_GET['id'])) {
@@ -25,27 +24,45 @@ if ($result->num_rows === 0) {
 // Obtener los datos del formulario
 $form_data = mysqli_fetch_assoc($result);
 mysqli_close($conn);
-
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Amcor - Editar Formulario Cotización</title>
+    <title>Amcor - Formulario Cotización</title>
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../css/sb-admin-2.css" rel="stylesheet">
+
+    <!-- Custom fonts for this template -->
+    <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../../css/sb-admin-2.min.css" rel="stylesheet">
+    <script src="../js/js.js"></script>
+
 </head>
 
 <body id="page-top">
+    <!-- Page Wrapper -->
     <div id="wrapper">
+        <!-- Sidebar -->
+        <?php include '../structure/sidebar.php'; ?>
+        <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
+            <!-- Main Content -->
             <div id="content">
+                <!-- Navbar -->
+                <?php include '../structure/navbar.php'; ?>
+
+                <!-- Contenido del Formulario -->
                 <div class="container">
                     <h1 class="text-center mb-4">Editar Formulario de Cotización</h1>
                     <form action="update_form1.php" method="POST">
@@ -59,7 +76,7 @@ mysqli_close($conn);
                                     <select class="form-control" id="cliente" name="cliente" required>
                                         <option value="" disabled selected>Selecciona un cliente</option>
                                         <?php
-                                        require '../php/db_connection.php';
+                                        require '../../php/db_connection.php';
 
                                         $sql_clientes = "SELECT name FROM client";
                                         $result_clientes = mysqli_query($conn, $sql_clientes);
@@ -83,7 +100,8 @@ mysqli_close($conn);
                                 <div class="mb-3">
                                     <label for="solicitante" class="form-label">Solicitante</label>
                                     <input type="text" class="form-control" id="solicitante" name="solicitante"
-                                        value="<?php echo htmlspecialchars($name) . ' ' . htmlspecialchars($last_name); ?>" readonly>
+                                        value="<?php echo htmlspecialchars($name) . ' ' . htmlspecialchars($last_name); ?>"
+                                        readonly>
                                 </div>
                             </div>
 
@@ -117,7 +135,7 @@ mysqli_close($conn);
                             <!-- Número de RFQ -->
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                RFQ</label>
+                                    RFQ</label>
                                     <input type="number" class="form-control" id="numero_rfq" name="numero_rfq"
                                         value="<?php echo htmlspecialchars($form_data['rfq_number']); ?>" required>
                                 </div>
@@ -128,10 +146,18 @@ mysqli_close($conn);
                                 <div class="mb-3">
                                     <label for="formato_entrega" class="form-label">Formato de Entrega</label>
                                     <select class="form-control" id="formato_entrega" name="formato_entrega" required>
-                                        <option value="Rollo/Bobina" <?php echo ($form_data['delivery_format'] == 'Rollo/Bobina') ? 'selected' : ''; ?>>Rollo/Bobina</option>
-                                        <option value="Sachet" <?php echo ($form_data['delivery_format'] == 'Sachet') ? 'selected' : ''; ?>>Sachet</option>
-                                        <option value="Bolsa Preformada" <?php echo ($form_data['delivery_format'] == 'Bolsa Preformada') ? 'selected' : ''; ?>>Bolsa Preformada</option>
-                                        <option value="Tubular" <?php echo ($form_data['delivery_format'] == 'Tubular') ? 'selected' : ''; ?>>Tubular</option>
+                                        <option value="Rollo/Bobina"
+                                            <?php echo ($form_data['delivery_format'] == 'Rollo/Bobina') ? 'selected' : ''; ?>>
+                                            Rollo/Bobina</option>
+                                        <option value="Sachet"
+                                            <?php echo ($form_data['delivery_format'] == 'Sachet') ? 'selected' : ''; ?>>
+                                            Sachet</option>
+                                        <option value="Bolsa Preformada"
+                                            <?php echo ($form_data['delivery_format'] == 'Bolsa Preformada') ? 'selected' : ''; ?>>
+                                            Bolsa Preformada</option>
+                                        <option value="Tubular"
+                                            <?php echo ($form_data['delivery_format'] == 'Tubular') ? 'selected' : ''; ?>>
+                                            Tubular</option>
                                     </select>
                                 </div>
                             </div>
@@ -151,8 +177,10 @@ mysqli_close($conn);
     </div>
 
     <!-- Bootstrap JS -->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../vendor/jquery/jquery.min.js"></script>
+    <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="../js/sb-admin-2.min.js"></script>
 </body>
 
 </html>
