@@ -24,6 +24,7 @@ include '../../php/auth.php';
     <!-- Custom styles for this template -->
     <link href="../../css/sb-admin-2.min.css" rel="stylesheet">
     <script src="../js/js.js"></script>
+    <link href="../../css/sb-admin-2.css" rel="stylesheet">
 
 </head>
 
@@ -107,8 +108,8 @@ include '../../php/auth.php';
                                         value="<?php echo htmlspecialchars($user_id); ?>" readonly>
                                 </div>
                             </div>
-                                                        <!-- Nombre de proyecto -->
-                                                        <div class="col-md-4">
+                            <!-- Nombre de proyecto -->
+                            <div class="col-md-4">
                                 <div class="mb-3">
                                     <label for="nombre_proyecto" class="form-label">Nombre del Proyecto/Producto</label>
                                     <input type="text" class="form-control" id="nombre_proyecto" name="nombre_proyecto"

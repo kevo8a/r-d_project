@@ -20,7 +20,7 @@ $_SESSION['last_activity'] = time();
 // Verificar si el usuario está logueado
 if (!isset($_SESSION['user_id'])) {
     // Redirigir al usuario a la página de inicio de sesión si no está logueado
-    header("Location: login.php");
+    header("Location: /r&d/html/login.php");
     exit();
 }
 

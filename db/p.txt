@@ -64,6 +64,7 @@ CREATE TABLE form1 (
     gusset_tolerance_mm FLOAT,
     overlap_mm FLOAT,
     overlap_tolerance_mm FLOAT,
+    sustainability_code_check BOOLEAN,
     sustainability_code INT,
     technical_sheet BOOLEAN,
     physical_sample BOOLEAN,
@@ -90,6 +91,6 @@ INSERT INTO client (name, email) VALUES
 ('Globex', 'info@globex.com');
 
 -- Insert sample values into 'form1'
-INSERT INTO form1 (id_form1, status_form1, id_user, name_user, site_user, name_client, project_name, rfq_number, delivery_format, packaging_format, convenience_element_of_packaging, filling_process, packaging_system, sales_unit, volume_per_order, annual_volume, printing_system, number_of_colors, width_mm, width_tolerance_mm, photo_distances_mm, photo_distances_tolerance_mm, thickness_microns, thickness_tolerance_microns, weight_gm2, weight_tolerance_gm2, length_mm, length_tolerance_mm, gusset_mm, gusset_tolerance_mm, overlap_mm, overlap_tolerance_mm, sustainability_code, technical_sheet, physical_sample, mechanical_plan, pdf_art)
+INSERT INTO form1 (id_form1, status_form1, id_user, name_user, site_user, name_client, project_name, rfq_number, delivery_format, packaging_format, convenience_element_of_packaging, filling_process, packaging_system, sales_unit, volume_per_order, annual_volume, printing_system, number_of_colors, width_mm, width_tolerance_mm, photo_distances_mm, photo_distances_tolerance_mm, thickness_microns, thickness_tolerance_microns, weight_gm2, weight_tolerance_gm2, length_mm, length_tolerance_mm, gusset_mm, gusset_tolerance_mm, overlap_mm, overlap_tolerance_mm, sustainability_code, technical_sheet, physical_sample, mechanical_plan, pdf_art, continuous_design_check, sustainability_code_check)
 VALUES 
-('101', 'Complete', 3664, 'John Doe', 'New York', 'Acme Corp', 'Project A', 12345, 'PDF', 'Box', 'Plastic', 'Sealed', 'Shrink Wrap', 'Unit', 1000, 5000, 'Flexo', 4, 150.5, 0.5, 12.5, 0.2, 25, 1, 350, 10, 50, 1, 10, 0.5, 2.5, 0.1, 101, TRUE, TRUE, TRUE, FALSE);
+('101', 'Complete', 3664, 'John Doe', 'New York', 'Acme Corp', 'Project A', 12345, 'PDF', 'Box', 'Plastic', 'Sealed', 'Shrink Wrap', 'Unit', 1000, 5000, 'Flexo', 4, 150.5, 0.5, 12.5, 0.2, 25, 1, 350, 10, 50, 1, 10, 0.5, 2.5, 0.1, 101, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE);

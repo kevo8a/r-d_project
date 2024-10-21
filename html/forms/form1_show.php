@@ -1,5 +1,6 @@
 <?php
 // Incluir la autenticación
+require '../../php/db_connection.php';
 require '../../php/auth.php';
 
 // Obtener el id del formulario de la URL
@@ -8,9 +9,6 @@ if (!isset($_GET['id'])) {
 }
 
 $id_formulario = $_GET['id'];
-
-// Conectar a la base de datos
-require '../../php/db_connection.php';
 
 // Consultar los datos del formulario por su ID
 $sql = "SELECT * FROM form1 WHERE id = ?";
@@ -357,8 +355,9 @@ mysqli_close($conn);
                             <div class="col-md-2">
                                 <div class="form-check mb-3">
                                     <input class="form-check-input" type="checkbox" id="check_diseno_continuo"
-                                        name="check_diseno_continuo" onchange="toggleFotodistancias()"
-                                        <?php echo ($form_data['continuous_design_check'] ? 'checked' : ''); ?>>
+                                        name="check_diseno_continuo"
+                                        <?php echo ($form_data['continuous_design_check'] == 0 ? 'checked' : ''); ?>
+                                        disabled>
                                     <label class="form-check-label" for="check_diseno_continuo">Diseño Continuo</label>
                                 </div>
                             </div>
@@ -531,7 +530,7 @@ mysqli_close($conn);
                                 <div class="form-check mb-3">
                                     <input class="form-check-input" type="checkbox" id="ficha_tecnica"
                                         name="ficha_tecnica"
-                                        <?php echo ($form_data['technical_sheet'] ? 'checked' : ''); ?>>
+                                        <?php echo ($form_data['technical_sheet'] == 0 ? 'checked' : ''); ?> disabled>
                                     <label class="form-check-label" for="ficha_tecnica">Ficha Técnica</label>
                                 </div>
                             </div>
@@ -541,7 +540,7 @@ mysqli_close($conn);
                                 <div class="form-check mb-3">
                                     <input class="form-check-input" type="checkbox" id="muestra_fisica"
                                         name="muestra_fisica"
-                                        <?php echo ($form_data['physical_sample'] ? 'checked' : ''); ?>>
+                                        <?php echo ($form_data['physical_sample'] == 0 ? 'checked' : ''); ?> disabled>
                                     <label class="form-check-label" for="muestra_fisica">Muestra Física</label>
                                 </div>
                             </div>
@@ -551,7 +550,7 @@ mysqli_close($conn);
                                 <div class="form-check mb-3">
                                     <input class="form-check-input" type="checkbox" id="plano_mecanico"
                                         name="plano_mecanico"
-                                        <?php echo ($form_data['mechanical_plan'] ? 'checked' : ''); ?>>
+                                        <?php echo ($form_data['mechanical_plan'] == 0 ? 'checked' : ''); ?> disabled>
                                     <label class="form-check-label" for="plano_mecanico">Plano Mecánico</label>
                                 </div>
                             </div>
@@ -560,7 +559,7 @@ mysqli_close($conn);
                             <div class="col-md-6">
                                 <div class="form-check mb-3">
                                     <input class="form-check-input" type="checkbox" id="pdf_arte" name="pdf_arte"
-                                        <?php echo ($form_data['pdf_art'] ? 'checked' : ''); ?>>
+                                        <?php echo ($form_data['pdf_art'] == 0 ? 'checked' : ''); ?> disabled>
                                     <label class="form-check-label" for="pdf_arte">PDF del Arte</label>
                                 </div>
                             </div>
