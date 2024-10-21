@@ -165,7 +165,7 @@ mysqli_close($conn);
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="formato_empaque" class="form-label">Formato del Empaque</label>
-                                    <select class="form-control" id="formato_empaque" name="formato_empaque" disabled>
+                                    <select class="form-control" id="formato_empaque" name="formato_empaque" required>
                                         <option value="Doypack"
                                             <?php echo ($form_data['packaging_format'] == 'Doypack') ? 'selected' : ''; ?>>
                                             Doypack</option>
@@ -188,7 +188,7 @@ mysqli_close($conn);
                                     <label for="elemento_conveniencia" class="form-label">Elemento de Conveniencia del
                                         Empaque</label>
                                     <select class="form-control" id="elemento_conveniencia" name="elemento_conveniencia"
-                                        disabled>
+                                        required>
                                         <option value="Válvula"
                                             <?php echo ($form_data['convenience_element_of_packaging'] == 'Válvula') ? 'selected' : ''; ?>>
                                             Válvula</option>
@@ -196,7 +196,7 @@ mysqli_close($conn);
                                             <?php echo ($form_data['convenience_element_of_packaging'] == 'Zipper') ? 'selected' : ''; ?>>
                                             Zipper</option>
                                         <option value="Easy Open"
-                                            <?php echo ($form_data['convenienceconvenience_element_of_packaging_element'] == 'Easy Open') ? 'selected' : ''; ?>>
+                                            <?php echo ($form_data['convenience_element_of_packaging'] == 'Easy Open') ? 'selected' : ''; ?>>
                                             Easy Open</option>
                                         <option value="Corte Laser"
                                             <?php echo ($form_data['convenience_element_of_packaging'] == 'Corte Laser') ? 'selected' : ''; ?>>
@@ -209,7 +209,7 @@ mysqli_close($conn);
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="proceso_llenado" class="form-label">Proceso de Llenado</label>
-                                    <select class="form-control" id="proceso_llenado" name="proceso_llenado" disabled>
+                                    <select class="form-control" id="proceso_llenado" name="proceso_llenado" required>
                                         <option value="UHT"
                                             <?php echo ($form_data['filling_process'] == 'UHT') ? 'selected' : ''; ?>>
                                             UHT</option>
@@ -230,7 +230,7 @@ mysqli_close($conn);
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="sistema_empaque" class="form-label">Sistema de Empaque</label>
-                                    <select class="form-control" id="sistema_empaque" name="sistema_empaque" disabled>
+                                    <select class="form-control" id="sistema_empaque" name="sistema_empaque" required>
                                         <option value="Cuello Formador"
                                             <?php echo ($form_data['packaging_system'] == 'Cuello Formador') ? 'selected' : ''; ?>>
                                             Cuello Formador</option>
@@ -251,7 +251,7 @@ mysqli_close($conn);
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="unidad_venta" class="form-label">Unidad de Venta</label>
-                                    <select class="form-control" id="unidad_venta" name="unidad_venta" disabled>
+                                    <select class="form-control" id="unidad_venta" name="unidad_venta" required>
                                         <option value="Unidades"
                                             <?php echo ($form_data['sales_unit'] == 'Unidades') ? 'selected' : ''; ?>>
                                             Unidades</option>
@@ -288,7 +288,7 @@ mysqli_close($conn);
                                 <div class="mb-3">
                                     <label for="sistema_impresion" class="form-label">Sistema de Impresión</label>
                                     <select class="form-control" id="sistema_impresion" name="sistema_impresion"
-                                    required>
+                                        required>
                                         <option value="Rotograbado"
                                             <?php echo ($form_data['printing_system'] == 'Rotograbado') ? 'selected' : ''; ?>>
                                             Rotograbado</option>
@@ -322,7 +322,7 @@ mysqli_close($conn);
                                     <label for="ancho" class="form-label">Ancho (mm)</label>
                                     <input type="number" class="form-control" id="ancho" name="ancho"
                                         value="<?php echo htmlspecialchars($form_data['width_mm']); ?>" step="any"
-                                        required >
+                                        required>
                                 </div>
                             </div>
 
@@ -333,7 +333,7 @@ mysqli_close($conn);
                                     <input type="number" class="form-control" id="tolerancia_ancho"
                                         name="tolerancia_ancho"
                                         value="<?php echo htmlspecialchars($form_data['width_tolerance_mm']); ?>"
-                                        step="any"  required>
+                                        step="any" required>
                                 </div>
                             </div>
 
@@ -354,7 +354,7 @@ mysqli_close($conn);
                                     <label for="fotodistancias" class="form-label">Fotodistancias (mm)</label>
                                     <input type="number" class="form-control" id="fotodistancias" name="fotodistancias"
                                         value="<?php echo htmlspecialchars($form_data['photo_distances_mm']); ?>"
-                                        step="any" >
+                                        step="any">
                                 </div>
                             </div>
 
@@ -366,7 +366,7 @@ mysqli_close($conn);
                                     <input type="number" class="form-control" id="tolerancia_fotodistancias"
                                         name="tolerancia_fotodistancias"
                                         value="<?php echo htmlspecialchars($form_data['photo_distances_tolerance_mm']); ?>"
-                                        step="any" >
+                                        step="any">
                                 </div>
                             </div>
 
@@ -426,8 +426,7 @@ mysqli_close($conn);
                                 <div class="mb-3">
                                     <label for="largo" class="form-label">Largo (mm)</label>
                                     <input type="number" class="form-control" id="largo" name="largo"
-                                        value="<?php echo htmlspecialchars($form_data['length_mm']); ?>" step="any"
-                                        >
+                                        value="<?php echo htmlspecialchars($form_data['length_mm']); ?>" step="any">
                                 </div>
                             </div>
 
@@ -438,7 +437,7 @@ mysqli_close($conn);
                                     <input type="number" class="form-control" id="tolerancia_largo"
                                         name="tolerancia_largo"
                                         value="<?php echo htmlspecialchars($form_data['length_tolerance_mm']); ?>"
-                                        step="any"  >
+                                        step="any">
                                 </div>
                             </div>
 
@@ -447,8 +446,7 @@ mysqli_close($conn);
                                 <div class="mb-3">
                                     <label for="fuelle" class="form-label">Fuelle (mm)</label>
                                     <input type="number" class="form-control" id="fuelle" name="fuelle"
-                                        value="<?php echo htmlspecialchars($form_data['gusset_mm']); ?>" step="any"
-                                         >
+                                        value="<?php echo htmlspecialchars($form_data['gusset_mm']); ?>" step="any">
                                 </div>
                             </div>
 
@@ -459,7 +457,7 @@ mysqli_close($conn);
                                     <input type="number" class="form-control" id="tolerancia_fuelle"
                                         name="tolerancia_fuelle"
                                         value="<?php echo htmlspecialchars($form_data['gusset_tolerance_mm']); ?>"
-                                        step="any"  >
+                                        step="any">
                                 </div>
                             </div>
 
@@ -468,8 +466,7 @@ mysqli_close($conn);
                                 <div class="mb-3">
                                     <label for="traslape" class="form-label">Traslape (mm)</label>
                                     <input type="number" class="form-control" id="traslape" name="traslape"
-                                        value="<?php echo htmlspecialchars($form_data['overlap_mm']); ?>" step="any"
-                                         >
+                                        value="<?php echo htmlspecialchars($form_data['overlap_mm']); ?>" step="any">
                                 </div>
                             </div>
 
@@ -480,7 +477,7 @@ mysqli_close($conn);
                                     <input type="number" class="form-control" id="tolerancia_traslape"
                                         name="tolerancia_traslape"
                                         value="<?php echo htmlspecialchars($form_data['overlap_tolerance_mm']); ?>"
-                                        step="any"  >
+                                        step="any">
                                 </div>
                             </div>
 
@@ -516,7 +513,7 @@ mysqli_close($conn);
                                 <div class="form-check mb-3">
                                     <input class="form-check-input" type="checkbox" id="ficha_tecnica"
                                         name="ficha_tecnica"
-                                        <?php echo ($form_data['technical_sheet'] == 0 ? 'checked' : ''); ?> >
+                                        <?php echo ($form_data['technical_sheet'] == 0 ? 'checked' : ''); ?>>
                                     <label class="form-check-label" for="ficha_tecnica">Ficha Técnica</label>
                                 </div>
                             </div>
@@ -526,7 +523,7 @@ mysqli_close($conn);
                                 <div class="form-check mb-3">
                                     <input class="form-check-input" type="checkbox" id="muestra_fisica"
                                         name="muestra_fisica"
-                                        <?php echo ($form_data['physical_sample'] == 0 ? 'checked' : ''); ?> >
+                                        <?php echo ($form_data['physical_sample'] == 0 ? 'checked' : ''); ?>>
                                     <label class="form-check-label" for="muestra_fisica">Muestra Física</label>
                                 </div>
                             </div>
@@ -536,7 +533,7 @@ mysqli_close($conn);
                                 <div class="form-check mb-3">
                                     <input class="form-check-input" type="checkbox" id="plano_mecanico"
                                         name="plano_mecanico"
-                                        <?php echo ($form_data['mechanical_plan'] == 0 ? 'checked' : ''); ?> >
+                                        <?php echo ($form_data['mechanical_plan'] == 0 ? 'checked' : ''); ?>>
                                     <label class="form-check-label" for="plano_mecanico">Plano Mecánico</label>
                                 </div>
                             </div>
@@ -545,10 +542,11 @@ mysqli_close($conn);
                             <div class="col-md-6">
                                 <div class="form-check mb-3">
                                     <input class="form-check-input" type="checkbox" id="pdf_arte" name="pdf_arte"
-                                        <?php echo ($form_data['pdf_art'] == 0 ? 'checked' : ''); ?> >
+                                        <?php echo ($form_data['pdf_art'] == 0 ? 'checked' : ''); ?>>
                                     <label class="form-check-label" for="pdf_arte">PDF del Arte</label>
                                 </div>
                             </div>
+
 
                             <!-- Alerta -->
                             <div class="col-md-12 text-center">
