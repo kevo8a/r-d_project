@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['user_id'] = $user['id_user'];
         $_SESSION['user_name'] = $user['name'];
         $_SESSION['user_last_name'] = $user['last_name'];
-
+        $_SESSION['site'] = $user['site'];
         // Redirigir al dashboard (index.php)
         header("Location: ../html/index.php");
         exit();

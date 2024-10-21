@@ -100,7 +100,7 @@ $result = $conn->query($sql);
 
                                     // Mostrar el botón de Editar solo si el estatus es "Corregir"
                                     if ($row['status_form1'] === 'Corregir') {
-                                        echo "<a href='/r&d/html/forms/form1_edit.php?id=" . $row['id'] . "' class='btn btn-outline-warning btn-sm ml-2'>Editar</a>";
+                                        echo "<a href='/r&d/html/forms/form1_create_edit.php?id=" . $row['id'] . "' class='btn btn-outline-warning btn-sm ml-2'>Editar</a>";
                                     }
 
                                     echo "</td>"; // Asegúrate de cerrar la celda correctamente

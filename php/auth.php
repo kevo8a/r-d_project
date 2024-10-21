@@ -31,6 +31,7 @@ session_regenerate_id(true);
 $user_id = $_SESSION['user_id'];
 $name = htmlspecialchars($_SESSION['user_name'], ENT_QUOTES, 'UTF-8');
 $last_name = htmlspecialchars($_SESSION['user_last_name'], ENT_QUOTES, 'UTF-8');
+$site = htmlspecialchars($_SESSION['site'], ENT_QUOTES, 'UTF-8');
 
 // Si utilizas roles, puedes validar aquí
 // if ($_SESSION['user_role'] !== 'admin') {

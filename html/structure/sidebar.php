@@ -29,7 +29,7 @@
         <div id="collapseForm1" class="collapse" aria-labelledby="headingForm1" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Opciones de Formularios:</h6>
-                <a class="collapse-item" href="/r&d/html/forms/form1.php">Crear Formulario</a>
+                <a class="collapse-item" href="/r&d/html/forms/form1_create_edit.php">Crear Formulario</a>
                 <a class="collapse-item" href="/r&d/html/forms/form1_list.php">Ver mis forms 1</a>
             </div>
         </div>
@@ -60,7 +60,7 @@
         <div id="collapseForm3" class="collapse" aria-labelledby="headingForm3" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Opciones de Formularios:</h6>
-                <a class="collapse-item" href="/r&d./html/form1.php">Crear Formulario 3</a>
+                <a class="collapse-item" href="/r&d./html/form1_create_edit.php">Crear Formulario 3</a>
                 <a class="collapse-item" href="/r&d/html/forms/form1_list.php">Ver mis forms 3</a>
             </div>
         </div>

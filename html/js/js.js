@@ -1,8 +1,10 @@
 function toggleNumeroColores() {
     const sistemaImpresion = document.getElementById("sistema_impresion");
     const numeroColores = document.getElementById("numero_colores");
+    
     if (sistemaImpresion.value === "Sin impresión") {
         numeroColores.disabled = true;
+        numeroColores.value = "";  // Vacía el campo número de colores
     } else {
         numeroColores.disabled = false;
     }
@@ -50,15 +52,24 @@ function toggleDimensionesBolsa() {
     }
 }
 
-function toggleCodigoSostenibilidad() {
+// Inicializa el estado del campo Código de Sostenibilidad
+document.addEventListener("DOMContentLoaded", function() {
     const checkSostenibilidad = document.getElementById("check_sostenibilidad");
     const codigoSostenibilidad = document.getElementById("codigo_sostenibilidad");
-    if (checkSostenibilidad.checked) {
-        codigoSostenibilidad.disabled = false;
-    } else {
-        codigoSostenibilidad.disabled = true;
+
+    toggleCodigoSostenibilidad();
+
+    checkSostenibilidad.addEventListener("change", toggleCodigoSostenibilidad);
+
+    function toggleCodigoSostenibilidad() {
+        if (checkSostenibilidad.checked) {
+            codigoSostenibilidad.disabled = false;
+        } else {
+            codigoSostenibilidad.disabled = true;
+            codigoSostenibilidad.value = "";  // Elimina el contenido del campo
+        }
     }
-}
+});
 
 // Función para cargar los clientes
 function loadClients() {
@@ -78,3 +89,13 @@ function loadClients() {
 
 // Cargar los clientes al cargar la página
 document.addEventListener('DOMContentLoaded', loadClients);
+
+// Inicializa el estado del campo Número de Colores al cargar la página
+document.addEventListener("DOMContentLoaded", function() {
+    const sistemaImpresion = document.getElementById("sistema_impresion");
+    const numeroColores = document.getElementById("numero_colores");
+
+    toggleNumeroColores(); // Llama a la función para configurar el estado del campo
+
+    sistemaImpresion.addEventListener("change", toggleNumeroColores);
+});

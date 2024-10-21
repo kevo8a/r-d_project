@@ -50,7 +50,7 @@ include '../php/auth.php';
                                 <div class="card-body text-center">
                                     <h2 class="card-title">Formulario Cotización</h2>
                                     <p class="card-text">Complete este formulario para solicitar una cotización de productos.</p>
-                                    <a href="forms/form1.php" class="btn btn-primary">Ir al formulario</a>
+                                    <a href="forms/form1_create_edit.php" class="btn btn-primary">Ir al formulario</a>
                                 </div>
                             </div>
                         </div>

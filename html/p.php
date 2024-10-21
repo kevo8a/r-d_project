@@ -30,7 +30,7 @@ include '../../php/auth.php';
                 <?php include '../structure/navbar.php'; ?>
                 <div class="container-fluid">
                     <h1 class="text-center mb-4">Formulario de Cotización</h1>
-                    <form action="../../php/send_form1.php" method="POST">
+                    <form action="../../php/send_form1_create_edit.php" method="POST">
                         <div class="row">
                             <!-- Cliente -->
                              <div class="col-md-4">

@@ -6,13 +6,14 @@ require '../php/db_connection.php'; // Asegúrate de que la ruta sea correcta
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Obtener los datos desde el formulario
     $id_form1 = uniqid('form1_');
-    $solicitante = $_POST['solicitante'] ?? '';
-    $id_user = $_POST['id_user'] ?? '';
-    $estatus = $_POST['estatus'] ?? '';
-    $cliente = $_POST['cliente'] ?? '';
-    $nombre_proyecto = $_POST['nombre_proyecto'] ?? '';
-    $numero_rfq = $_POST['numero_rfq'] ?? '';
-    $formato_entrega = $_POST['formato_entrega'] ?? '';
+    $site = $_POST['site'];
+    $solicitante = $_POST['solicitante'] ;
+    $id_user = $_POST['id_user'] ;
+    $estatus = $_POST['estatus'] ;
+    $cliente = $_POST['cliente'] ;
+    $nombre_proyecto = $_POST['nombre_proyecto'] ;
+    $numero_rfq = $_POST['numero_rfq'] ;
+    $formato_entrega = $_POST['formato_entrega'] ;
     $formato_empaque = $_POST['formato_empaque'] ?? '';
     $elemento_conveniencia = $_POST['elemento_conveniencia'] ?? '';
     $proceso_llenado = $_POST['proceso_llenado'] ?? '';
@@ -77,14 +78,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             overlap_mm, overlap_tolerance_mm,
             sustainability_code,
             technical_sheet, physical_sample,
-            mechanical_plan, pdf_art
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            mechanical_plan, pdf_art,
+            site
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     "); 
 
     // Vincular parámetros
     mysqli_stmt_bind_param(
         $stmt, 
-        "ssisssissssssiisiddddddddddddssiiiii", 
+        "ssisssissssssiisiddddddddddddssiiiis", 
         $id_form1, $estatus,
         $id_user, $solicitante,
         $cliente, $nombre_proyecto,
@@ -103,7 +105,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $traslape, $tolerancia_traslape,
         $codigo_sostenibilidad,
         $ficha_tecnica, $muestra_fisica,
-        $plano_mecanico, $pdf_art
+        $plano_mecanico, $pdf_art,
+        $site
     );
 
     // Ejecutar la declaración
