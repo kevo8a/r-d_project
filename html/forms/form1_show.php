@@ -530,7 +530,7 @@ mysqli_close($conn);
                                 <div class="form-check mb-3">
                                     <input class="form-check-input" type="checkbox" id="ficha_tecnica"
                                         name="ficha_tecnica"
-                                        <?php echo ($form_data['technical_sheet'] == 0 ? 'checked' : ''); ?> disabled>
+                                        <?php echo ($form_data['technical_sheet'] == 1 ? 'checked' : ''); ?> disabled>
                                     <label class="form-check-label" for="ficha_tecnica">Ficha Técnica</label>
                                 </div>
                             </div>
@@ -540,7 +540,7 @@ mysqli_close($conn);
                                 <div class="form-check mb-3">
                                     <input class="form-check-input" type="checkbox" id="muestra_fisica"
                                         name="muestra_fisica"
-                                        <?php echo ($form_data['physical_sample'] == 0 ? 'checked' : ''); ?> disabled>
+                                        <?php echo ($form_data['physical_sample'] == 1 ? 'checked' : ''); ?> disabled>
                                     <label class="form-check-label" for="muestra_fisica">Muestra Física</label>
                                 </div>
                             </div>
@@ -550,7 +550,7 @@ mysqli_close($conn);
                                 <div class="form-check mb-3">
                                     <input class="form-check-input" type="checkbox" id="plano_mecanico"
                                         name="plano_mecanico"
-                                        <?php echo ($form_data['mechanical_plan'] == 0 ? 'checked' : ''); ?> disabled>
+                                        <?php echo ($form_data['mechanical_plan'] == 1 ? 'checked' : ''); ?> disabled>
                                     <label class="form-check-label" for="plano_mecanico">Plano Mecánico</label>
                                 </div>
                             </div>
@@ -559,7 +559,7 @@ mysqli_close($conn);
                             <div class="col-md-6">
                                 <div class="form-check mb-3">
                                     <input class="form-check-input" type="checkbox" id="pdf_arte" name="pdf_arte"
-                                        <?php echo ($form_data['pdf_art'] == 0 ? 'checked' : ''); ?> disabled>
+                                        <?php echo ($form_data['pdf_art'] == 1 ? 'checked' : ''); ?> disabled>
                                     <label class="form-check-label" for="pdf_arte">PDF del Arte</label>
                                 </div>
                             </div>

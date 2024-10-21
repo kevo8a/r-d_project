@@ -100,7 +100,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Vincular parámetros
     mysqli_stmt_bind_param(
         $stmt,
-        "ssssssssssiiisiddddddddddddddibbbbi", // Tipos de parámetros: 's' para string y 'i' para entero
+        "ssssssssssiiisiddddddddddddddiiiiii", // Tipos de parámetros: 's' para string y 'i' para entero
         $solicitante, 
         $cliente, 
         $nombre_proyecto, 

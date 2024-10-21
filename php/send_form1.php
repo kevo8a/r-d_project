@@ -37,10 +37,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $traslape = $_POST['traslape']?? '';
     $tolerancia_traslape = $_POST['tolerancia_traslape']?? '';
     $codigo_sostenibilidad = $_POST['codigo_sostenibilidad']?? '';
-    $ficha_tecnica = isset($_POST['ficha_tecnica']) ? 1 : 0; // 1 para Sí, 0 para No
+    $ficha_tecnica = isset($_POST['ficha_tecnica']) ? 1 : 0;
     $muestra_fisica = isset($_POST['muestra_fisica']) ? 1 : 0;
     $plano_mecanico = isset($_POST['plano_mecanico']) ? 1 : 0;
-    $pdf_art = isset($_POST['pdf_arte']) ? 1 : 0;
+    $pdf_arte = isset($_POST['pdf_arte']) ? 1 : 0;
+
 
     // Validar datos obligatorios
     if (empty($id_user)) {
@@ -83,7 +84,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Vincular parámetros
     mysqli_stmt_bind_param(
         $stmt, 
-        "ssisssissssssiisiddddddddddddssibbbb", 
+        "ssisssissssssiisiddddddddddddssiiiii", 
         $id_form1, $estatus,
         $id_user, $solicitante,
         $cliente, $nombre_proyecto,

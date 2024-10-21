@@ -131,7 +131,14 @@ mysqli_close($conn);
                                         value="<?php echo htmlspecialchars($form_data['status_form1']); ?>" readonly>
                                 </div>
                             </div>
-
+                            <!-- folio -->
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="folio" class="form-label">Folio</label>
+                                    <input type="text" class="form-control" id="folio" name="folio"
+                                    value="<?php echo htmlspecialchars($form_data['id_form1']); ?>" readonly>
+                                </div>
+                            </div>
                             <!-- Número de RFQ -->
                             <div class="col-md-6">
                                 <div class="mb-3">
@@ -341,9 +348,9 @@ mysqli_close($conn);
                             <div class="col-md-2">
                                 <div class="form-check mb-3">
                                     <input class="form-check-input" type="checkbox" id="check_diseno_continuo"
-                                        name="check_diseno_continuo"
-                                        <?php echo ($form_data['continuous_design_check'] == 0 ? 'checked' : ''); ?>
-                                        disabled>
+                                        name="check_diseno_continuo" onchange="toggleFotodistancias()"
+                                        <?php echo ($form_data['continuous_design_check'] == 1 ? 'checked' : ''); ?>
+                                        >
                                     <label class="form-check-label" for="check_diseno_continuo">Diseño Continuo</label>
                                 </div>
                             </div>

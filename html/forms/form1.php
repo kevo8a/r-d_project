@@ -429,12 +429,10 @@ include '../../php/auth.php';
                             <div class="col-md-12 text-center">
                                 <h3>Check de Adjuntos</h3>
                             </div>
-
                             <!-- Ficha Técnica -->
                             <div class="col-md-6">
                                 <div class="form-check mb-3">
-                                    <input class="form-check-input" type="checkbox" id="ficha_tecnica"
-                                        name="ficha_tecnica">
+                                    <input class="form-check-input" type="checkbox" id="ficha_tecnica" name="ficha_tecnica" value="1">
                                     <label class="form-check-label" for="ficha_tecnica">Ficha Técnica</label>
                                 </div>
                             </div>
@@ -442,8 +440,7 @@ include '../../php/auth.php';
                             <!-- Muestra Física -->
                             <div class="col-md-6">
                                 <div class="form-check mb-3">
-                                    <input class="form-check-input" type="checkbox" id="muestra_fisica"
-                                        name="muestra_fisica">
+                                    <input class="form-check-input" type="checkbox" id="muestra_fisica" name="muestra_fisica" value="1">
                                     <label class="form-check-label" for="muestra_fisica">Muestra Física</label>
                                 </div>
                             </div>
@@ -451,8 +448,7 @@ include '../../php/auth.php';
                             <!-- Plano Mecánico -->
                             <div class="col-md-6">
                                 <div class="form-check mb-3">
-                                    <input class="form-check-input" type="checkbox" id="plano_mecanico"
-                                        name="plano_mecanico">
+                                    <input class="form-check-input" type="checkbox" id="plano_mecanico" name="plano_mecanico" value="1">
                                     <label class="form-check-label" for="plano_mecanico">Plano Mecánico</label>
                                 </div>
                             </div>
@@ -460,7 +456,7 @@ include '../../php/auth.php';
                             <!-- PDF Arte -->
                             <div class="col-md-6">
                                 <div class="form-check mb-3">
-                                    <input class="form-check-input" type="checkbox" id="pdf_arte" name="pdf_arte">
+                                    <input class="form-check-input" type="checkbox" id="pdf_arte" name="pdf_arte" value="1">
                                     <label class="form-check-label" for="pdf_arte">PDF del Arte</label>
                                 </div>
                             </div>
