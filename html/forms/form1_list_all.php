@@ -1,27 +1,9 @@
 <?php
 include '../../php/db_connection.php';
 include '../../php/auth.php';
-
-// Obtener el ID del usuario logueado desde la sesión
-$user_id = $_SESSION['user_id'];
-
-// Consulta para obtener los formularios que pertenecen al usuario logueado
-$sql = "SELECT id, id_form1, id_user, name_user, name_client, status_form1, project_name 
-        FROM form1 
-        WHERE id_user = ?";  // Filtrar por el ID del usuario
-
-// Preparar la consulta
-$stmt = $conn->prepare($sql);
-
-// Asociar el parámetro de la consulta (ID del usuario)
-$stmt->bind_param("i", $user_id);
-
-// Ejecutar la consulta
-$stmt->execute();
-
-// Obtener el resultado de la consulta
-$result = $stmt->get_result();
-
+// Consulta para obtener las cotizaciones
+$sql = "SELECT id, id_form1, id_user, name_user, name_client, status_form1, project_name FROM form1";
+$result = $conn->query($sql);
 ?>
 
 <!DOCTYPE html>
@@ -123,6 +105,7 @@ $result = $stmt->get_result();
 
                                     echo "</td>"; // Asegúrate de cerrar la celda correctamente
 
+                                    echo "</td>";
                                     echo "</tr>";
                                 }
                             } else {
@@ -130,6 +113,9 @@ $result = $stmt->get_result();
                             }
                             ?>
                         </tbody>
+
+
+
                     </table>
                 </div>
                 <!-- End of Main Content -->

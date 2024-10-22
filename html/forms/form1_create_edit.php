@@ -478,17 +478,17 @@ mysqli_close($conn);
                             <div class="col-md-1">
                                 <div class="mb-1">
                                     <label for="es_bolsa" class="form-label">¿Es Bolsa?</label>
-                                    <select class="form-control" id="es_bolsa" name="es_bolsa"
-                                        onchange="toggleDimensionesBolsa()" >
+                                    <select class="form-control" id="es_bolsa" name="es_bolsa" onchange="toggleDimensionesBolsa()" >
                                         <option value="Sí"
-                                            <?php echo ($id_formulario && $form_data['bag_check'] == 'Sí' ? 'selected' : ''); ?>>
+                                            <?php echo ($id_formulario && $form_data['bag_check'] == 'Sí') ? 'selected' : ''; ?>>
                                             Sí</option>
                                         <option value="No"
-                                            <?php echo ($id_formulario && $form_data['bag_check'] == 'No' ? 'selected' : ''); ?>>
+                                            <?php echo ($id_formulario && $form_data['bag_check'] == 'No') ? 'selected' : ''; ?>>
                                             No</option>
                                     </select>
                                 </div>
                             </div>
+
                             <!-- Largo -->
                             <div class="col-md-6 bolsa_fields">
                                 <div class="mb-3">

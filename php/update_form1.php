@@ -13,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $estatus = $_POST['estatus'] ?? '';
     $numero_rfq = $_POST['numero_rfq'] ?? '';
     $formato_entrega = $_POST['formato_entrega'] ?? '';
-     $formato_empaque = $_POST['formato_empaque'] ?? '';
+    $formato_empaque = $_POST['formato_empaque'] ?? '';
     $elemento_conveniencia = $_POST['elemento_conveniencia'] ?? '';
     $proceso_llenado = $_POST['proceso_llenado'] ?? '';
     $sistema_empaque = $_POST['sistema_empaque'] ?? '';
@@ -40,8 +40,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $ficha_tecnica = isset($_POST['ficha_tecnica']) ? 1 : 0;
     $muestra_fisica = isset($_POST['muestra_fisica']) ? 1 : 0;
     $plano_mecanico = isset($_POST['plano_mecanico']) ? 1 : 0;
-    $es_bolsa = isset($_POST['es_bolsa']) ?? '';
     $pdf_art = isset($_POST['pdf_arte']) ? 1 : 0;
+    $es_bolsa = $_POST['es_bolsa'] ?? 'No';
 
     // Validar que los campos obligatorios estén presentes
     if (empty($id_formulario) || empty($solicitante) || empty($id_user) || empty($cliente) || empty($nombre_proyecto) || empty($numero_rfq) || empty($formato_entrega)) {

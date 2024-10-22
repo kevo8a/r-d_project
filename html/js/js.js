@@ -27,30 +27,30 @@ function toggleFotodistancias() {
 }
 
 function toggleDimensionesBolsa() {
-    const esBolsa = document.getElementById("es_bolsa").value;
-    const bolsaFields = document.getElementsByClassName("bolsa_fields");
-
-    for (let i = 0; i < bolsaFields.length; i++) {
-        const inputFields = bolsaFields[i].getElementsByTagName("input");
+    const esBolsa = $("#es_bolsa").val();
+    
+    $(".bolsa_fields").each(function() {
+        const $bolsaField = $(this);
+        const $inputFields = $bolsaField.find("input");
 
         if (esBolsa === "No") {
-            bolsaFields[i].style.display = "none";
+            $bolsaField.hide();
 
             // Limpiar los valores de los campos input y eliminar el atributo 'required'
-            for (let j = 0; j < inputFields.length; j++) {
-                inputFields[j].value = "";
-                inputFields[j].removeAttribute("required");
-            }
+            $inputFields.each(function() {
+                $(this).val("").removeAttr("required");
+            });
         } else {
-            bolsaFields[i].style.display = "block";
+            $bolsaField.show();
 
             // Añadir el atributo 'required' nuevamente
-            for (let j = 0; j < inputFields.length; j++) {
-                inputFields[j].setAttribute("required", "required");
-            }
+            $inputFields.each(function() {
+                $(this).attr("required", "required");
+            });
         }
-    }
+    });
 }
+
 
 // Inicializa el estado del campo Código de Sostenibilidad
 document.addEventListener("DOMContentLoaded", function() {
