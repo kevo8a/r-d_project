@@ -1,7 +1,7 @@
 <?php
 // Iniciar la sesión
 session_start();
-
+date_default_timezone_set('America/Mexico_City');
 // Definir tiempo máximo de inactividad (en segundos)
 $inactive = 1800; // 30 minutos
 
