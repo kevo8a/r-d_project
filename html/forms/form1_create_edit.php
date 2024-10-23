@@ -142,22 +142,20 @@ mysqli_close($conn);
                                     <input type="text" class="form-control" id="created_at" name="created_at" readonly
                                         value="<?php 
                                             // Verifica si está en modo edición (si $form_data['created_at'] tiene un valor guardado)
-                                            if (isset($form_data['created_at']) && !empty($form_data['created_at'])) {
-                                                echo htmlspecialchars($form_data['created_at'], ENT_QUOTES, 'UTF-8'); 
-                                            } else {
-                                                // Muestra la fecha actual por defecto
-                                                echo date('d-m-Y H:i'); // O cambia esto por cualquier valor por defecto que desees
-                                            }
-                                        ?>">
+                                            echo isset($form_data['created_at']) && !empty($form_data['created_at']) 
+                                                ? htmlspecialchars($form_data['created_at'], ENT_QUOTES, 'UTF-8') 
+                                                : date('d-m-Y H:i'); // Muestra la fecha actual si no hay un valor guardado
+                                        ?>"
+                                    >
                                 </div>
                             </div>
+
 
                             <!-- Fecha de finalización -->
                             <div class="col-md-3">
                                 <div class="mb-3">
                                     <label for="completed_at" class="form-label">Fecha de finalización</label>
                                     <input type="text" class="form-control" id="completed_at" name="completed_at" readonly>
-                                    <!-- Permite ingresar manualmente la fecha -->
                                 </div>
                             </div>
 

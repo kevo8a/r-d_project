@@ -136,9 +136,15 @@ mysqli_close($conn);
                                 <div class="mb-3">
                                     <label for="created_at" class="form-label">Fecha de creación</label>
                                     <input type="text" class="form-control" id="created_at" name="created_at" readonly
-                                        value="<?php echo date('d-m-Y H:i'); ?>">
+                                        value="<?php 
+                                            // Verifica si está en modo edición (si $form_data['created_at'] tiene un valor guardado)
+                                            echo isset($form_data['created_at']) && !empty($form_data['created_at']) 
+                                                ? htmlspecialchars($form_data['created_at'], ENT_QUOTES, 'UTF-8') 
+                                                : ''; // Si no, deja el campo vacío
+                                        ?>"
+                                    >
                                 </div>
-                            </div>
+                            </div>  
 
                             <!-- Fecha de finalización -->
                             <div class="col-md-3">

@@ -99,7 +99,7 @@
         <div id="collapseUsers" class="collapse" aria-labelledby="headingUsers" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Opciones de Usuarios:</h6>
-                <a class="collapse-item" href="/r&d/html/usuarios/crear_cuenta.php">Crear Usuario</a>
+                <a class="collapse-item" href="/r&d/html/users/form_user.php">Crear Usuario</a>
                 <a class="collapse-item" href="/r&d/html/usuarios/editar_cuenta.php">Editar Usuario</a>
             </div>
         </div>

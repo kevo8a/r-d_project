@@ -11,7 +11,7 @@ if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity']) >
     // Si el tiempo de inactividad ha superado el límite, cerrar la sesión
     session_unset();     // Elimina todas las variables de sesión
     session_destroy();   // Destruye la sesión
-    header("Location: login.php"); // Redirigir al login
+    header("Location: /r&d/html/login.php"); // Redirigir al login
     exit();
 }
 

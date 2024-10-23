@@ -43,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $plano_mecanico = isset($_POST['plano_mecanico']) ? 1 : 0;
     $pdf_arte = isset($_POST['pdf_arte']) ? 1 : 0;
     $site = $_POST['site_user'];
-    
+    $created_at = $_POST['created_at']?? '';
 
 
     // Validar datos obligatorios
@@ -81,14 +81,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             sustainability_code,
             technical_sheet, physical_sample,
             mechanical_plan, pdf_art,
-            site_user,sustainability_code_check
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            site_user,sustainability_code_check,
+            created_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     "); 
 
     // Vincular parámetros
     mysqli_stmt_bind_param(
         $stmt, 
-        "ssisssissssssiisiddddddddddddssiiiiisi", 
+        "ssisssissssssiisiddddddddddddssiiiiisis", 
         $id_form1, $estatus,
         $id_user, $solicitante,
         $cliente, $nombre_proyecto,
@@ -108,7 +109,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $codigo_sostenibilidad,
         $ficha_tecnica, $muestra_fisica,
         $plano_mecanico, $pdf_art,
-        $site, $check_sostenibilidad
+        $site, $check_sostenibilidad,
+        $created_at
     );
 
     // Ejecutar la declaración
