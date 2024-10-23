@@ -81,13 +81,15 @@ CREATE TABLE form1 (
 -- Insert sample values into 'rol'
 INSERT INTO rol (id, description) VALUES 
 (1, 'Admin'),
-(2, 'User');
+(2, 'Approver'),
+(3, 'User');
 
 -- Insert sample values into 'users'
 INSERT INTO users (id_user, name, last_name, email, password, id_rol, site)
 VALUES 
-(3664, 'John', 'Doe', 'john.doe@example.com', 'password123', 1, 'New York'),
-(4567, 'Jane', 'Smith', 'jane.smith@example.com', 'password456', 2, 'London');
+(3664, 'John', 'Doe', 'john.doe@example.com', 'password123', 3, 'New York'),
+(4567, 'Jane', 'Smith', 'jane.smith@example.com', 'password456', 2, 'London'),
+(3324, 'Kevin', 'Ochoa', 'kevin.ochoa@amcor.com', 'password123', 1, 'FTLA');
 
 -- Insert sample values into 'client'
 INSERT INTO client (name, email) VALUES 
