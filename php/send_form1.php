@@ -6,14 +6,13 @@ require '../php/db_connection.php'; // Asegúrate de que la ruta sea correcta
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Obtener los datos desde el formulario
     $id_form1 = uniqid('form1_');
-    $site = $_POST['site'];
-    $solicitante = $_POST['solicitante'] ;
-    $id_user = $_POST['id_user'] ;
-    $estatus = $_POST['estatus'] ;
-    $cliente = $_POST['cliente'] ;
-    $nombre_proyecto = $_POST['nombre_proyecto'] ;
-    $numero_rfq = $_POST['numero_rfq'] ;
-    $formato_entrega = $_POST['formato_entrega'] ;
+    $solicitante = $_POST['solicitante'] ?? '';
+    $id_user = $_POST['id_user'] ?? '';
+    $estatus = $_POST['estatus'] ?? '';
+    $cliente = $_POST['cliente'] ?? '';
+    $nombre_proyecto = $_POST['nombre_proyecto'] ?? '';
+    $numero_rfq = $_POST['numero_rfq'] ?? '';
+    $formato_entrega = $_POST['formato_entrega'] ?? '';
     $formato_empaque = $_POST['formato_empaque'] ?? '';
     $elemento_conveniencia = $_POST['elemento_conveniencia'] ?? '';
     $proceso_llenado = $_POST['proceso_llenado'] ?? '';
@@ -42,9 +41,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $muestra_fisica = isset($_POST['muestra_fisica']) ? 1 : 0;
     $plano_mecanico = isset($_POST['plano_mecanico']) ? 1 : 0;
     $pdf_arte = isset($_POST['pdf_arte']) ? 1 : 0;
-    $es_bolsa = isset($_POST['es_bolsa']) ;
-
-    
 
 
     // Validar datos obligatorios
@@ -81,15 +77,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             overlap_mm, overlap_tolerance_mm,
             sustainability_code,
             technical_sheet, physical_sample,
-            mechanical_plan, pdf_art,
-            site, bag_check
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            mechanical_plan, pdf_art
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     "); 
 
     // Vincular parámetros
     mysqli_stmt_bind_param(
         $stmt, 
-        "ssisssissssssiisiddddddddddddssiiiiss", 
+        "ssisssissssssiisiddddddddddddssiiiii", 
         $id_form1, $estatus,
         $id_user, $solicitante,
         $cliente, $nombre_proyecto,
@@ -108,8 +103,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $traslape, $tolerancia_traslape,
         $codigo_sostenibilidad,
         $ficha_tecnica, $muestra_fisica,
-        $plano_mecanico, $pdf_art,
-        $site, $es_bolsa
+        $plano_mecanico, $pdf_art
     );
 
     // Ejecutar la declaración
