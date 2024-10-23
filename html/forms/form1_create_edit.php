@@ -76,16 +76,34 @@ mysqli_close($conn);
                                 <div class="mb-3">
                                     <label for="solicitante" class="form-label">Solicitante</label>
                                     <input type="text" class="form-control" id="solicitante" name="solicitante"
-                                        value="<?php echo htmlspecialchars($name) . ' ' . htmlspecialchars($last_name); ?>"
+                                        value="<?php 
+                                            // Verifica si está en modo edición (si $form_data['name_user'] tiene un valor guardado)
+                                            if (isset($form_data['name_user']) && !empty($form_data['name_user'])) {
+                                                echo htmlspecialchars($form_data['name_user'], ENT_QUOTES, 'UTF-8'); 
+                                            } else {
+                                                // Si no, muestra el nombre por defecto
+                                                echo htmlspecialchars($name . ' ' . $last_name, ENT_QUOTES, 'UTF-8'); // Ajusta esto según lo que necesites
+                                            }
+                                        ?>"
                                         readonly>
                                 </div>
                             </div>
+
                             <!-- Site -->
                             <div class="col-md-3">
                                 <div class="mb-3">
-                                    <label for="Site" class="form-label">Site</label>
-                                    <input type="text" class="form-control" id="Site" name="Site"
-                                        value="<?php echo htmlspecialchars($site); ?>" readonly>
+                                    <label for="site" class="form-label">Site</label>
+                                    <input type="text" class="form-control" id="site" name="site_user"
+                                        value="<?php 
+                                            // Verifica si está en modo edición (si $form_data['site_user'] tiene un valor guardado)
+                                            if (isset($form_data['site_user']) && !empty($form_data['site_user'])) {
+                                                echo htmlspecialchars($form_data['site_user'], ENT_QUOTES, 'UTF-8'); 
+                                            } else {
+                                                // Muestra un valor por defecto cuando no hay un site_user
+                                                echo htmlspecialchars($site, ENT_QUOTES, 'UTF-8'); // Cambia $default_site por el valor por defecto que quieras
+                                            }
+                                        ?>"
+                                        readonly>
                                 </div>
                             </div>
 
@@ -94,7 +112,16 @@ mysqli_close($conn);
                                 <div class="mb-3">
                                     <label for="id_user" class="form-label">ID del Usuario</label>
                                     <input type="text" class="form-control" id="id_user" name="id_user"
-                                        value="<?php echo htmlspecialchars($user_id); ?>" readonly>
+                                        value="<?php 
+                                            // Verifica si está en modo edición (si $form_data['id_user'] tiene un valor guardado)
+                                            if (isset($form_data['id_user']) && !empty($form_data['id_user'])) {
+                                                echo htmlspecialchars($form_data['id_user'], ENT_QUOTES, 'UTF-8'); 
+                                            } else {
+                                                // Muestra un valor por defecto cuando no hay un id_user
+                                                echo htmlspecialchars($user_id, ENT_QUOTES, 'UTF-8'); // Cambia $default_id_user por el valor por defecto que quieras
+                                            }
+                                        ?>"
+                                        readonly>
                                 </div>
                             </div>
 
@@ -113,7 +140,15 @@ mysqli_close($conn);
                                 <div class="mb-3">
                                     <label for="created_at" class="form-label">Fecha de creación</label>
                                     <input type="text" class="form-control" id="created_at" name="created_at" readonly
-                                        value="<?php echo date('d-m-Y H:i'); ?>">
+                                        value="<?php 
+                                            // Verifica si está en modo edición (si $form_data['created_at'] tiene un valor guardado)
+                                            if (isset($form_data['created_at']) && !empty($form_data['created_at'])) {
+                                                echo htmlspecialchars($form_data['created_at'], ENT_QUOTES, 'UTF-8'); 
+                                            } else {
+                                                // Muestra la fecha actual por defecto
+                                                echo date('d-m-Y H:i'); // O cambia esto por cualquier valor por defecto que desees
+                                            }
+                                        ?>">
                                 </div>
                             </div>
 

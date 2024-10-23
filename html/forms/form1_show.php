@@ -71,26 +71,38 @@ mysqli_close($conn);
 
                 <!-- Main Content -->
                 <div class="container">
-                    <h1 class="text-center mb-4">Editar Formulario de Cotización</h1>
+                    <h1 class="text-center mb-4">Ver Formulario de Cotización</h1>
                     <form>
                         <input type="hidden" name="id_formulario"
                             value="<?php echo htmlspecialchars($id_formulario); ?>">
                         <div class="row">
                             <!-- Solicitante -->
-                            <div class="col-md-3">
+                           <div class="col-md-3">
                                 <div class="mb-3">
                                     <label for="solicitante" class="form-label">Solicitante</label>
                                     <input type="text" class="form-control" id="solicitante" name="solicitante"
-                                        value="<?php echo htmlspecialchars($name) . ' ' . htmlspecialchars($last_name); ?>"
+                                        value="<?php 
+                                            // Verifica si está en modo edición (si $form_data['name_user'] tiene un valor guardado)
+                                            echo isset($form_data['name_user']) && !empty($form_data['name_user']) 
+                                                ? htmlspecialchars($form_data['name_user'], ENT_QUOTES, 'UTF-8') 
+                                                : ''; // Si no, deja el campo vacío
+                                        ?>"
                                         readonly>
                                 </div>
-                            </div>
+                             </div>
+
                             <!-- Site -->
                             <div class="col-md-3">
                                 <div class="mb-3">
-                                    <label for="Site" class="form-label">Site</label>
-                                    <input type="text" class="form-control" id="Site" name="Site"
-                                        value="<?php echo htmlspecialchars($site); ?>" readonly>
+                                    <label for="site" class="form-label">Site</label>
+                                    <input type="text" class="form-control" id="site" name="site_user"
+                                        value="<?php 
+                                            // Verifica si está en modo edición (si $form_data['site_user'] tiene un valor guardado en la base de datos)
+                                            echo isset($form_data['site_user']) && !empty($form_data['site_user']) 
+                                                ? htmlspecialchars($form_data['site_user'], ENT_QUOTES, 'UTF-8') 
+                                                : ''; // Si no, deja el campo vacío o coloca un valor por defecto
+                                        ?>"
+                                        readonly>
                                 </div>
                             </div>
 
@@ -99,7 +111,13 @@ mysqli_close($conn);
                                 <div class="mb-3">
                                     <label for="id_user" class="form-label">ID del Usuario</label>
                                     <input type="text" class="form-control" id="id_user" name="id_user"
-                                        value="<?php echo htmlspecialchars($user_id); ?>" readonly>
+                                        value="<?php 
+                                            // Verifica si está en modo edición (si $form_data['id_user'] tiene un valor guardado)
+                                            echo isset($form_data['id_user']) && !empty($form_data['id_user']) 
+                                                ? htmlspecialchars($form_data['id_user'], ENT_QUOTES, 'UTF-8') 
+                                                : ''; // Si no, deja el campo vacío
+                                        ?>"
+                                        readonly>
                                 </div>
                             </div>
 

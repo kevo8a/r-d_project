@@ -36,11 +36,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $tolerancia_fuelle = $_POST['tolerancia_fuelle']?? '';
     $traslape = $_POST['traslape']?? '';
     $tolerancia_traslape = $_POST['tolerancia_traslape']?? '';
+    $check_sostenibilidad  = isset($_POST['plano_mecanico']) ? 1 : 0;
     $codigo_sostenibilidad = $_POST['codigo_sostenibilidad']?? '';
     $ficha_tecnica = isset($_POST['ficha_tecnica']) ? 1 : 0;
     $muestra_fisica = isset($_POST['muestra_fisica']) ? 1 : 0;
     $plano_mecanico = isset($_POST['plano_mecanico']) ? 1 : 0;
     $pdf_arte = isset($_POST['pdf_arte']) ? 1 : 0;
+    $site = $_POST['site_user'];
+    
 
 
     // Validar datos obligatorios
@@ -77,14 +80,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             overlap_mm, overlap_tolerance_mm,
             sustainability_code,
             technical_sheet, physical_sample,
-            mechanical_plan, pdf_art
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            mechanical_plan, pdf_art,
+            site_user,sustainability_code_check
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     "); 
 
     // Vincular parámetros
     mysqli_stmt_bind_param(
         $stmt, 
-        "ssisssissssssiisiddddddddddddssiiiii", 
+        "ssisssissssssiisiddddddddddddssiiiiisi", 
         $id_form1, $estatus,
         $id_user, $solicitante,
         $cliente, $nombre_proyecto,
@@ -103,7 +107,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $traslape, $tolerancia_traslape,
         $codigo_sostenibilidad,
         $ficha_tecnica, $muestra_fisica,
-        $plano_mecanico, $pdf_art
+        $plano_mecanico, $pdf_art,
+        $site, $check_sostenibilidad
     );
 
     // Ejecutar la declaración
