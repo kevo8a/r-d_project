@@ -115,10 +115,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Ejecutar la declaración
     if (mysqli_stmt_execute($stmt)) {
-        // Redirigir a una ruta después de guardar correctamente
-        header("Location: ../html/forms/form1_list.php");  // Cambia 'ruta_deseada.php' a la ruta que prefieras
-        exit(); // Asegúrate de terminar el script después de redirigir
+        // Enviar respuesta de éxito
+        echo "success";
     } else {
+        // Enviar mensaje de error
         echo "Error al guardar los datos: " . mysqli_stmt_error($stmt);
     }
 

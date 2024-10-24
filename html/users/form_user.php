@@ -46,7 +46,11 @@ if ($id_user) {
                 <!-- Contenido -->
                 <div class="container-fluid">
                     <h1 class="h3 mb-4 text-gray-800"><?php echo $id_user ? 'Editar Usuario' : 'Crear Usuario'; ?></h1>
-                    <form action="../../php/create_edit_user.php" method="POST">
+
+                    <!-- Contenedor para mensajes de error -->
+                    <div id="error-message" class="alert alert-danger" style="display: none;"></div>
+
+                    <form id="form-cotizacion" action="../../php/create_edit_user.php" method="POST">
                         <div class="row">
                             <!-- ID User -->
                             <div class="col-md-3">
@@ -116,7 +120,7 @@ if ($id_user) {
                             </div>
                         </div>
 
-                        <button type="submit" class="btn btn-primary"><?php echo $id_user ? 'Actualizar Usuario' : 'Crear Usuario'; ?></button>
+                        <button id="submit-btn" type="submit" class="btn btn-primary"><?php echo $id_user ? 'Actualizar Usuario' : 'Crear Usuario'; ?></button>
                     </form>
                 </div>
                 <!-- End of Content -->
@@ -131,6 +135,52 @@ if ($id_user) {
     <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
     <script src="../js/sb-admin-2.min.js"></script>
-</body>
 
+    <!-- Validación de email y envío AJAX -->
+    <script>
+$(document).ready(function() {
+    $('#submit-btn').click(function(event) {
+        event.preventDefault(); // Previene el comportamiento por defecto del formulario
+
+        // Limpiar mensajes de error anteriores
+        $('#error-message').hide().empty();
+
+        // Validar el campo de email
+        var email = $('#email').val();
+        var emailPattern = /^[a-zA-Z0-9._%+-]+@amcor\.com$/; // Expresión regular para el dominio @amcor.com
+
+        if (!emailPattern.test(email)) {
+            $('#error-message').text('Por favor, ingrese un correo válido de la empresa (@amcor.com).').show();
+            return;
+        }
+
+        // Captura los datos del formulario
+        var formData = $('#form-cotizacion').serialize();
+
+        // Realiza la solicitud AJAX
+        $.ajax({
+            url: '../../php/create_edit_user.php',
+            type: 'POST',
+            data: formData,
+            dataType: 'json', // Asegúrate de que la respuesta se maneje como JSON
+            success: function(response) {
+                console.log(response); // Para depuración
+
+                if (response.success) {
+                    alert('Usuario creado correctamente.'); // Mensaje de éxito
+                    window.location.href = '/r&d/html/users/user_list.php'; // Redirigir a la lista de usuarios
+                } else {
+                    // Mostrar mensaje de error en el contenedor
+                    $('#error-message').text('Error: ' + response.message).show();
+                }
+            },
+            error: function() {
+                $('#error-message').text('Hubo un error al procesar la solicitud. Intenta de nuevo.').show();
+            }
+        });
+    });
+});
+</script>
+
+</body>
 </html>

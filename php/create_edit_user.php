@@ -2,6 +2,8 @@
 session_start();
 require '../php/db_connection.php'; // Asegúrate de que la ruta sea correcta
 
+header('Content-Type: application/json'); // Indica que la respuesta es JSON
+
 // Procesar los datos del formulario
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Obtener los datos desde el formulario
@@ -15,46 +17,56 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Validar datos obligatorios
     $errors = [];
+    if (empty($id_user)) { $errors[] = "El campo 'ID Usuario' es obligatorio."; }
+    if (empty($name)) { $errors[] = "El campo 'Nombre' es obligatorio."; }
+    if (empty($last_name)) { $errors[] = "El campo 'Apellido' es obligatorio."; }
+    if (empty($email)) { $errors[] = "El campo 'Email' es obligatorio."; }
+    if (empty($rol)) { $errors[] = "El campo 'Rol' es obligatorio."; }
+    if (empty($site)) { $errors[] = "El campo 'Sitio' es obligatorio."; }
 
-    if (empty($id_user)) {
-        $errors[] = "El campo 'ID Usuario' es obligatorio.";
-    }
-    if (empty($name)) {
-        $errors[] = "El campo 'Nombre' es obligatorio.";
-    }
-    if (empty($last_name)) {
-        $errors[] = "El campo 'Apellido' es obligatorio.";
-    }
-    if (empty($email)) {
-        $errors[] = "El campo 'Email' es obligatorio.";
-    }
-    if (empty($rol)) {
-        $errors[] = "El campo 'Rol' es obligatorio.";
-    }
-    if (empty($site)) {
-        $errors[] = "El campo 'Sitio' es obligatorio.";
-    }
-
-    // Si hay errores, mostrar el mensaje de error y salir
+    // Si hay errores, retornar error en JSON
     if (!empty($errors)) {
-        foreach ($errors as $error) {
-            echo "<p>$error</p>";
-        }
+        echo json_encode(['success' => false, 'message' => implode(", ", $errors)]);
         exit;
     }
 
     // Verificar si se está editando un usuario existente
-    $result = mysqli_query($conn, "SELECT * FROM users WHERE id_user = '$id_user'");
-    
-    if ($result && mysqli_num_rows($result) > 0) {
+    $existing_user_query = "SELECT * FROM users WHERE id_user = '$id_user' LIMIT 1";
+    $result = mysqli_query($conn, $existing_user_query);
+    $is_editing = ($result && mysqli_num_rows($result) > 0);
+
+    // Verificar ID de usuario
+    if ($is_editing) {
+        // Para la edición, verificar si el correo electrónico está en uso por otro usuario
+        $email_check_query = "SELECT * FROM users WHERE email = '$email' AND id_user != '$id_user' LIMIT 1";
+        $email_result = mysqli_query($conn, $email_check_query);
+        if ($email_result && mysqli_num_rows($email_result) > 0) {
+            echo json_encode(['success' => false, 'message' => "El correo electrónico ya está en uso."]);
+            exit;
+        }
+    } else {
+        // Para la creación, verificar si el ID de usuario ya existe
+        $id_check_query = "SELECT * FROM users WHERE id_user = '$id_user' LIMIT 1";
+        $result = mysqli_query($conn, $id_check_query);
+        if ($result && mysqli_num_rows($result) > 0) {
+            echo json_encode(['success' => false, 'message' => "El ID de usuario ya está en uso."]);
+            exit;
+        }
+
+        // Verificar si el correo electrónico ya existe
+        $email_check_query = "SELECT * FROM users WHERE email = '$email' LIMIT 1";
+        $result = mysqli_query($conn, $email_check_query);
+        if ($result && mysqli_num_rows($result) > 0) {
+            echo json_encode(['success' => false, 'message' => "El correo electrónico ya está en uso."]);
+            exit;
+        }
+    }
+
+    // Preparar la declaración SQL para crear o editar el usuario
+    if ($is_editing) {
         // Se está editando
-        $user_data = mysqli_fetch_assoc($result);
-        
-        // Si la contraseña está vacía, no se actualiza
         if (!empty($password)) {
-            // Encriptar la nueva contraseña
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-            // Preparar la declaración SQL para la actualización
             $stmt = mysqli_prepare($conn, "
                 UPDATE users 
                 SET name = ?, last_name = ?, email = ?, password = ?, id_rol = ?, site = ?
@@ -62,13 +74,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             ");
             mysqli_stmt_bind_param($stmt, "ssssisi", $name, $last_name, $email, $hashed_password, $rol, $site, $id_user);
         } else {
-            // Preparar la declaración SQL para la actualización sin cambiar la contraseña
             $stmt = mysqli_prepare($conn, "
                 UPDATE users 
                 SET name = ?, last_name = ?, email = ?, id_rol = ?, site = ?
                 WHERE id_user = ?
             ");
-            // Corregir el tipo de datos, eliminando un parámetro de contraseña
             mysqli_stmt_bind_param($stmt, "sssisi", $name, $last_name, $email, $rol, $site, $id_user);
         }
     } else {
@@ -83,11 +93,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Ejecutar la declaración
     if (mysqli_stmt_execute($stmt)) {
-        // Redirigir a una ruta después de guardar correctamente
-        header("Location: ../html/users/user_list.php");  // Cambia 'ruta_deseada.php' a la ruta que prefieras
-        exit(); // Asegúrate de terminar el script después de redirigir
+        echo json_encode(['success' => true]); // Respuesta de éxito
     } else {
-        echo "Error al guardar los datos: " . mysqli_stmt_error($stmt);
+        echo json_encode(['success' => false, 'message' => "Error al guardar los datos: " . mysqli_stmt_error($stmt)]);
     }
 
     // Cerrar la declaración y la conexión

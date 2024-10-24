@@ -63,10 +63,8 @@ mysqli_close($conn);
 
                 <!-- Contenido del Formulario -->
                 <div class="container">
-                    <h1 class="text-center mb-4"><?php echo $id_formulario ? 'Editar' : 'Crear'; ?> Formulario de
-                        Cotización</h1>
-                    <form action="../../php/<?php echo $id_formulario ? 'update_form1.php' : 'send_form1.php'; ?>"
-                        method="POST">
+                    <h1 class="text-center mb-4"><?php echo $id_formulario ? 'Editar' : 'Crear'; ?> Formulario de Cotización</h1>
+                    <form id="form-cotizacion" method="POST">
                         <?php if ($id_formulario): ?>
                         <input type="hidden" name="id_formulario" value="<?php echo $id_formulario; ?>">
                         <?php endif; ?>
@@ -662,9 +660,9 @@ mysqli_close($conn);
                             <!-- Botón de Envío -->
                             <div class="col-md-12">
                                 <div class="text-center">
-                                    <button type="submit"
-                                        class="btn btn-primary"><?php echo $id_formulario ? 'Actualizar' : 'Crear'; ?>
-                                        Cotización</button>
+                                    <button type="button" id="submit-btn" class="btn btn-primary">
+                                        <?php echo $id_formulario ? 'Actualizar' : 'Crear'; ?> Cotización
+                                    </button>
                                 </div>
                             </div>
 
@@ -683,3 +681,37 @@ mysqli_close($conn);
 </body>
 
 </html>
+<script>
+$(document).ready(function() {
+    $('#submit-btn').click(function(event) {
+        event.preventDefault(); // Evita el envío predeterminado del formulario
+
+        // Captura los datos del formulario
+        var formData = $('#form-cotizacion').serialize();
+
+        // Realiza la solicitud AJAX
+        $.ajax({
+            url: '../../php/<?php echo isset($id_formulario) ? 'update_form1.php' : 'send_form1.php'; ?>',
+            type: 'POST',
+            data: formData,
+            success: function(response) {
+                // Verifica el contenido de la respuesta y actúa en consecuencia
+                if (response.trim() === 'success') {
+                    alert('Formulario guardado con éxito.');
+                    // Redireccionar a la página de lista de formularios u otra acción
+                    window.location.href = '/r&d/html/forms/form1_list.php';
+                } else if (response.trim() === 'incomplete') {
+                    alert('Por favor, complete todos los campos obligatorios.');
+                } else {
+                    // Mostrar el mensaje de error devuelto por PHP
+                    alert('Error: ' + response);
+                }
+            },
+            error: function() {
+                // Muestra una alerta de error si hay algún problema con la solicitud
+                alert('Hubo un error al procesar la solicitud. Intenta de nuevo.');
+            }
+        });
+    });
+});
+</script>
