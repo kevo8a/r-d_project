@@ -10,12 +10,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $last_name = $_POST['last_name'] ?? '';
     $email = $_POST['email'] ?? '';
     $password = $_POST['password'] ?? '';
-    $rol = $_POST['rol'] ?? '';
+    $rol = $_POST['id_rol'] ?? '';
     $site = $_POST['site'] ?? '';
 
     // Validar datos obligatorios
-    if (empty($id_user) || empty($name) || empty($last_name) || empty($email) || empty($rol) || empty($site)) {
-        echo "Todos los campos son obligatorios.";
+    $errors = [];
+
+    if (empty($id_user)) {
+        $errors[] = "El campo 'ID Usuario' es obligatorio.";
+    }
+    if (empty($name)) {
+        $errors[] = "El campo 'Nombre' es obligatorio.";
+    }
+    if (empty($last_name)) {
+        $errors[] = "El campo 'Apellido' es obligatorio.";
+    }
+    if (empty($email)) {
+        $errors[] = "El campo 'Email' es obligatorio.";
+    }
+    if (empty($rol)) {
+        $errors[] = "El campo 'Rol' es obligatorio.";
+    }
+    if (empty($site)) {
+        $errors[] = "El campo 'Sitio' es obligatorio.";
+    }
+
+    // Si hay errores, mostrar el mensaje de error y salir
+    if (!empty($errors)) {
+        foreach ($errors as $error) {
+            echo "<p>$error</p>";
+        }
         exit;
     }
 
@@ -33,27 +57,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Preparar la declaración SQL para la actualización
             $stmt = mysqli_prepare($conn, "
                 UPDATE users 
-                SET name = ?, last_name = ?, email = ?, password = ?, rol = ?, site = ?
+                SET name = ?, last_name = ?, email = ?, password = ?, id_rol = ?, site = ?
                 WHERE id_user = ?
             ");
-            mysqli_stmt_bind_param($stmt, "sssss", $name, $last_name, $email, $hashed_password, $rol, $site, $id_user);
+            mysqli_stmt_bind_param($stmt, "ssssisi", $name, $last_name, $email, $hashed_password, $rol, $site, $id_user);
         } else {
             // Preparar la declaración SQL para la actualización sin cambiar la contraseña
             $stmt = mysqli_prepare($conn, "
                 UPDATE users 
-                SET name = ?, last_name = ?, email = ?, rol = ?, site = ?
+                SET name = ?, last_name = ?, email = ?, id_rol = ?, site = ?
                 WHERE id_user = ?
             ");
-            mysqli_stmt_bind_param($stmt, "sssss", $name, $last_name, $email, $rol, $site, $id_user);
+            // Corregir el tipo de datos, eliminando un parámetro de contraseña
+            mysqli_stmt_bind_param($stmt, "sssisi", $name, $last_name, $email, $rol, $site, $id_user);
         }
     } else {
         // Se está creando un nuevo usuario
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
         $stmt = mysqli_prepare($conn, "
-            INSERT INTO users (id_user, name, last_name, email, password, rol, site, created_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO users (id_user, name, last_name, email, password, id_rol, site)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
         ");
-        mysqli_stmt_bind_param($stmt, "ssssssss", $id_user, $name, $last_name, $email, $hashed_password, $rol, $site);
+        mysqli_stmt_bind_param($stmt, "issssis", $id_user, $name, $last_name, $email, $hashed_password, $rol, $site);
     }
 
     // Ejecutar la declaración

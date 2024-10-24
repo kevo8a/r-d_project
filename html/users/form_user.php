@@ -92,12 +92,12 @@ if ($id_user) {
                             <!-- Rol -->
                             <div class="col-md-3">
                                 <div class="mb-3">
-                                    <label for="rol" class="form-label">Rol</label>
-                                    <select class="form-control" id="rol" name="rol" required>
+                                    <label for="id_rol" class="form-label">Rol</label>
+                                    <select class="form-control" id="id_rol" name="id_rol" required>
                                         <option value="">Seleccione un rol</option>
-                                        <option value="1" <?php echo isset($user_data) && $user_data['rol'] == 1 ? 'selected' : ''; ?>>Admin</option>
-                                        <option value="2" <?php echo isset($user_data) && $user_data['rol'] == 2 ? 'selected' : ''; ?>>Approver</option>
-                                        <option value="3" <?php echo isset($user_data) && $user_data['rol'] == 3 ? 'selected' : ''; ?>>Basic</option>
+                                        <option value="1" <?php echo isset($user_data) && $user_data['id_rol'] == 1 ? 'selected' : ''; ?>>Admin</option>
+                                        <option value="2" <?php echo isset($user_data) && $user_data['id_rol'] == 2 ? 'selected' : ''; ?>>Approver</option>
+                                        <option value="3" <?php echo isset($user_data) && $user_data['id_rol'] == 3 ? 'selected' : ''; ?>>Basic</option>
                                     </select>
                                 </div>
                             </div>
