@@ -36,14 +36,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $tolerancia_fuelle = $_POST['tolerancia_fuelle']?? '';
     $traslape = $_POST['traslape']?? '';
     $tolerancia_traslape = $_POST['tolerancia_traslape']?? '';
-    $check_sostenibilidad  = isset($_POST['plano_mecanico']) ? 1 : 0;
-    $codigo_sostenibilidad = $_POST['codigo_sostenibilidad']?? '';
+    $codigo_sostenibilidad = $_POST['sustainability_code']?? '';
     $ficha_tecnica = isset($_POST['ficha_tecnica']) ? 1 : 0;
     $muestra_fisica = isset($_POST['muestra_fisica']) ? 1 : 0;
     $plano_mecanico = isset($_POST['plano_mecanico']) ? 1 : 0;
     $pdf_arte = isset($_POST['pdf_arte']) ? 1 : 0;
     $site = $_POST['site_user'];
     $created_at = $_POST['created_at']?? '';
+    $check_sostenibilidad = isset($_POST['sustainability_code_check']) ? 1 : 0;
 
 
     // Validar datos obligatorios

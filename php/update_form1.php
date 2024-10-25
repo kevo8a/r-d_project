@@ -41,7 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $muestra_fisica = isset($_POST['muestra_fisica']) ? 1 : 0;
     $plano_mecanico = isset($_POST['plano_mecanico']) ? 1 : 0;
     $pdf_art = isset($_POST['pdf_arte']) ? 1 : 0;
-    $es_bolsa = $_POST['es_bolsa'] ?? 'No';
+    $es_bolsa = isset($_POST['es_bolsa']) ? 1 : 0;
 
     // Validar que los campos obligatorios estén presentes
     if (empty($id_formulario) || empty($solicitante) || empty($id_user) || empty($cliente) || empty($nombre_proyecto) || empty($numero_rfq) || empty($formato_entrega)) {
@@ -70,7 +70,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             number_of_colors = ?,
             width_mm = ?, 
             width_tolerance_mm = ?, 
-            photo_distances_mm = ?, 
+            photo_distances_mm = ?,
             photo_distances_tolerance_mm = ?, 
             thickness_microns = ?,
             thickness_tolerance_microns = ?, 
@@ -103,7 +103,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Vincular parámetros
     mysqli_stmt_bind_param(
         $stmt,
-        "ssssssssssiiisiddddddddddddddiiiiisi", // Tipos de parámetros: 's' para string y 'i' para entero
+        "ssssssssssiiisiddddddddddddddiiiiiii", // Tipos de parámetros: 's' para string y 'i' para entero
         $solicitante, 
         $cliente, 
         $nombre_proyecto, 
@@ -145,13 +145,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Ejecutar la consulta
     if (mysqli_stmt_execute($stmt)) {
-        // Redirigir al usuario a la lista de formularios después de una actualización exitosa
-        header("Location: ../html/forms/form1_list.php");
-        exit;
+        echo "success"; // Indica éxito al guardar
     } else {
         // Manejar el error en caso de fallo
         echo "Error al actualizar el formulario: " . mysqli_stmt_error($stmt);
     }
+
 
     // Cerrar la declaración y la conexión
     mysqli_stmt_close($stmt);

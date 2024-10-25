@@ -80,7 +80,7 @@ if (!$result || mysqli_num_rows($result) == 0) {
                                     <td><?php echo $row['site']; ?></td>
                                     <td>
                                         <!-- Enlaces para editar y eliminar -->
-                                        <a href="form_user.php?id_user=<?php echo $row['id_user']; ?>" class="btn btn-primary btn-sm">Editar</a>
+                                        <a href="edit_user.php?id_user=<?php echo $row['id_user']; ?>" class="btn btn-primary btn-sm">Editar</a>
                                         <!-- <a href="../../php/delete_user.php?id_user=<?php echo $row['id_user']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar este usuario?');">Eliminar</a> -->
                                     </td>
                                 </tr>

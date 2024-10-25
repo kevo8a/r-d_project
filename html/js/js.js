@@ -24,35 +24,7 @@ function toggleFotodistancias() {
         fotodistancias.disabled = false;
         toleranciaFotodistancias.disabled = false;
     }
-}
-
-function toggleDimensionesBolsa() {
-    const esBolsa = $("#es_bolsa").val();
-    
-    $(".bolsa_fields").each(function() {
-        const $bolsaField = $(this);
-        const $inputFields = $bolsaField.find("input");
-
-        if (esBolsa === "No") {
-            $bolsaField.hide();
-
-            // Limpiar los valores de los campos input y eliminar el atributo 'required'
-            $inputFields.each(function() {
-                $(this).val("").removeAttr("required");
-            });
-        } else {
-            $bolsaField.show();
-
-            // Añadir el atributo 'required' nuevamente
-            $inputFields.each(function() {
-                $(this).attr("required", "required");
-            });
-        }
-    });
-}
-
-
-// Inicializa el estado del campo Código de Sostenibilidad
+}// Inicializa el estado del campo Código de Sostenibilidad
 document.addEventListener("DOMContentLoaded", function() {
     const checkSostenibilidad = document.getElementById("check_sostenibilidad");
     const codigoSostenibilidad = document.getElementById("codigo_sostenibilidad");
@@ -98,4 +70,30 @@ document.addEventListener("DOMContentLoaded", function() {
     toggleNumeroColores(); // Llama a la función para configurar el estado del campo
 
     sistemaImpresion.addEventListener("change", toggleNumeroColores);
+});
+function toggleDimensionesBolsa() {
+    const esBolsa = $("#es_bolsa").is(":checked"); // Verifica si el checkbox está marcado
+
+    $(".bolsa_fields").each(function() {
+        const $bolsaField = $(this);
+        const $inputFields = $bolsaField.find("input");
+
+        if (esBolsa) { // Si el checkbox está marcado
+            $bolsaField.show(); // Muestra los campos
+            $inputFields.each(function() {
+                $(this).attr("required", "required"); // Añadir 'required' nuevamente
+            });
+        } else { // Si el checkbox no está marcado
+            $bolsaField.hide(); // Oculta los campos
+            $inputFields.each(function() {
+                $(this).val("").removeAttr("required"); // Limpiar valores y quitar 'required'
+            });
+        }
+    });
+}
+
+// Inicializa el estado de los campos al cargar la página
+$(document).ready(function() {
+    toggleDimensionesBolsa(); // Inicializa el estado de dimensiones de bolsa
+    $("#es_bolsa").change(toggleDimensionesBolsa); // Llama a la función cuando cambia el estado del checkbox
 });

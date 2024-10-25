@@ -61,7 +61,7 @@ CREATE TABLE form1 (
     thickness_tolerance_microns FLOAT,
     weight_gm2 FLOAT,
     weight_tolerance_gm2 FLOAT,
-    bag_check VARCHAR(3),
+    bag_check BOOLEAN,
     length_mm FLOAT,
     length_tolerance_mm FLOAT,
     gusset_mm FLOAT,
@@ -87,9 +87,9 @@ INSERT INTO rol (id, description) VALUES
 -- Insert sample values into 'users'
 INSERT INTO users (id_user, name, last_name, email, password, id_rol, site)
 VALUES 
-(3664, 'John', 'Doe', 'john.doe@example.com', 'password123', 3, 'New York'),
-(4567, 'Jane', 'Smith', 'jane.smith@example.com', 'password456', 2, 'London'),
-(3324, 'Kevin', 'Ochoa', 'kevin.ochoa@amcor.com', 'password123', 1, 'FTLA');
+(3664, 'John', 'Doe', 'john.doe@amcor.com', 'password123', 3, 'Zacapu'),
+(4567, 'Jane', 'Smith', 'jane.smith@amcor.com', 'password456', 2, 'London'),
+(3324, 'Kevin', 'Ochoa', 'kevin.ochoa@amcor.com', 'password123', 1, 'Tlaquepaque');
 
 -- Insert sample values into 'client'
 INSERT INTO client (name, email) VALUES 
@@ -99,4 +99,4 @@ INSERT INTO client (name, email) VALUES
 -- Insert sample values into 'form1'
 INSERT INTO form1 (id_form1, status_form1, id_user, name_user, site_user, name_client, project_name, rfq_number, delivery_format, packaging_format, convenience_element_of_packaging, filling_process, packaging_system, sales_unit, volume_per_order, annual_volume, printing_system, number_of_colors, width_mm, width_tolerance_mm, photo_distances_mm, photo_distances_tolerance_mm, thickness_microns, thickness_tolerance_microns, weight_gm2, weight_tolerance_gm2, length_mm, length_tolerance_mm, gusset_mm, gusset_tolerance_mm, overlap_mm, overlap_tolerance_mm, sustainability_code, technical_sheet, physical_sample, mechanical_plan, pdf_art, continuous_design_check, sustainability_code_check, bag_check, approved_by )
 VALUES 
-('101', 'Corregir', 3664, 'John Doe', 'FTLA', 'Acme Corp', 'Project A', 12345, 'PDF', 'Box', 'Plastic', 'Sealed', 'Shrink Wrap', 'Unit', 1000, 5000, 'Flexo', 4, 150.5, 0.5, 12.5, 0.2, 25, 1, 350, 10, 50, 1, 10, 0.5, 2.5, 0.1, 101, TRUE, TRUE, TRUE, FALSE, FALSE, TRUE, 'Sí','Flavio');
+('101', 'Corregir', 3664, 'John Doe', 'Zacapu', 'Acme Corp', 'Project A', 12345, 'PDF', 'Box', 'Plastic', 'Sealed', 'Shrink Wrap', 'Unit', 1000, 5000, 'Flexo', 4, 150.5, 0.5, 12.5, 0.2, 25, 1, 350, 10, 50, 1, 10, 0.5, 2.5, 0.1, 101, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE, 'Sí','Flavio');

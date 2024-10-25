@@ -47,6 +47,7 @@ mysqli_close($conn);
 
     <!-- Custom styles for this template-->
     <link href="../../css/sb-admin-2.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="../js/js.js"></script>
 </head>
 
@@ -497,49 +498,44 @@ mysqli_close($conn);
                                         step="any" readonly>
                                 </div>
                             </div>
-
                             <!-- Espacio -->
-                            <div class="col-md-6"></div>
-
-                            <!-- Dimensiones Bolsa -->
-                            <div class="col-md-11 text-center">
-                                <h3>Dimensiones Bolsa</h3>
-                            </div>
-                            <!-- Dimensiones de la Bolsa -->
-                            <div class="col-md-1">
-                                <div class="mb-1">
-                                    <label for="es_bolsa" class="form-label">¿Es Bolsa?</label>
-                                    <select class="form-control" id="es_bolsa" name="es_bolsa"
-                                        onchange="toggleDimensionesBolsa()" disabled>
-                                        <option value="Sí"
-                                            <?php echo ($id_formulario && $form_data['bag_check'] == 'Sí' ? 'selected' : ''); ?>>
-                                            Sí</option>
-                                        <option value="No"
-                                            <?php echo ($id_formulario && $form_data['bag_check'] == 'No' ? 'selected' : ''); ?>>
-                                            No</option>
-                                    </select>
+                            <div class="col-md-12">
+                                <div class="mb-3">
                                 </div>
                             </div>
 
+                             <!-- ¿Es Bolsa? -->
+                            <div class="col-md-6">
+                                <div class="mb-1">
+                                    <label for="es_bolsa" class="form-label">¿Es Bolsa?</label>
+                                    <input type="checkbox" id="es_bolsa" name="es_bolsa" value="1" disabled
+                                        <?php echo ($id_formulario && $form_data['bag_check'] == 1 ? 'checked' : ''); ?>>
+                                    <label for="es_bolsa">Sí</label>
+                                </div>
+                            </div>   
+
+                            <!-- Dimensiones de la Bolsa -->
+                            <div class="col-md-6"></div>
+                            <div class="col-md-12 text-center bolsa_fields">
+                                <h3>Dimensiones Bolsa</h3>
+                            </div>
 
                             <!-- Largo -->
                             <div class="col-md-6 bolsa_fields">
                                 <div class="mb-3">
                                     <label for="largo" class="form-label">Largo (mm)</label>
-                                    <input type="number" class="form-control" id="largo" name="largo"
+                                    <input type="number" class="form-control" id="largo" name="largo" disabled
                                         value="<?php echo $id_formulario ? htmlspecialchars($form_data['length_mm']) : ''; ?>"
                                         step="any" readonly>
                                 </div>
                             </div>
 
-
                             <!-- Tolerancia largo -->
                             <div class="col-md-6 bolsa_fields">
                                 <div class="mb-3">
                                     <label for="tolerancia_largo" class="form-label">Tolerancia Largo (mm)</label>
-                                    <input type="number" class="form-control" id="tolerancia_largo"
-                                        name="tolerancia_largo"
-                                        value="<?php echo $id_formulario ? htmlspecialchars($form_data['length_tolerance_mm']): ''; ?>"
+                                    <input type="number" class="form-control" id="tolerancia_largo" name="tolerancia_largo"
+                                        value="<?php echo $id_formulario ? htmlspecialchars($form_data['length_tolerance_mm']) : ''; ?>"
                                         step="any" readonly>
                                 </div>
                             </div>
@@ -549,7 +545,7 @@ mysqli_close($conn);
                                 <div class="mb-3">
                                     <label for="fuelle" class="form-label">Fuelle (mm)</label>
                                     <input type="number" class="form-control" id="fuelle" name="fuelle"
-                                        value="<?php echo $id_formulario ? htmlspecialchars($form_data['gusset_mm']): ''; ?>"
+                                        value="<?php echo $id_formulario ? htmlspecialchars($form_data['gusset_mm']) : ''; ?>"
                                         step="any" readonly>
                                 </div>
                             </div>
@@ -558,9 +554,8 @@ mysqli_close($conn);
                             <div class="col-md-6 bolsa_fields">
                                 <div class="mb-3">
                                     <label for="tolerancia_fuelle" class="form-label">Tolerancia Fuelle (mm)</label>
-                                    <input type="number" class="form-control" id="tolerancia_fuelle"
-                                        name="tolerancia_fuelle"
-                                        value="<?php echo $id_formulario ? htmlspecialchars($form_data['gusset_tolerance_mm']): ''; ?>"
+                                    <input type="number" class="form-control" id="tolerancia_fuelle" name="tolerancia_fuelle"
+                                        value="<?php echo $id_formulario ? htmlspecialchars($form_data['gusset_tolerance_mm']) : ''; ?>"
                                         step="any" readonly>
                                 </div>
                             </div>
@@ -570,7 +565,7 @@ mysqli_close($conn);
                                 <div class="mb-3">
                                     <label for="traslape" class="form-label">Traslape (mm)</label>
                                     <input type="number" class="form-control" id="traslape" name="traslape"
-                                        value="<?php echo $id_formulario ? htmlspecialchars($form_data['overlap_mm']): ''; ?>"
+                                        value="<?php echo $id_formulario ? htmlspecialchars($form_data['overlap_mm']) : ''; ?>"
                                         step="any" readonly>
                                 </div>
                             </div>
@@ -579,18 +574,18 @@ mysqli_close($conn);
                             <div class="col-md-6 bolsa_fields">
                                 <div class="mb-3">
                                     <label for="tolerancia_traslape" class="form-label">Tolerancia Traslape (mm)</label>
-                                    <input type="number" class="form-control" id="tolerancia_traslape"
-                                        name="tolerancia_traslape"
-                                        value="<?php echo $id_formulario ? htmlspecialchars($form_data['overlap_tolerance_mm']): ''; ?>"
+                                    <input type="number" class="form-control" id="tolerancia_traslape" name="tolerancia_traslape"
+                                        value="<?php echo $id_formulario ? htmlspecialchars($form_data['overlap_tolerance_mm']) : ''; ?>"
                                         step="any" readonly>
                                 </div>
                             </div>
 
+
                             <!-- Check Código de sostenibilidad -->
                             <div class="col-md-6">
                                 <div class="form-check mb-3">
-                                    <input class="form-check-input" type="checkbox" id="check_sostenibilidad" disabled
-                                        name="check_sostenibilidad"
+                                    <input class="form-check-input" type="checkbox" id="check_sostenibilidad"
+                                        name="check_sostenibilidad" onchange="toggleCodigoSostenibilidad()" disabled
                                         <?php echo ($id_formulario && $form_data['sustainability_code_check'] == 1 ? 'checked' : ''); ?>>
                                     <label class="form-check-label" for="check_sostenibilidad">Check código de
                                         sostenibilidad</label>
@@ -603,7 +598,7 @@ mysqli_close($conn);
                                     <label for="codigo_sostenibilidad" class="form-label">Código de
                                         Sostenibilidad</label>
                                     <input type="text" class="form-control" id="codigo_sostenibilidad"
-                                        name="codigo_sostenibilidad"
+                                        name="codigo_sostenibilidad" 
                                         value="<?php echo $id_formulario ? htmlspecialchars($form_data['sustainability_code']) : ''; ?>"
                                         readonly> <!-- Este campo se inicia deshabilitado -->
                                 </div>
