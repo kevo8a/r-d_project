@@ -5,7 +5,7 @@ require '../php/db_connection.php'; // Asegúrate de que la ruta sea correcta
 // Procesar los datos del formulario
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Obtener los datos desde el formulario
-    $id_form1 = uniqid('form1_');
+    $id_form1 = uniqid('FC');
     $solicitante = $_POST['solicitante'] ?? '';
     $id_user = $_POST['id_user'] ?? '';
     $estatus = $_POST['estatus'] ?? '';

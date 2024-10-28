@@ -3,6 +3,8 @@
 include 'db_connection.php';
 session_start();
 
+header('Content-Type: application/json');
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
     $password = $_POST['password'];
@@ -11,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = mysqli_real_escape_string($conn, $email);
     $password = mysqli_real_escape_string($conn, $password);
 
-    // Consulta SQL para buscar el usuario en la tabla 'user' sin hash en la contraseña
+    // Consulta SQL para buscar el usuario en la tabla 'user'
     $sql = "SELECT * FROM users WHERE email = '$email' AND password = '$password'";
     $result = $conn->query($sql);
 
@@ -25,12 +27,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['user_last_name'] = $user['last_name'];
         $_SESSION['site'] = $user['site'];
         $_SESSION['id_rol'] = $user['id_rol'];
-        // Redirigir al dashboard (index.php)
-        header("Location: ../html/index.php");
-        exit();
+
+        // Responder con éxito
+        echo json_encode(["success" => true]);
     } else {
-        // Usuario o contraseña incorrectos, mostrar mensaje de error
-        echo "<p>Correo electrónico o contraseña incorrectos</p>";
+        // Usuario o contraseña incorrectos
+        echo json_encode(["success" => false]);
     }
 }
 
