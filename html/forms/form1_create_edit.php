@@ -580,26 +580,6 @@ mysqli_close($conn);
                                 </div>
                             </div>
 
-                            <!-- Check Código de sostenibilidad -->
-                            <div class="col-md-6">
-                                <div class="form-check mb-3">
-                                    <input class="form-check-input" type="checkbox" id="sustainability_check"
-                                        name="sustainability_check"
-                                        <?php echo ($id_formulario && $form_data['sustainability_check'] == 1 ? 'checked' : ''); ?>>
-                                    <label class="form-check-label" for="sustainability_check">Check código de
-                                        sostenibilidad</label>
-                                </div>
-                            </div>
-
-                            <!-- Campo de Código de sostenibilidad -->
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <input type="text" class="form-control" id="codigo_sostenibilidad"
-                                        name="codigo_sostenibilidad"
-                                        value="<?php echo $id_formulario ? htmlspecialchars($form_data['sustainability_code']) : ''; ?>">
-                                </div>
-                            </div>
-
                             <!-- Adjuntos -->
                             <div class="col-md-12 text-center">
                                 <h3>Check de Adjuntos</h3>
@@ -650,6 +630,16 @@ mysqli_close($conn);
                                     Es obligatorio adjuntar la ficha técnica o la muestra física.
                                 </div>
                             </div>
+                            <!-- Comentarios -->
+                            <div class="col-md-12">
+                                <div class="mb-3">
+                                    <label for="nombre_proyecto" class="form-label">Comentarios</label>
+                                    <input type="text" class="form-control" id="Comentarios" name="Comentarios"
+                                        value="<?php echo $id_formulario ? htmlspecialchars($form_data['comments']) : ''; ?>"
+                                        <?php echo ($role != 1 && $role != 2) ? 'readonly' : ''; ?>
+                                        required>
+                                </div>
+                            </div>
                             <!-- Botón de Envío -->
                             <div class="col-md-12">
                                 <div class="text-center">
@@ -679,6 +669,22 @@ $(document).ready(function() {
     $('#submit-btn').click(function(event) {
         event.preventDefault(); // Evita el envío predeterminado del formulario
 
+        // Validar campos obligatorios
+        var camposObligatorios = ['#id_user', '#solicitante', '#cliente', '#nombre_proyecto', '#estatus'];
+        var incompleto = false;
+        
+        camposObligatorios.forEach(function(campo) {
+            if ($(campo).val().trim() === '') {
+                incompleto = true;
+                return false; // Termina el bucle si encuentra un campo vacío
+            }
+        });
+        
+        if (incompleto) {
+            alert('Por favor, complete todos los campos obligatorios.');
+            return;
+        }
+
         // Captura los datos del formulario
         var formData = $('#form-cotizacion').serialize();
 
@@ -693,8 +699,6 @@ $(document).ready(function() {
                     alert('Formulario guardado con éxito.');
                     // Redireccionar a la página de lista de formularios u otra acción
                     window.history.back();
-                } else if (response.trim() === 'incomplete') {
-                    alert('Por favor, complete todos los campos obligatorios.');
                 } else {
                     // Mostrar el mensaje de error devuelto por PHP
                     alert('Error: ' + response);

@@ -5,44 +5,42 @@ require 'db_connection.php';
 // Verificar si se ha enviado el formulario a través del método POST
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Obtener los datos desde el formulario
-    $id_formulario = $_POST['id_formulario'] ?? '';
-    $solicitante = $_POST['solicitante'] ?? '';
-    $id_user = $_POST['id_user'] ?? '';
-    $cliente = $_POST['cliente'] ?? '';
-    $nombre_proyecto = $_POST['nombre_proyecto'] ?? '';
-    $estatus = $_POST['estatus'] ?? '';
-    $numero_rfq = $_POST['numero_rfq'] ?? '';
-    $formato_entrega = $_POST['formato_entrega'] ?? '';
-    $formato_empaque = $_POST['formato_empaque'] ?? '';
-    $elemento_conveniencia = $_POST['elemento_conveniencia'] ?? '';
-    $proceso_llenado = $_POST['proceso_llenado'] ?? '';
-    $sistema_empaque = $_POST['sistema_empaque'] ?? '';
-    $unidad_venta = $_POST['unidad_venta'] ?? '';
-    $volumen_pedido = $_POST['volumen_pedido'] ?? 0;
-    $volumen_anual = $_POST['volumen_anual'] ?? 0;
-    $sistema_impresion = $_POST['sistema_impresion'] ?? '';
-    $numero_colores = $_POST['numero_colores'] ?? 0;
-    $ancho = $_POST['ancho'] ?? 0;
-    $tolerancia_ancho = $_POST['tolerancia_ancho'] ?? 0;
+    $id_formulario = $_POST['id_formulario'];
+    $solicitante = $_POST['solicitante'];
+    $id_user = $_POST['id_user'];
+    $cliente = $_POST['cliente'];
+    $nombre_proyecto = $_POST['nombre_proyecto'];
+    $estatus = $_POST['estatus'];
+    $numero_rfq = $_POST['numero_rfq'];
+    $formato_entrega = $_POST['formato_entrega'];
+    $formato_empaque = $_POST['formato_empaque'];
+    $elemento_conveniencia = $_POST['elemento_conveniencia'];
+    $proceso_llenado = $_POST['proceso_llenado'];
+    $sistema_empaque = $_POST['sistema_empaque'];
+    $unidad_venta = $_POST['unidad_venta'];
+    $volumen_pedido = $_POST['volumen_pedido'];
+    $volumen_anual = $_POST['volumen_anual'];
+    $sistema_impresion = $_POST['sistema_impresion'];
+    $numero_colores = $_POST['numero_colores']?? null;
+    $ancho = $_POST['ancho'];
+    $tolerancia_ancho = $_POST['tolerancia_ancho'];
     $fotodistancias = $_POST['fotodistancias'] ?? null;
     $tolerancia_fotodistancias = $_POST['tolerancia_fotodistancias'] ?? null;
-    $calibre = $_POST['calibre'] ?? '';
-    $tolerancia_calibre = $_POST['tolerancia_calibre'] ?? '';
-    $peso = $_POST['peso'] ?? '';
-    $tolerancia_peso = $_POST['tolerancia_peso'] ?? '';
-    $largo = $_POST['largo'] ?? '';
-    $tolerancia_largo = $_POST['tolerancia_largo'] ?? '';
-    $fuelle = $_POST['fuelle'] ?? '';
-    $tolerancia_fuelle = $_POST['tolerancia_fuelle'] ?? '';
-    $traslape = $_POST['traslape'] ?? '';
-    $tolerancia_traslape = $_POST['tolerancia_traslape'] ?? '';
-    $codigo_sostenibilidad = $_POST['codigo_sostenibilidad'] ?? '';
+    $calibre = $_POST['calibre'];
+    $tolerancia_calibre = $_POST['tolerancia_calibre'];
+    $peso = $_POST['peso'];
+    $tolerancia_peso = $_POST['tolerancia_peso'];
+    $largo = $_POST['largo']?? null;
+    $tolerancia_largo = $_POST['tolerancia_largo']?? null;
+    $fuelle = $_POST['fuelle']?? null;
+    $tolerancia_fuelle = $_POST['tolerancia_fuelle']?? null;
+    $traslape = $_POST['traslape']?? null;
+    $tolerancia_traslape = $_POST['tolerancia_traslape']?? null;
     $ficha_tecnica = isset($_POST['ficha_tecnica']) ? 1 : 0;
     $muestra_fisica = isset($_POST['muestra_fisica']) ? 1 : 0;
     $plano_mecanico = isset($_POST['plano_mecanico']) ? 1 : 0;
     $pdf_art = isset($_POST['pdf_arte']) ? 1 : 0;
     $es_bolsa = isset($_POST['es_bolsa']) ? 1 : 0;
-    $sustainability_check = isset($_POST['sustainability_check']) ? 1 : 0;
     $continuous_check = isset($_POST['continuous_check']) ? 1 : 0;
 
 
@@ -85,13 +83,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             gusset_tolerance_mm = ?,
             overlap_mm = ?, 
             overlap_tolerance_mm = ?, 
-            sustainability_code = ?,
             technical_sheet = ?, 
             physical_sample = ?, 
             mechanical_plan = ?, 
             pdf_art = ?,
             bag_check = ?,
-            sustainability_check = ?,
             continuous_check  = ?
         WHERE 
             id = ?
@@ -108,7 +104,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Vincular parámetros
     mysqli_stmt_bind_param(
         $stmt,
-        "ssssssssssiiisiddddddddddddddiiiiiiiii", // Tipos de parámetros: 's' para string y 'i' para entero
+        "ssssssssssiiisiddddddddddddddiiiiiii", // Tipos de parámetros: 's' para string y 'i' para entero
         $solicitante, 
         $cliente, 
         $nombre_proyecto, 
@@ -137,14 +133,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $fuelle, 
         $tolerancia_fuelle, 
         $traslape, 
-        $tolerancia_traslape, 
-        $codigo_sostenibilidad, 
+        $tolerancia_traslape,  
         $ficha_tecnica, 
         $muestra_fisica, 
         $plano_mecanico,
         $pdf_art,
         $es_bolsa,
-        $sustainability_check,
         $continuous_check,
         $id_formulario
         

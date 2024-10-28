@@ -33,31 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Añadir el evento de cambio al checkbox
     checkDisenoContinuo.addEventListener("change", toggleFotodistancias);
-});
-
-document.addEventListener("DOMContentLoaded", function () {
-    const checkboxSostenibilidad = document.getElementById("sustainability_check");
-    const codigoSostenibilidad = document.getElementById("codigo_sostenibilidad");
-
-    // Función para alternar la propiedad 'disabled' y limpiar el valor del campo
-    function toggleCodigoSostenibilidad() {
-        if (checkboxSostenibilidad.checked) {
-            codigoSostenibilidad.disabled = false;
-        } else {
-            codigoSostenibilidad.disabled = true;
-            codigoSostenibilidad.value = ""; // Borra el valor del campo
-        }
-    }
-
-    // Llama a la función al cargar la página para establecer el estado inicial
-    toggleCodigoSostenibilidad();
-
-    // Añade el evento de cambio al checkbox
-    checkboxSostenibilidad.addEventListener("change", toggleCodigoSostenibilidad);
-});
-
-
-// Función para cargar los clientes
+});// Función para cargar los clientes
 function loadClients() {
     fetch('get_clients.php')
         .then(response => response.json())

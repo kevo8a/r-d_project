@@ -580,30 +580,6 @@ mysqli_close($conn);
                                 </div>
                             </div>
 
-
-                            <!-- Check Código de sostenibilidad -->
-                            <div class="col-md-6">
-                                <div class="form-check mb-3">
-                                    <input class="form-check-input" type="checkbox" id="sustainability_check"
-                                        name="sustainability_check" onchange="toggleCodigoSostenibilidad()" disabled
-                                        <?php echo ($id_formulario && $form_data['sustainability_check'] == 1 ? 'checked' : ''); ?>>
-                                    <label class="form-check-label" for="sustainability_check">Check código de
-                                        sostenibilidad</label>
-                                </div>
-                            </div>
-
-                            <!-- Código de sostenibilidad -->
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="codigo_sostenibilidad" class="form-label">Código de
-                                        Sostenibilidad</label>
-                                    <input type="text" class="form-control" id="codigo_sostenibilidad"
-                                        name="codigo_sostenibilidad" 
-                                        value="<?php echo $id_formulario ? htmlspecialchars($form_data['sustainability_code']) : ''; ?>"
-                                        readonly> <!-- Este campo se inicia deshabilitado -->
-                                </div>
-                            </div>
-
                             <!-- Adjuntos -->
                             <div class="col-md-12 text-center">
                                 <h3>Check de Adjuntos</h3>
@@ -652,6 +628,15 @@ mysqli_close($conn);
                             <div class="col-md-12 text-center">
                                 <div class="alert alert-warning w-100" role="alert">
                                     Es obligatorio adjuntar la ficha técnica o la muestra física.
+                                </div>
+                            </div>
+                            <!-- Comentarios -->
+                            <div class="col-md-12">
+                                <div class="mb-3">
+                                    <label for="nombre_proyecto" class="form-label">Comentarios</label>
+                                    <input type="text" class="form-control" id="Comentarios" name="Comentarios"
+                                        value="<?php echo $id_formulario ? htmlspecialchars($form_data['comments']) : ''; ?>"
+                                        readonly>
                                 </div>
                             </div>
                             <!-- Botón Enviar -->
