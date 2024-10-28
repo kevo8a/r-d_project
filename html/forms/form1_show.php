@@ -427,10 +427,10 @@ mysqli_close($conn);
                             <!-- Check Diseño Continuo -->
                             <div class="col-md-2">
                                 <div class="form-check mb-3">
-                                    <input class="form-check-input" type="checkbox" id="check_diseno_continuo"
-                                        name="check_diseno_continuo" onchange="toggleFotodistancias()"
-                                        <?php echo ($id_formulario && $form_data['continuous_design_check'] == 1) ? 'checked' : ''; ?>disabled>
-                                    <label class="form-check-label" for="check_diseno_continuo">Diseño Continuo</label>
+                                    <input class="form-check-input" type="checkbox" id="continuous_check"
+                                        name="continuous_check" onchange="toggleFotodistancias()"
+                                        <?php echo ($id_formulario && $form_data['continuous_check'] == 1) ? 'checked' : ''; ?>disabled>
+                                    <label class="form-check-continuous_check" for="continuous_check">Diseño Continuo</label>
                                 </div>
                             </div>
 
@@ -584,10 +584,10 @@ mysqli_close($conn);
                             <!-- Check Código de sostenibilidad -->
                             <div class="col-md-6">
                                 <div class="form-check mb-3">
-                                    <input class="form-check-input" type="checkbox" id="check_sostenibilidad"
-                                        name="check_sostenibilidad" onchange="toggleCodigoSostenibilidad()" disabled
-                                        <?php echo ($id_formulario && $form_data['sustainability_code_check'] == 1 ? 'checked' : ''); ?>>
-                                    <label class="form-check-label" for="check_sostenibilidad">Check código de
+                                    <input class="form-check-input" type="checkbox" id="sustainability_check"
+                                        name="sustainability_check" onchange="toggleCodigoSostenibilidad()" disabled
+                                        <?php echo ($id_formulario && $form_data['sustainability_check'] == 1 ? 'checked' : ''); ?>>
+                                    <label class="form-check-label" for="sustainability_check">Check código de
                                         sostenibilidad</label>
                                 </div>
                             </div>

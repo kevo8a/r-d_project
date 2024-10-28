@@ -64,7 +64,8 @@ mysqli_close($conn);
 
                 <!-- Contenido del Formulario -->
                 <div class="container">
-                    <h1 class="text-center mb-4"><?php echo $id_formulario ? 'Editar' : 'Crear'; ?> Formulario de Cotización</h1>
+                    <h1 class="text-center mb-4"><?php echo $id_formulario ? 'Editar' : 'Crear'; ?> Formulario de
+                        Cotización</h1>
                     <form id="form-cotizacion" method="POST">
                         <?php if ($id_formulario): ?>
                         <input type="hidden" name="id_formulario" value="<?php echo $id_formulario; ?>">
@@ -74,8 +75,7 @@ mysqli_close($conn);
                             <div class="col-md-3">
                                 <div class="mb-3">
                                     <label for="solicitante" class="form-label">Solicitante</label>
-                                    <input type="text" class="form-control" id="solicitante" name="solicitante"
-                                        value="<?php 
+                                    <input type="text" class="form-control" id="solicitante" name="solicitante" value="<?php 
                                             // Verifica si está en modo edición (si $form_data['name_user'] tiene un valor guardado)
                                             if (isset($form_data['name_user']) && !empty($form_data['name_user'])) {
                                                 echo htmlspecialchars($form_data['name_user'], ENT_QUOTES, 'UTF-8'); 
@@ -83,8 +83,7 @@ mysqli_close($conn);
                                                 // Si no, muestra el nombre por defecto
                                                 echo htmlspecialchars($name . ' ' . $last_name, ENT_QUOTES, 'UTF-8'); // Ajusta esto según lo que necesites
                                             }
-                                        ?>"
-                                        readonly>
+                                        ?>" readonly>
                                 </div>
                             </div>
 
@@ -92,8 +91,7 @@ mysqli_close($conn);
                             <div class="col-md-3">
                                 <div class="mb-3">
                                     <label for="site" class="form-label">Site</label>
-                                    <input type="text" class="form-control" id="site" name="site_user"
-                                        value="<?php 
+                                    <input type="text" class="form-control" id="site" name="site_user" value="<?php 
                                             // Verifica si está en modo edición (si $form_data['site_user'] tiene un valor guardado)
                                             if (isset($form_data['site_user']) && !empty($form_data['site_user'])) {
                                                 echo htmlspecialchars($form_data['site_user'], ENT_QUOTES, 'UTF-8'); 
@@ -101,8 +99,7 @@ mysqli_close($conn);
                                                 // Muestra un valor por defecto cuando no hay un site_user
                                                 echo htmlspecialchars($site, ENT_QUOTES, 'UTF-8'); // Cambia $default_site por el valor por defecto que quieras
                                             }
-                                        ?>"
-                                        readonly>
+                                        ?>" readonly>
                                 </div>
                             </div>
 
@@ -110,8 +107,7 @@ mysqli_close($conn);
                             <div class="col-md-3">
                                 <div class="mb-3">
                                     <label for="id_user" class="form-label">ID del Usuario</label>
-                                    <input type="text" class="form-control" id="id_user" name="id_user"
-                                        value="<?php 
+                                    <input type="text" class="form-control" id="id_user" name="id_user" value="<?php 
                                             // Verifica si está en modo edición (si $form_data['id_user'] tiene un valor guardado)
                                             if (isset($form_data['id_user']) && !empty($form_data['id_user'])) {
                                                 echo htmlspecialchars($form_data['id_user'], ENT_QUOTES, 'UTF-8'); 
@@ -119,8 +115,7 @@ mysqli_close($conn);
                                                 // Muestra un valor por defecto cuando no hay un id_user
                                                 echo htmlspecialchars($user_id, ENT_QUOTES, 'UTF-8'); // Cambia $default_id_user por el valor por defecto que quieras
                                             }
-                                        ?>"
-                                        readonly>
+                                        ?>" readonly>
                                 </div>
                             </div>
 
@@ -144,8 +139,7 @@ mysqli_close($conn);
                                             echo isset($form_data['created_at']) && !empty($form_data['created_at']) 
                                                 ? htmlspecialchars($form_data['created_at'], ENT_QUOTES, 'UTF-8') 
                                                 : date('d-m-Y H:i'); // Muestra la fecha actual si no hay un valor guardado
-                                        ?>"
-                                    >
+                                        ?>">
                                 </div>
                             </div>
 
@@ -154,7 +148,8 @@ mysqli_close($conn);
                             <div class="col-md-3">
                                 <div class="mb-3">
                                     <label for="completed_at" class="form-label">Fecha de finalización</label>
-                                    <input type="text" class="form-control" id="completed_at" name="completed_at" readonly>
+                                    <input type="text" class="form-control" id="completed_at" name="completed_at"
+                                        readonly>
                                 </div>
                             </div>
 
@@ -427,10 +422,11 @@ mysqli_close($conn);
                             <!-- Check Diseño Continuo -->
                             <div class="col-md-2">
                                 <div class="form-check mb-3">
-                                    <input class="form-check-input" type="checkbox" id="check_diseno_continuo"
-                                        name="check_diseno_continuo" onchange="toggleFotodistancias()"
-                                        <?php echo ($id_formulario && $form_data['continuous_design_check'] == 1) ? 'checked' : ''; ?>>
-                                    <label class="form-check-label" for="check_diseno_continuo">Diseño Continuo</label>
+                                    <input class="form-check-input" type="checkbox" id="continuous_check"
+                                        name="continuous_check" onchange="toggleFotodistancias()"
+                                        <?php echo ($id_formulario && $form_data['continuous_check'] == 1) ? 'checked' : ''; ?>>
+                                    <label class="form-check-label" for="continuous_check">Diseño
+                                        Continuo</label>
                                 </div>
                             </div>
 
@@ -505,15 +501,15 @@ mysqli_close($conn);
                                 </div>
                             </div>
 
-                             <!-- ¿Es Bolsa? -->
+                            <!-- ¿Es Bolsa? -->
                             <div class="col-md-6">
                                 <div class="mb-1">
                                     <label for="es_bolsa" class="form-label">¿Es Bolsa?</label>
-                                    <input type="checkbox" id="es_bolsa" name="es_bolsa" value="1" 
+                                    <input type="checkbox" id="es_bolsa" name="es_bolsa" value="1"
                                         <?php echo ($id_formulario && $form_data['bag_check'] == 1 ? 'checked' : ''); ?>>
                                     <label for="es_bolsa">Sí</label>
                                 </div>
-                            </div>   
+                            </div>
 
                             <!-- Dimensiones de la Bolsa -->
                             <div class="col-md-6"></div>
@@ -521,7 +517,7 @@ mysqli_close($conn);
                                 <h3>Dimensiones Bolsa</h3>
                             </div>
 
-                           <!-- Largo -->
+                            <!-- Largo -->
                             <div class="col-md-6 bolsa_fields">
                                 <div class="mb-3">
                                     <label for="largo" class="form-label">Largo (mm)</label>
@@ -535,7 +531,8 @@ mysqli_close($conn);
                             <div class="col-md-6 bolsa_fields">
                                 <div class="mb-3">
                                     <label for="tolerancia_largo" class="form-label">Tolerancia Largo (mm)</label>
-                                    <input type="number" class="form-control" id="tolerancia_largo" name="tolerancia_largo"
+                                    <input type="number" class="form-control" id="tolerancia_largo"
+                                        name="tolerancia_largo"
                                         value="<?php echo $id_formulario ? htmlspecialchars($form_data['length_tolerance_mm']) : ''; ?>"
                                         step="any" required>
                                 </div>
@@ -555,7 +552,8 @@ mysqli_close($conn);
                             <div class="col-md-6 bolsa_fields">
                                 <div class="mb-3">
                                     <label for="tolerancia_fuelle" class="form-label">Tolerancia Fuelle (mm)</label>
-                                    <input type="number" class="form-control" id="tolerancia_fuelle" name="tolerancia_fuelle"
+                                    <input type="number" class="form-control" id="tolerancia_fuelle"
+                                        name="tolerancia_fuelle"
                                         value="<?php echo $id_formulario ? htmlspecialchars($form_data['gusset_tolerance_mm']) : ''; ?>"
                                         step="any" required>
                                 </div>
@@ -575,7 +573,8 @@ mysqli_close($conn);
                             <div class="col-md-6 bolsa_fields">
                                 <div class="mb-3">
                                     <label for="tolerancia_traslape" class="form-label">Tolerancia Traslape (mm)</label>
-                                    <input type="number" class="form-control" id="tolerancia_traslape" name="tolerancia_traslape"
+                                    <input type="number" class="form-control" id="tolerancia_traslape"
+                                        name="tolerancia_traslape"
                                         value="<?php echo $id_formulario ? htmlspecialchars($form_data['overlap_tolerance_mm']) : ''; ?>"
                                         step="any" required>
                                 </div>
@@ -584,26 +583,22 @@ mysqli_close($conn);
                             <!-- Check Código de sostenibilidad -->
                             <div class="col-md-6">
                                 <div class="form-check mb-3">
-                                    <input class="form-check-input" type="checkbox" id="check_sostenibilidad"
-                                        name="check_sostenibilidad" onchange="toggleCodigoSostenibilidad()" 
-                                        <?php echo ($id_formulario && $form_data['sustainability_code_check'] == 1 ? 'checked' : ''); ?>>
-                                    <label class="form-check-label" for="check_sostenibilidad">Check código de
+                                    <input class="form-check-input" type="checkbox" id="sustainability_check"
+                                        name="sustainability_check"
+                                        <?php echo ($id_formulario && $form_data['sustainability_check'] == 1 ? 'checked' : ''); ?>>
+                                    <label class="form-check-label" for="sustainability_check">Check código de
                                         sostenibilidad</label>
                                 </div>
                             </div>
-         
-                            <!-- Código de sostenibilidad -->
+
+                            <!-- Campo de Código de sostenibilidad -->
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="codigo_sostenibilidad" class="form-label">Código de
-                                        Sostenibilidad</label>
                                     <input type="text" class="form-control" id="codigo_sostenibilidad"
-                                        name="codigo_sostenibilidad" 
-                                        value="<?php echo $id_formulario ? htmlspecialchars($form_data['sustainability_code']) : ''; ?>"
-                                        > 
+                                        name="codigo_sostenibilidad"
+                                        value="<?php echo $id_formulario ? htmlspecialchars($form_data['sustainability_code']) : ''; ?>">
                                 </div>
                             </div>
-
 
                             <!-- Adjuntos -->
                             <div class="col-md-12 text-center">
@@ -643,8 +638,7 @@ mysqli_close($conn);
                             <!-- PDF Arte -->
                             <div class="col-md-6">
                                 <div class="form-check mb-3">
-                                    <input class="form-check-input" type="checkbox" id="pdf_arte" 
-                                        name="pdf_arte"
+                                    <input class="form-check-input" type="checkbox" id="pdf_arte" name="pdf_arte"
                                         <?php echo ($id_formulario && $form_data['pdf_art'] == 1 ? 'checked' : ''); ?>>
                                     <label class="form-check-label" for="pdf_arte">PDF del Arte</label>
                                 </div>
@@ -698,7 +692,7 @@ $(document).ready(function() {
                 if (response.trim() === 'success') {
                     alert('Formulario guardado con éxito.');
                     // Redireccionar a la página de lista de formularios u otra acción
-                    window.location.href = '/r&d/html/forms/form1_list.php';
+                    window.history.back();
                 } else if (response.trim() === 'incomplete') {
                     alert('Por favor, complete todos los campos obligatorios.');
                 } else {

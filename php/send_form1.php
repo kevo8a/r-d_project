@@ -36,15 +36,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $tolerancia_fuelle = $_POST['tolerancia_fuelle']?? '';
     $traslape = $_POST['traslape']?? '';
     $tolerancia_traslape = $_POST['tolerancia_traslape']?? '';
-    $codigo_sostenibilidad = $_POST['sustainability_code']?? '';
+    $codigo_sostenibilidad = $_POST['codigo_sostenibilidad'] ?? '';
     $ficha_tecnica = isset($_POST['ficha_tecnica']) ? 1 : 0;
     $muestra_fisica = isset($_POST['muestra_fisica']) ? 1 : 0;
     $plano_mecanico = isset($_POST['plano_mecanico']) ? 1 : 0;
     $pdf_arte = isset($_POST['pdf_arte']) ? 1 : 0;
     $site = $_POST['site_user'];
     $created_at = $_POST['created_at']?? '';
-    $check_sostenibilidad = isset($_POST['sustainability_code_check']) ? 1 : 0;
-
+    $es_bolsa = isset($_POST['es_bolsa']) ? 1 : 0;
+    $sustainability_check = isset($_POST['sustainability_check']) ? 1 : 0;
+    $continuous_check = isset($_POST['continuous_check']) ? 1 : 0;
 
     // Validar datos obligatorios
     if (empty($id_user)) {
@@ -81,15 +82,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             sustainability_code,
             technical_sheet, physical_sample,
             mechanical_plan, pdf_art,
-            site_user,sustainability_code_check,
+            site_user,sustainability_check,
+            bag_check, continuous_check,
             created_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     "); 
 
     // Vincular parámetros
     mysqli_stmt_bind_param(
         $stmt, 
-        "ssisssissssssiisiddddddddddddssiiiiisis", 
+        "ssisssissssssiisiddddddddddddssiiiiisiiis", 
         $id_form1, $estatus,
         $id_user, $solicitante,
         $cliente, $nombre_proyecto,
@@ -109,7 +111,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $codigo_sostenibilidad,
         $ficha_tecnica, $muestra_fisica,
         $plano_mecanico, $pdf_art,
-        $site, $check_sostenibilidad,
+        $site, $sustainability_check,
+        $es_bolsa, $continuous_check,
         $created_at
     );
 

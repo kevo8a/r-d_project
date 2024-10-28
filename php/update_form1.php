@@ -42,6 +42,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $plano_mecanico = isset($_POST['plano_mecanico']) ? 1 : 0;
     $pdf_art = isset($_POST['pdf_arte']) ? 1 : 0;
     $es_bolsa = isset($_POST['es_bolsa']) ? 1 : 0;
+    $sustainability_check = isset($_POST['sustainability_check']) ? 1 : 0;
+    $continuous_check = isset($_POST['continuous_check']) ? 1 : 0;
+
 
     // Validar que los campos obligatorios estén presentes
     if (empty($id_formulario) || empty($solicitante) || empty($id_user) || empty($cliente) || empty($nombre_proyecto) || empty($numero_rfq) || empty($formato_entrega)) {
@@ -87,7 +90,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             physical_sample = ?, 
             mechanical_plan = ?, 
             pdf_art = ?,
-            bag_check = ?
+            bag_check = ?,
+            sustainability_check = ?,
+            continuous_check  = ?
         WHERE 
             id = ?
     ";
@@ -103,7 +108,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Vincular parámetros
     mysqli_stmt_bind_param(
         $stmt,
-        "ssssssssssiiisiddddddddddddddiiiiiii", // Tipos de parámetros: 's' para string y 'i' para entero
+        "ssssssssssiiisiddddddddddddddiiiiiiiii", // Tipos de parámetros: 's' para string y 'i' para entero
         $solicitante, 
         $cliente, 
         $nombre_proyecto, 
@@ -139,6 +144,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $plano_mecanico,
         $pdf_art,
         $es_bolsa,
+        $sustainability_check,
+        $continuous_check,
         $id_formulario
         
     );

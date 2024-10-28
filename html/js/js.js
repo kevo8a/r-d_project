@@ -10,38 +10,52 @@ function toggleNumeroColores() {
     }
 }
 
-function toggleFotodistancias() {
-    const checkDisenoContinuo = document.getElementById("check_diseno_continuo");
+document.addEventListener("DOMContentLoaded", function () {
+    const checkDisenoContinuo = document.getElementById("continuous_check");
     const fotodistancias = document.getElementById("fotodistancias");
     const toleranciaFotodistancias = document.getElementById("tolerancia_fotodistancias");
 
-    if (checkDisenoContinuo.checked) {
-        fotodistancias.disabled = true;
-        fotodistancias.value = ""; // Borrar el valor
-        toleranciaFotodistancias.disabled = true;
-        toleranciaFotodistancias.value = ""; // Borrar el valor
-    } else {
-        fotodistancias.disabled = false;
-        toleranciaFotodistancias.disabled = false;
+    // Función para alternar la propiedad 'disabled' de los campos de fotodistancias
+    function toggleFotodistancias() {
+        if (checkDisenoContinuo.checked) {
+            fotodistancias.disabled = true;
+            fotodistancias.value = ""; // Borrar el valor
+            toleranciaFotodistancias.disabled = true;
+            toleranciaFotodistancias.value = ""; // Borrar el valor
+        } else {
+            fotodistancias.disabled = false;
+            toleranciaFotodistancias.disabled = false;
+        }
     }
-}// Inicializa el estado del campo Código de Sostenibilidad
-document.addEventListener("DOMContentLoaded", function() {
-    const checkSostenibilidad = document.getElementById("check_sostenibilidad");
+
+    // Llama a la función toggleFotodistancias al cargar la página para establecer el estado inicial
+    toggleFotodistancias();
+
+    // Añadir el evento de cambio al checkbox
+    checkDisenoContinuo.addEventListener("change", toggleFotodistancias);
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    const checkboxSostenibilidad = document.getElementById("sustainability_check");
     const codigoSostenibilidad = document.getElementById("codigo_sostenibilidad");
 
-    toggleCodigoSostenibilidad();
-
-    checkSostenibilidad.addEventListener("change", toggleCodigoSostenibilidad);
-
+    // Función para alternar la propiedad 'disabled' y limpiar el valor del campo
     function toggleCodigoSostenibilidad() {
-        if (checkSostenibilidad.checked) {
+        if (checkboxSostenibilidad.checked) {
             codigoSostenibilidad.disabled = false;
         } else {
             codigoSostenibilidad.disabled = true;
-            codigoSostenibilidad.value = "";  // Elimina el contenido del campo
+            codigoSostenibilidad.value = ""; // Borra el valor del campo
         }
     }
+
+    // Llama a la función al cargar la página para establecer el estado inicial
+    toggleCodigoSostenibilidad();
+
+    // Añade el evento de cambio al checkbox
+    checkboxSostenibilidad.addEventListener("change", toggleCodigoSostenibilidad);
 });
+
 
 // Función para cargar los clientes
 function loadClients() {
