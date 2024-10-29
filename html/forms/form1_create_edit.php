@@ -122,9 +122,9 @@ mysqli_close($conn);
                             <!-- Aprobado por -->
                             <div class="col-md-3">
                                 <div class="mb-3">
-                                    <label for="approved_by" class="form-label">Aprobado por</label>
-                                    <input type="text" class="form-control" id="approved_by" name="approved_by"
-                                        value="<?php echo isset($id_formulario) && $id_formulario ? htmlspecialchars($form_data['approved_by']) : ''; ?>"
+                                    <label for="qualified_by" class="form-label">Calificado por</label>
+                                    <input type="text" class="form-control" id="qualified_by" name="qualified_by"
+                                        value="<?php echo isset($id_formulario) && $id_formulario ? htmlspecialchars($form_data['qualified_by']) : ''; ?>"
                                         readonly>
                                 </div>
                             </div>
@@ -225,6 +225,7 @@ mysqli_close($conn);
                                 <div class="mb-3">
                                     <label for="formato_entrega" class="form-label">Formato de Entrega</label>
                                     <select class="form-control" id="formato_entrega" name="formato_entrega" required>
+                                    <option value="" disabled selected>Selecciona una opcion</option>
                                         <option value="Rollo/Bobina"
                                             <?php echo ($id_formulario && $form_data['delivery_format'] == 'Rollo/Bobina') ? 'selected' : ''; ?>>
                                             Rollo/Bobina</option>
@@ -245,6 +246,7 @@ mysqli_close($conn);
                                 <div class="mb-3">
                                     <label for="formato_empaque" class="form-label">Formato del Empaque</label>
                                     <select class="form-control" id="formato_empaque" name="formato_empaque" required>
+                                    <option value="" disabled selected>Selecciona una opcion</option>
                                         <option value="Doypack"
                                             <?php echo ($id_formulario && $form_data['packaging_format'] == 'Doypack') ? 'selected' : ''; ?>>
                                             Doypack</option>
@@ -264,10 +266,9 @@ mysqli_close($conn);
                             <!-- Elemento de Conveniencia -->
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="elemento_conveniencia" class="form-label">Elemento de Conveniencia del
-                                        Empaque</label>
-                                    <select class="form-control" id="elemento_conveniencia" name="elemento_conveniencia"
-                                        required>
+                                    <label for="elemento_conveniencia" class="form-label">Elemento de Conveniencia del Empaque</label>
+                                    <select class="form-control" id="elemento_conveniencia" name="elemento_conveniencia" required>
+                                        <option value="" disabled selected>Selecciona una opcion</option>
                                         <option value="Válvula"
                                             <?php echo ($id_formulario && $form_data['convenience_element_of_packaging'] == 'Válvula') ? 'selected' : ''; ?>>
                                             Válvula</option>
@@ -289,6 +290,7 @@ mysqli_close($conn);
                                 <div class="mb-3">
                                     <label for="proceso_llenado" class="form-label">Proceso de Llenado</label>
                                     <select class="form-control" id="proceso_llenado" name="proceso_llenado" required>
+                                    <option value="" disabled selected>Selecciona una opcion</option>
                                         <option value="UHT"
                                             <?php echo ($id_formulario && $form_data['filling_process'] == 'UHT') ? 'selected' : ''; ?>>
                                             UHT</option>
@@ -310,6 +312,7 @@ mysqli_close($conn);
                                 <div class="mb-3">
                                     <label for="sistema_empaque" class="form-label">Sistema de Empaque</label>
                                     <select class="form-control" id="sistema_empaque" name="sistema_empaque" required>
+                                    <option value="" disabled selected>Selecciona una opcion</option>
                                         <option value="Cuello Formador"
                                             <?php echo ($id_formulario && $form_data['packaging_system'] == 'Cuello Formador') ? 'selected' : ''; ?>>
                                             Cuello Formador</option>
@@ -331,6 +334,7 @@ mysqli_close($conn);
                                 <div class="mb-3">
                                     <label for="unidad_venta" class="form-label">Unidad de Venta</label>
                                     <select class="form-control" id="unidad_venta" name="unidad_venta" required>
+                                    <option value="" disabled selected>Selecciona una opcion</option>
                                         <option value="Unidades"
                                             <?php echo ($id_formulario && $form_data['sales_unit'] == 'Unidades') ? 'selected' : ''; ?>>
                                             Unidades</option>
@@ -368,8 +372,8 @@ mysqli_close($conn);
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="sistema_impresion" class="form-label">Sistema de Impresión</label>
-                                    <select class="form-control" id="sistema_impresion" name="sistema_impresion"
-                                        required>
+                                    <select class="form-control" id="sistema_impresion" name="sistema_impresion" required>
+                                    <option value="" disabled selected>Selecciona una opcion</option>
                                         <option value="Rotograbado"
                                             <?php echo ($id_formulario && $form_data['printing_system'] == 'Rotograbado') ? 'selected' : ''; ?>>
                                             Rotograbado</option>
@@ -634,7 +638,7 @@ mysqli_close($conn);
                             <div class="col-md-12">
                                 <div class="mb-3">
                                     <label for="nombre_proyecto" class="form-label">Comentarios</label>
-                                    <input type="text" class="form-control" id="Comentarios" name="Comentarios"
+                                     <input type="text" class="form-control" id="Comentarios" name="Comentarios"
                                         value="<?php echo $id_formulario ? htmlspecialchars($form_data['comments']) : ''; ?>"
                                         <?php echo ($role != 1 && $role != 2) ? 'readonly' : ''; ?>
                                         required>

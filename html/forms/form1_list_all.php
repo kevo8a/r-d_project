@@ -1,8 +1,15 @@
 <?php
 include '../../php/db_connection.php';
 include '../../php/auth.php';
+
+// Verifica si el usuario tiene rol 1 o 2
+if ($role != 1 && $role != 2) {
+    header("Location: /path/to/r&d/html/login.php");
+    exit();
+}
+
 // Consulta para obtener las cotizaciones
-$sql = "SELECT id, id_form1, id_user, name_user, name_client, status_form1, project_name FROM form1";
+$sql = "SELECT id, id_form1, id_user, name_user, name_client, status_form1, project_name, qualified_by, created_at, completed_at FROM form1";
 $result = $conn->query($sql);
 ?>
 
@@ -15,39 +22,28 @@ $result = $conn->query($sql);
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Amcor - Formulario Cotización</title>
 
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom fonts for this template-->
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
-
-    <!-- Custom styles for this template-->
     <link href="../../css/sb-admin-2.css" rel="stylesheet">
+    <style>
+        .modal {
+            display: none;
+        }
+        .modal.active {
+            display: block;
+        }
+    </style>
 </head>
 
 <body id="page-top">
 
-    <!-- Page Wrapper -->
     <div id="wrapper">
-
-        <!-- Sidebar -->
         <?php include '../structure/sidebar.php'; ?>
-        <!-- End of Sidebar -->
 
-        <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
-
-            <!-- Main Content -->
             <div id="content">
-
-                <!-- Topbar -->
                 <?php include '../structure/navbar.php'; ?>
-                <!-- End of Topbar -->
 
-                <!-- Main Content -->
                 <div class="container mt-5">
                     <h1 class="text-center">Formularios de Cotización</h1>
                     <table class="table table-striped mt-4">
@@ -58,53 +54,52 @@ $result = $conn->query($sql);
                                 <th>Cliente</th>
                                 <th>Usuario</th>
                                 <th>Estatus</th>
-                                <th>Acciones</th> <!-- Columna para el botón -->
+                                <th>Calificado por</th>
+                                <th>Fechas</th>
+                                <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
                             if ($result->num_rows > 0) {
-                                // Mostrar datos de cada fila
                                 while ($row = $result->fetch_assoc()) {
-                                    // Definir la clase de color para el estatus basado en su valor
                                     $status_class = '';
                                     switch ($row['status_form1']) {
                                         case 'Complete':
-                                            $status_class = 'bg-success text-white'; // Verde para "Aprobada"
+                                            $status_class = 'bg-success text-white';
                                             break;
                                         case 'Rechazado':
-                                            $status_class = 'bg-danger text-white'; // Rojo para "Rechazado"
+                                            $status_class = 'bg-danger text-white';
                                             break;
                                         case 'En Proceso':
-                                            $status_class = 'bg-primary text-white'; // Azul para "En Proceso"
+                                            $status_class = 'bg-primary text-white';
                                             break;
                                         case 'Corregir':
-                                            $status_class = 'bg-warning text-dark'; // Naranja para "Corregir"
+                                            $status_class = 'bg-warning text-dark';
                                             break;
                                         default:
-                                            $status_class = 'bg-secondary text-white'; // Color por defecto para otros casos
+                                            $status_class = 'bg-secondary text-white';
                                             break;
                                     }
 
                                     echo "<tr>";
-                                    echo "<td>" . $row['id_form1'] . "</td>";
+                                    echo "<td>" . $row['id_form1'] . "</td>"; // Usando el ID aquí
                                     echo "<td>" . $row['project_name'] . "</td>";
                                     echo "<td>" . $row['name_client'] . "</td>";
-                                    echo "<td>" . $row['name_user'] .' ('. $row['id_user']. ')'. "</td>";
-                                    
-                                    // Aplicar la clase de color al recuadro de estatus
+                                    echo "<td>" . $row['name_user'] . ' (' . $row['id_user'] . ')' . "</td>";
                                     echo "<td class='$status_class'>" . $row['status_form1'] . "</td>";
+                                    echo "<td>" . $row['qualified_by'] . "</td>";
+                                    echo "<td>" . $row['created_at'] . '-' . $row['completed_at'] . "</td>";
+                                    echo "<td>
+                                            <a href='/r&d/html/forms/form1_show.php?id=" . $row['id'] . "' class='btn btn-outline-primary btn-sm'>Ver completo</a>";
                                     
-                                    // Botón de Ver Completo
-                                    echo "<td><a href='/r&d/html/forms/form1_show.php?id=" . $row['id'] . "' class='btn btn-outline-primary btn-sm'>Ver completo</a> ";
+                                    // Cambiando a usar el ID en lugar de id_form1
+                                    echo "<button class='btn btn-outline-secondary btn-sm ml-2' onclick='calificar(" . $row['id'] . ")'>Calificar</button>";   
 
-                                    // Mostrar el botón de Editar solo si el estatus es "Corregir"
                                     if ($row['status_form1'] === 'Corregir') {
                                         echo "<a href='/r&d/html/forms/form1_create_edit.php?id=" . $row['id'] . "' class='btn btn-outline-warning btn-sm ml-2'>Editar</a>";
-                                    }
-
-                                    echo "</td>"; // Asegúrate de cerrar la celda correctamente
-
+                                    } 
+                                    
                                     echo "</td>";
                                     echo "</tr>";
                                 }
@@ -113,35 +108,69 @@ $result = $conn->query($sql);
                             }
                             ?>
                         </tbody>
-
-
-
                     </table>
                 </div>
-                <!-- End of Main Content -->
 
             </div>
-            <!-- End of Content Wrapper -->
         </div>
-        <!-- End of Page Wrapper -->
-
-        <!-- Bootstrap core JavaScript-->
-        <script src="../vendor/jquery/jquery.min.js"></script>
-        <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-        <!-- Core plugin JavaScript-->
-        <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
-
-        <!-- Custom scripts for all pages-->
-        <script src="../js/sb-admin-2.min.js"></script>
-
-        <!-- Page level plugins -->
-        <script src="../vendor/chart.js/Chart.min.js"></script>
-
-        <!-- Page level custom scripts -->
-        <script src="../js/demo/chart-area-demo.js"></script>
-        <script src="../js/demo/chart-pie-demo.js"></script>
     </div>
+
+    <script src="../vendor/jquery/jquery.min.js"></script>
+    <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="../js/sb-admin-2.min.js"></script>
+
+    <script>
+        function calificar(id) {
+            closeModal(); // Cierra cualquier modal abierto
+
+            const modalHtml = `
+                <div class="modal active" id="calificarModal-${id}">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Calificar</h5>
+                                <button type="button" class="btn-close" onclick="closeModal(${id})"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Seleccione una opción:</p>
+                                <button class="btn btn-success" onclick="submitCalificacion('Aprobar', ${id})">Aprobar</button>
+                                <button class="btn btn-warning" onclick="submitCalificacion('Corregir', ${id})">Corregir</button>
+                                <button class="btn btn-danger" onclick="submitCalificacion('Rechazar', ${id})">Rechazar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+                
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+        }
+
+        function closeModal(id) {
+            const modal = document.getElementById(`calificarModal-${id}`);
+            if (modal) {
+                modal.remove();
+            }
+        }
+
+        async function submitCalificacion(opcion, id) {
+            const response = await fetch('../../php/calificar.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ opcion, id })
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                alert(result.message); // Mensaje de la respuesta del servidor
+                closeModal(id);
+                location.reload(); // Recargar la página para ver los cambios
+            } else {
+                alert('Error en la solicitud. Por favor intenta nuevamente.');
+            }
+        }
+    </script>
 </body>
 
 </html>

@@ -125,9 +125,9 @@ mysqli_close($conn);
                             <!-- Aprobado por -->
                             <div class="col-md-3">
                                 <div class="mb-3">
-                                    <label for="approved_by" class="form-label">Aprobado por</label>
-                                    <input type="text" class="form-control" id="approved_by" name="approved_by"
-                                        value="<?php echo isset($id_formulario) && $id_formulario ? htmlspecialchars($form_data['approved_by']) : ''; ?>"
+                                    <label for="qualified_by" class="form-label">Calificado por</label>
+                                    <input type="text" class="form-control" id="qualified_by" name="qualified_by"
+                                        value="<?php echo isset($id_formulario) && $id_formulario ? htmlspecialchars($form_data['qualified_by']) : ''; ?>"
                                         readonly>
                                 </div>
                             </div>

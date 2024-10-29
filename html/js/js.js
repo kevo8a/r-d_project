@@ -82,8 +82,41 @@ function toggleDimensionesBolsa() {
     });
 }
 
-// Inicializa el estado de los campos al cargar la página
-$(document).ready(function() {
-    toggleDimensionesBolsa(); // Inicializa el estado de dimensiones de bolsa
-    $("#es_bolsa").change(toggleDimensionesBolsa); // Llama a la función cuando cambia el estado del checkbox
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('submit-btn').addEventListener('click', function(event) {
+        // Evitar el comportamiento por defecto
+        event.preventDefault();
+
+        const fichaTecnica = document.getElementById('ficha_tecnica').checked;
+        const muestraFisica = document.getElementById('muestra_fisica').checked;
+
+        if (!fichaTecnica && !muestraFisica) {
+            alert('Es obligatorio adjuntar la Ficha Técnica o la Muestra Física.');
+        } else {
+            document.getElementById('form-cotizacion').submit(); // Envía el formulario si la validación es exitosa
+        }
+    });
 });
+function calificar(id) {
+    // Muestra una alerta personalizada con opciones
+    const alertDiv = document.createElement('div');
+    alertDiv.classList.add('alert', 'alert-info');
+    alertDiv.innerHTML = `
+        <div class="text-center">
+            <p>¿Cómo deseas calificar?</p>
+            <button class="btn btn-success" onclick="handleCalificacion('Aprobar', ${id})">Aprobar</button>
+            <button class="btn btn-warning" onclick="handleCalificacion('Corregir', ${id})">Corregir</button>
+            <button class="btn btn-danger" onclick="handleCalificacion('Rechazar', ${id})">Rechazar</button>
+        </div>
+    `;
+    document.body.appendChild(alertDiv);
+}
+
+function handleCalificacion(decision, id) {
+    // Aquí puedes manejar la calificación, por ejemplo, enviar una solicitud AJAX al servidor
+    alert(`Has elegido: ${decision} para el ID: ${id}`);
+    
+    // Puedes eliminar el alertDiv después de hacer clic
+    const alertDiv = document.querySelector('.alert');
+    if (alertDiv) alertDiv.remove();
+}
