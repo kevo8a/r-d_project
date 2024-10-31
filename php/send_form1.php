@@ -1,12 +1,24 @@
-<?php   
+<?php
 session_start();
 require '../php/db_connection.php'; // Asegúrate de que la ruta sea correcta
+
+// Función para encriptar el archivo
+function encrypt_file($file_path, $encryption_key) {
+    // Generar un vector de inicialización aleatorio
+    $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length('aes-256-cbc'));
+    // Leer el contenido del archivo
+    $data = file_get_contents($file_path);
+    // Encriptar el contenido
+    $encrypted_data = openssl_encrypt($data, 'aes-256-cbc', $encryption_key, 0, $iv);
+    // Guardar el vector de inicialización y el contenido encriptado
+    file_put_contents($file_path, base64_encode($iv . $encrypted_data));
+}
 
 // Procesar los datos del formulario
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Obtener los datos desde el formulario
     $id_form1 = uniqid('FC');
-    $solicitante = $_POST['solicitante'] ;
+    $solicitante = $_POST['solicitante'];
     $id_user = $_POST['id_user'];
     $estatus = $_POST['estatus'];
     $cliente = $_POST['cliente'];
@@ -31,12 +43,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $tolerancia_calibre = $_POST['tolerancia_calibre'];
     $peso = $_POST['peso'];
     $tolerancia_peso = $_POST['tolerancia_peso'];
-    $largo = $_POST['largo']?? null;
-    $tolerancia_largo = $_POST['tolerancia_largo']?? null;
-    $fuelle = $_POST['fuelle']?? null;
-    $tolerancia_fuelle = $_POST['tolerancia_fuelle']?? null;
-    $traslape = $_POST['traslape']?? null;
-    $tolerancia_traslape = $_POST['tolerancia_traslape']?? null;
+    $largo = $_POST['largo'] ?? null;
+    $tolerancia_largo = $_POST['tolerancia_largo'] ?? null;
+    $fuelle = $_POST['fuelle'] ?? null;
+    $tolerancia_fuelle = $_POST['tolerancia_fuelle'] ?? null;
+    $traslape = $_POST['traslape'] ?? null;
+    $tolerancia_traslape = $_POST['tolerancia_traslape'] ?? null;
     $ficha_tecnica = isset($_POST['ficha_tecnica']) ? 1 : 0;
     $muestra_fisica = isset($_POST['muestra_fisica']) ? 1 : 0;
     $plano_mecanico = isset($_POST['plano_mecanico']) ? 1 : 0;
@@ -57,6 +69,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!$result || mysqli_num_rows($result) == 0) {
         echo "El id_user no existe en la tabla users.";
         exit;
+    }
+
+    // Manejo del archivo subido
+    if (isset($_FILES['archivo'])) {
+        $archivo_tmp = $_FILES['archivo']['tmp_name'];
+        $archivo_nombre = basename($_FILES['archivo']['name']);
+        $ruta_archivo = "/r&d/files/" . $archivo_nombre;
+
+        // Mover el archivo subido a la ruta deseada
+        if (move_uploaded_file($archivo_tmp, $ruta_archivo)) {
+            // Encriptar el archivo
+            $encryption_key = 'tu_clave_secreta'; // Cambia esto por tu clave secreta
+            encrypt_file($ruta_archivo, $encryption_key);
+        } else {
+            echo "Error al subir el archivo.";
+            exit;
+        }
     }
 
     // Preparar la declaración SQL
@@ -80,8 +109,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             overlap_mm, overlap_tolerance_mm,
             technical_sheet, physical_sample,
             mechanical_plan, pdf_art,
-            site_user,bag_check, 
-            continuous_check,comments,
+            site_user, bag_check, 
+            continuous_check, comments,
             created_at
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     "); 
@@ -107,9 +136,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $fuelle, $tolerancia_fuelle,
         $traslape, $tolerancia_traslape,
         $ficha_tecnica, $muestra_fisica,
-        $plano_mecanico, $pdf_art,
-        $site,$es_bolsa, 
-        $continuous_check,$comentarios,
+        $plano_mecanico, $pdf_arte,
+        $site, $es_bolsa, 
+        $continuous_check, $comentarios,
         $created_at
     );
 

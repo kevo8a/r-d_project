@@ -35,10 +35,16 @@ document.addEventListener("DOMContentLoaded", function () {
     checkDisenoContinuo.addEventListener("change", toggleFotodistancias);
 });// Función para cargar los clientes
 function loadClients() {
-    fetch('get_clients.php')
-        .then(response => response.json())
+    fetch('/r&d/php/get_clients.php') // Verifica la URL
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok: ' + response.statusText);
+            }
+            return response.json();
+        })
         .then(data => {
             const select = document.getElementById('cliente');
+            select.innerHTML = ''; // Limpia las opciones anteriores
             data.forEach(client => {
                 const option = document.createElement('option');
                 option.value = client;
@@ -48,6 +54,8 @@ function loadClients() {
         })
         .catch(error => console.error('Error al cargar los clientes:', error));
 }
+
+
 
 // Cargar los clientes al cargar la página
 document.addEventListener('DOMContentLoaded', loadClients);
@@ -61,42 +69,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     sistemaImpresion.addEventListener("change", toggleNumeroColores);
 });
-function toggleDimensionesBolsa() {
-    const esBolsa = $("#es_bolsa").is(":checked"); // Verifica si el checkbox está marcado
 
-    $(".bolsa_fields").each(function() {
-        const $bolsaField = $(this);
-        const $inputFields = $bolsaField.find("input");
-
-        if (esBolsa) { // Si el checkbox está marcado
-            $bolsaField.show(); // Muestra los campos
-            $inputFields.each(function() {
-                $(this).attr("required", "required"); // Añadir 'required' nuevamente
-            });
-        } else { // Si el checkbox no está marcado
-            $bolsaField.hide(); // Oculta los campos
-            $inputFields.each(function() {
-                $(this).val("").removeAttr("required"); // Limpiar valores y quitar 'required'
-            });
-        }
-    });
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('submit-btn').addEventListener('click', function(event) {
-        // Evitar el comportamiento por defecto
-        event.preventDefault();
-
-        const fichaTecnica = document.getElementById('ficha_tecnica').checked;
-        const muestraFisica = document.getElementById('muestra_fisica').checked;
-
-        if (!fichaTecnica && !muestraFisica) {
-            alert('Es obligatorio adjuntar la Ficha Técnica o la Muestra Física.');
-        } else {
-            document.getElementById('form-cotizacion').submit(); // Envía el formulario si la validación es exitosa
-        }
-    });
-});
 function calificar(id) {
     // Muestra una alerta personalizada con opciones
     const alertDiv = document.createElement('div');

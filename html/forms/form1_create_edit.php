@@ -66,7 +66,7 @@ mysqli_close($conn);
                 <div class="container">
                     <h1 class="text-center mb-4"><?php echo $id_formulario ? 'Editar' : 'Crear'; ?> Formulario de
                         Cotización</h1>
-                    <form id="form-cotizacion" method="POST">
+                    <form id="form-cotizacion" method="POST" enctype="multipart/form-data"> 
                         <?php if ($id_formulario): ?>
                         <input type="hidden" name="id_formulario" value="<?php echo $id_formulario; ?>">
                         <?php endif; ?>
@@ -627,6 +627,15 @@ mysqli_close($conn);
                                     <label class="form-check-label" for="pdf_arte">PDF del Arte</label>
                                 </div>
                             </div>
+                            
+                            <!-- Subir Archivo -->
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="file" class="form-label">Subir Archivo</label>
+                                    <input type="file" class="form-control" id="file" name="file" required>
+                                    <small class="form-text text-muted">Por favor, selecciona un archivo para subir. (Formato permitido: .pdf, .docx, .jpg)</small>
+                                </div>
+                            </div>
 
                             <!-- Alerta -->
                             <div class="col-md-12 text-center">
@@ -673,19 +682,57 @@ $(document).ready(function() {
     $('#submit-btn').click(function(event) {
         event.preventDefault(); // Evita el envío predeterminado del formulario
 
-        // Validar campos obligatorios
-        var camposObligatorios = ['#id_user', '#solicitante', '#cliente', '#nombre_proyecto', '#estatus'];
+        // Definir campos obligatorios
+        var camposObligatorios = [
+            '#id_user',
+            '#solicitante',
+            '#cliente',
+            '#nombre_proyecto',
+            '#numero_rfq',                // Agregado
+            '#formato_entrega',           // Agregado
+            '#formato_empaque',           // Agregado
+            '#elemento_conveniencia',     // Agregado
+            '#proceso_llenado',           // Agregado
+            '#sistema_empaque',           // Agregado
+            '#unidad_venta',              // Agregado
+            '#volumen_pedido',            // Agregado
+            '#volumen_anual',             // Agregado
+            '#sistema_impresion',         // Agregado
+            '#ancho',                     // Agregado
+            '#tolerancia_ancho',          // Agregado
+            '#calibre',                   // Agregado
+            '#peso',                      // Agregado
+        ];
+
         var incompleto = false;
-        
-        camposObligatorios.forEach(function(campo) {
-            if ($(campo).val().trim() === '') {
-                incompleto = true;
-                return false; // Termina el bucle si encuentra un campo vacío
+
+        // Validar campos obligatorios
+        $.each(camposObligatorios, function(index, campo) {
+            // Comprobar si el campo es un select
+            if ($(campo).is('select')) {
+                // Validar que no esté en "Selecciona una opción"
+                if ($(campo).val() === null) {
+                    incompleto = true;
+                    return false; // Termina el bucle si encuentra un select sin opción seleccionada
+                }
+            } else {
+                // Para los campos de texto
+                if ($(campo).val().trim() === '') {
+                    incompleto = true;
+                    return false; // Termina el bucle si encuentra un campo vacío
+                }
             }
         });
-        
+
+        // Si hay campos incompletos, mostrar alerta y detener el envío
         if (incompleto) {
             alert('Por favor, complete todos los campos obligatorios.');
+            return;
+        }
+
+        // Verificar si al menos uno de los campos de Ficha Técnica o Muestra Física está seleccionado
+        if (!$('#ficha_tecnica').is(':checked') && !$('#muestra_fisica').is(':checked')) {
+            alert("Por favor, seleccione al menos uno de los siguientes: Ficha Técnica o Muestra Física.");
             return;
         }
 
@@ -715,4 +762,31 @@ $(document).ready(function() {
         });
     });
 });
+
+function toggleDimensionesBolsa() {
+    const esBolsa = $("#es_bolsa").is(":checked"); // Verifica si el checkbox está marcado
+
+    $(".bolsa_fields").each(function() {
+        const $bolsaField = $(this);
+        const $inputFields = $bolsaField.find("input");
+
+        if (esBolsa) { // Si el checkbox está marcado
+            $bolsaField.show(); // Muestra los campos
+            $inputFields.each(function() {
+                $(this).attr("required", "required"); // Añadir 'required' nuevamente
+            });
+        } else { // Si el checkbox no está marcado
+            $bolsaField.hide(); // Oculta los campos
+            $inputFields.each(function() {
+                $(this).val("").removeAttr("required"); // Limpiar valores y quitar 'required'
+            });
+        }
+    });
+}
+
+$(document).ready(function() {
+    toggleDimensionesBolsa(); // Ejecutar al cargar la página
+    $("#es_bolsa").change(toggleDimensionesBolsa); // Ejecutar al cambiar el checkbox
+});
+
 </script>
