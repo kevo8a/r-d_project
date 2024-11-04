@@ -1,34 +1,33 @@
 <?php
-include 'db_connection.php';
+session_start();
+require '../php/db_connection.php';
 
-$query = "SELECT * FROM form1";
-$result = mysqli_query($conn, $query);
+$sql = "SELECT * FROM form1";
+$result = $conn->query($sql);
 
-if (mysqli_num_rows($result) > 0) {
+if ($result->num_rows > 0) {
+    echo "<h1>Lista de Archivos Subidos</h1>";
     echo "<table border='1'>
             <tr>
-                <th>Ficha Técnica</th>
-                <th>Muestra Física</th>
-                <th>Plano Mecánico</th>
-                <th>PDF Arte</th>
-                <th>Acciones</th> <!-- Nueva columna para las acciones -->
+                <th>ID</th>
+                <th>Nombre del Archivo</th>
+                <th>Ruta del Archivo</th>
+                <th>Acciones</th>
             </tr>";
 
-    while ($row = mysqli_fetch_assoc($result)) {
+    while ($row = $result->fetch_assoc()) {
         echo "<tr>
-                <td>" . ($row['technical_sheet'] ? 'Sí' : 'No') . "</td>
-                <td>" . ($row['physical_sample'] ? 'Sí' : 'No') . "</td>
-                <td>" . ($row['mechanical_plan'] ? 'Sí' : 'No') . "</td>
-                <td>" . ($row['pdf_art'] ? 'Sí' : 'No') . "</td>
+                <td>{$row['id_form1']}</td>
+                <td>{$row['file_name']}</td>
+                <td>{$row['file_rute']}</td>
                 <td>
-                    <a href='update.php?id=" . $row['id'] . "'><button>Actualizar</button></a> <!-- Botón Update -->
+                    <a href='update.php?id={$row['id_form1']}'>Actualizar</a>
+                    <a href='delete.php?id={$row['id_form1']}'>Eliminar</a>
                 </td>
-            </tr>";
+              </tr>";
     }
     echo "</table>";
 } else {
-    echo "No hay datos.";
+    echo "No hay archivos subidos.";
 }
-
-mysqli_close($conn);
 ?>

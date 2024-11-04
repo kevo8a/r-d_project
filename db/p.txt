@@ -73,7 +73,8 @@ CREATE TABLE form1 (
     mechanical_plan BOOLEAN,
     pdf_art BOOLEAN,
     comments VARCHAR(255),
-    file VARCHAR(255),
+    file_rute VARCHAR(255),
+    file_name VARCHAR(255),
     FOREIGN KEY (id_user) REFERENCES users(id_user),
     FOREIGN KEY (name_client) REFERENCES client(name)
 );

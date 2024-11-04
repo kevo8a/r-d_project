@@ -632,10 +632,19 @@ mysqli_close($conn);
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="file" class="form-label">Subir Archivo</label>
-                                    <input type="file" class="form-control" id="file" name="file" required>
+                                    <input type="file" class="form-control" id="file" name="file" <?php echo $id_formulario ? '' : 'required'; ?>>
+                                    
+                                    <?php if ($id_formulario && isset($form_data['file_name']) && !empty($form_data['file_name'])): ?>
+                                        <!-- Muestra el archivo actual como enlace si está disponible -->
+                                        <small class="form-text text-muted">
+                                                <?php echo htmlspecialchars($form_data['file_name']); ?>
+                                        </small>
+                                    <?php endif; ?>
+                                    
                                     <small class="form-text text-muted">Por favor, selecciona un archivo para subir. (Formato permitido: .pdf, .docx, .jpg)</small>
                                 </div>
                             </div>
+
 
                             <!-- Alerta -->
                             <div class="col-md-12 text-center">
@@ -701,7 +710,7 @@ $(document).ready(function() {
             '#ancho',                     // Agregado
             '#tolerancia_ancho',          // Agregado
             '#calibre',                   // Agregado
-            '#peso',                      // Agregado
+            '#peso'                       // Agregado
         ];
 
         var incompleto = false;
@@ -711,7 +720,7 @@ $(document).ready(function() {
             // Comprobar si el campo es un select
             if ($(campo).is('select')) {
                 // Validar que no esté en "Selecciona una opción"
-                if ($(campo).val() === null) {
+                if ($(campo).val() === null || $(campo).val() === "") {
                     incompleto = true;
                     return false; // Termina el bucle si encuentra un select sin opción seleccionada
                 }
@@ -737,13 +746,15 @@ $(document).ready(function() {
         }
 
         // Captura los datos del formulario
-        var formData = $('#form-cotizacion').serialize();
+        var formData = new FormData($('#form-cotizacion')[0]); // Usa FormData para incluir archivos
 
         // Realiza la solicitud AJAX
         $.ajax({
             url: '../../php/<?php echo isset($id_formulario) ? 'update_form1.php' : 'send_form1.php'; ?>',
             type: 'POST',
             data: formData,
+            contentType: false, // Evita que jQuery establezca el Content-Type
+            processData: false, // Evita que jQuery procese los datos
             success: function(response) {
                 // Verifica el contenido de la respuesta y actúa en consecuencia
                 if (response.trim() === 'success') {
@@ -762,6 +773,7 @@ $(document).ready(function() {
         });
     });
 });
+
 
 function toggleDimensionesBolsa() {
     const esBolsa = $("#es_bolsa").is(":checked"); // Verifica si el checkbox está marcado

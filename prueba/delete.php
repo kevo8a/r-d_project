@@ -1,24 +1,31 @@
 <?php
-// Incluir la conexión a la base de datos
-include '../php/db_connection.php';
-include '../php/auth.php';
+session_start();
+require '../php/db_connection.php';
 
-// Verificar si se proporcionó un ID
 if (isset($_GET['id'])) {
-    $id = mysqli_real_escape_string($conn, $_GET['id']);
+    $id = $_GET['id'];
 
-    // Eliminar el cliente de la base de datos
-    $sql = "DELETE FROM client WHERE id='$id'";
+    // Obtener la ruta del archivo antes de eliminarlo de la base de datos
+    $sql = "SELECT * FROM form1 WHERE id_form1 = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('i', $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $file = $result->fetch_assoc();
 
-    if (mysqli_query($conn, $sql)) {
-        echo "Cliente eliminado exitosamente.";
+    // Eliminar el archivo del sistema de archivos
+    if ($file) {
+        unlink($file['file_rute']); // Eliminar el archivo
+        $sql = "DELETE FROM form1 WHERE id_form1 = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('i', $id);
+        $stmt->execute();
+        
+        echo "Archivo eliminado con éxito.";
     } else {
-        echo "Error al eliminar el cliente: " . mysqli_error($conn);
+        echo "Archivo no encontrado.";
     }
 } else {
-    echo "ID no proporcionado.";
+    echo "ID no especificado.";
 }
-
-// Cerrar la conexión
-mysqli_close($conn);
 ?>

@@ -1,13 +1,37 @@
-﻿<!DOCTYPE html>
-<html lang="es">
+<?php
+include '../../php/db_connection.php';
+include '../../php/auth.php';
+?>
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulario Diseño de Estructura</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>SB Admin 2 - Dashboard</title>
+    <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+          rel="stylesheet">
+    <link href="../../css/sb-admin-2.min.css" rel="stylesheet">
 </head>
-<body>
-    <div class="container mt-5">
+
+<body id="page-top">
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+        <?php include '../structure/sidebar.php'; ?>
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <!-- Main Content -->
+            <div id="content">
+                <?php include '../structure/navbar.php'; ?>
+
+                <!-- Contenido -->   
+                <div class="container-fluid">
+                <div class="container mt-5">
         <form>
             <!-- Encabezado -->
             <div class="mb-3">
@@ -115,45 +139,20 @@
             <button type="submit" class="btn btn-primary">Enviar</button>
         </form>
     </div>
+                </div>
+                <!-- End of Content -->
 
-    <!-- JavaScript para añadir filas -->
-    <script>
-        function addRow() {
-            var tableBody = document.getElementById('tableBody');
-            var newRow = document.createElement('tr');
+            </div>
+            <!-- End of Main Content -->
 
-            newRow.innerHTML = `
-                    <td><input type="text" class="form-control"></td>
-                    <td><input type="text" class="form-control"></td>
-                    <td><input type="number" class="form-control calibre" oninput="calculateTotals()"></td>
-                    <td><input type="number" class="form-control peso" oninput="calculateTotals()"></td>
-                    <td><input type="number" class="form-control"></td>
-                `;
-            tableBody.appendChild(newRow);
-        }
+        </div>
+    </div>
 
-        // Función para calcular los totales
-        function calculateTotals() {
-            var totalCalibre = 0;
-            var totalPeso = 0;
-
-            // Calcular total de calibre
-            document.querySelectorAll('.calibre').forEach(function (input) {
-                totalCalibre += parseFloat(input.value) || 0;
-            });
-
-            // Calcular total de peso
-            document.querySelectorAll('.peso').forEach(function (input) {
-                totalPeso += parseFloat(input.value) || 0;
-            });
-
-            // Actualizar los campos de total
-            document.getElementById('totalCalibre').value = totalCalibre.toFixed(2);
-            document.getElementById('totalPeso').value = totalPeso.toFixed(2);
-        }
-    </script>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap core JavaScript-->
+    <script src="../vendor/jquery/jquery.min.js"></script>
+    <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="../js/sb-admin-2.min.js"></script>
 </body>
-</html>
 
+</html>

@@ -2,17 +2,6 @@
 session_start();
 require '../php/db_connection.php'; // Asegúrate de que la ruta sea correcta
 
-// Función para encriptar el archivo
-function encrypt_file($file_path, $encryption_key) {
-    // Generar un vector de inicialización aleatorio
-    $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length('aes-256-cbc'));
-    // Leer el contenido del archivo
-    $data = file_get_contents($file_path);
-    // Encriptar el contenido
-    $encrypted_data = openssl_encrypt($data, 'aes-256-cbc', $encryption_key, 0, $iv);
-    // Guardar el vector de inicialización y el contenido encriptado
-    file_put_contents($file_path, base64_encode($iv . $encrypted_data));
-}
 
 // Procesar los datos del formulario
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -63,30 +52,51 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "El campo id_user es obligatorio.";
         exit;
     }
+    $rutaArchivo = null;
+    $nombreArchivo = null;
 
-    // Verificar que el id_user existe en la tabla users
-    $result = mysqli_query($conn, "SELECT * FROM users WHERE id_user = '$id_user'");
-    if (!$result || mysqli_num_rows($result) == 0) {
-        echo "El id_user no existe en la tabla users.";
-        exit;
-    }
+    // Manejo de archivo subido
+    if (isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
+        // Configurar la ruta del archivo
+        $extension = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
+        $nombreArchivo = $id_form1 . '.' . $extension; // Cambiar el nombre del archivo
+        $rutaArchivo = 'C:/xampp/htdocs/r&d/files/' . $nombreArchivo;
 
-    // Manejo del archivo subido
-    if (isset($_FILES['archivo'])) {
-        $archivo_tmp = $_FILES['archivo']['tmp_name'];
-        $archivo_nombre = basename($_FILES['archivo']['name']);
-        $ruta_archivo = "/r&d/files/" . $archivo_nombre;
+        // Verificar si la carpeta existe, si no, crearla
+        if (!file_exists('C:/xampp/htdocs/r&d/files/')) {
+            mkdir('C:/xampp/htdocs/r&d/files/', 0777, true);
+        }
 
-        // Mover el archivo subido a la ruta deseada
-        if (move_uploaded_file($archivo_tmp, $ruta_archivo)) {
-            // Encriptar el archivo
-            $encryption_key = 'tu_clave_secreta'; // Cambia esto por tu clave secreta
-            encrypt_file($ruta_archivo, $encryption_key);
-        } else {
+        // Si se está actualizando, eliminar el archivo anterior
+        if (isset($_POST['old_file']) && file_exists($_POST['old_file'])) {
+            unlink($_POST['old_file']);
+        }
+
+        // Mover el archivo subido a la ruta especificada
+        if (!move_uploaded_file($_FILES['file']['tmp_name'], $rutaArchivo)) {
             echo "Error al subir el archivo.";
             exit;
         }
+    } else {
+        // Captura el error específico
+        switch ($_FILES['file']['error']) {
+            case UPLOAD_ERR_INI_SIZE:
+            case UPLOAD_ERR_FORM_SIZE:
+                echo "El archivo es demasiado grande.";
+                break;
+            case UPLOAD_ERR_PARTIAL:
+                echo "El archivo fue subido parcialmente.";
+                break;
+            case UPLOAD_ERR_NO_FILE:
+                echo "No se seleccionó ningún archivo.";
+                break;
+            default:
+                echo "Error al subir el archivo.";
+                break;
+        }
+        exit;
     }
+
 
     // Preparar la declaración SQL
     $stmt = mysqli_prepare($conn, "
@@ -111,14 +121,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             mechanical_plan, pdf_art,
             site_user, bag_check, 
             continuous_check, comments,
+            file_rute, file_name,
             created_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     "); 
 
     // Vincular parámetros
     mysqli_stmt_bind_param(
         $stmt, 
-        "ssisssissssssiisiddddddddddddssiiiisiiss", 
+        "ssisssissssssiisiddddddddddddssiiiisiissss", 
         $id_form1, $estatus,
         $id_user, $solicitante,
         $cliente, $nombre_proyecto,
@@ -139,6 +150,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $plano_mecanico, $pdf_arte,
         $site, $es_bolsa, 
         $continuous_check, $comentarios,
+        $rutaArchivo, $nombreArchivo,
         $created_at
     );
 

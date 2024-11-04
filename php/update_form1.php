@@ -5,7 +5,7 @@ require 'db_connection.php';
 // Verificar si se ha enviado el formulario a través del método POST
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Obtener los datos desde el formulario
-    $id_formulario = $_POST['id_formulario'];
+    $id_formulario = $_POST['folio'];
     $solicitante = $_POST['solicitante'];
     $id_user = $_POST['id_user'];
     $cliente = $_POST['cliente'];
@@ -44,12 +44,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $continuous_check = isset($_POST['continuous_check']) ? 1 : 0;
 
 
-    // Validar que los campos obligatorios estén presentes
+    // Validar campos obligatorios
     if (empty($id_formulario) || empty($solicitante) || empty($id_user) || empty($cliente) || empty($nombre_proyecto) || empty($numero_rfq) || empty($formato_entrega)) {
         echo "Todos los campos obligatorios deben ser completados.";
         exit;
     }
 
+    // Manejo de archivo subido
+    $rutaArchivo = null;
+    $nombreArchivo = null;
+    $nombreArchivoOriginal = null;
+
+    if (isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
+        // Capturar el nombre original del archivo
+        $nombreArchivoOriginal = $_FILES['file']['name'];
+        $extension = pathinfo($nombreArchivoOriginal, PATHINFO_EXTENSION);
+        $nombreArchivo = $id_formulario . '.' . $extension;
+        $rutaArchivo = 'C:/xampp/htdocs/r&d/files/' . $nombreArchivo;
+
+        // Verificar si el archivo ya existe y eliminarlo
+        if (file_exists($rutaArchivo)) {
+            unlink($rutaArchivo);
+        }
+
+        // Mover el nuevo archivo a la ruta especificada
+        if (!move_uploaded_file($_FILES['file']['tmp_name'], $rutaArchivo)) {
+            echo "Error al subir el archivo.";
+            exit;
+        }
+    }
     // Preparar la declaración SQL para actualizar el formulario
     $sql = "
         UPDATE form1
@@ -88,7 +111,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             mechanical_plan = ?, 
             pdf_art = ?,
             bag_check = ?,
-            continuous_check  = ?
+            continuous_check  = ?,
+            file_rute = ?,
+            file_name = ?
         WHERE 
             id = ?
     ";
@@ -104,7 +129,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Vincular parámetros
     mysqli_stmt_bind_param(
         $stmt,
-        "sssssssssssiisiddddddddddddddiiiiiii", // Tipos de parámetros: 's' para string y 'i' para entero
+        "sssssssssssiisiddddddddddddddiiiiiissi", // Tipos de parámetros: 's' para string y 'i' para entero
         $solicitante, 
         $cliente, 
         $nombre_proyecto, 
@@ -140,6 +165,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $pdf_art,
         $es_bolsa,
         $continuous_check,
+        $file_rute, 
+        $file_name,
         $id_formulario
         
     );

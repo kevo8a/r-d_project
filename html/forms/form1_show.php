@@ -624,6 +624,18 @@ mysqli_close($conn);
                                     <label class="form-check-label" for="pdf_arte">PDF del Arte</label>
                                 </div>
                             </div>
+
+                            <!-- Subir Archivo -->
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="file" class="form-label">Subir Archivo</label>
+                                    <input type="file" class="form-control" id="file" name="file" <?php echo $id_formulario ? '' : 'required'; ?>>
+                                    <?php if ($id_formulario && isset($form_data['file_name'])): ?>
+                                        <small class="form-text text-muted">Archivo actual: <?php echo htmlspecialchars($form_data['file_name']); ?></small>
+                                    <?php endif; ?>
+                                    <small class="form-text text-muted">Por favor, selecciona un archivo para subir. (Formato permitido: .pdf, .docx, .jpg)</small>
+                                </div>
+                            </div>
                             <!-- Alerta -->
                             <div class="col-md-12 text-center">
                                 <div class="alert alert-warning w-100" role="alert">

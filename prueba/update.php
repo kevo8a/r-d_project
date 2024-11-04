@@ -1,67 +1,69 @@
 <?php
-include 'db_connection.php';
+session_start();
+require '../php/db_connection.php';
 
-$data = []; // Inicializa la variable $data para evitar errores
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $id = $_POST['id'];
 
-if (isset($_GET['id'])) {
-    $id = $_GET['id'];
+    // Obtener la ruta del archivo anterior antes de eliminarlo
+    $sql = "SELECT * FROM form1 WHERE id_form1 = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('i', $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $file = $result->fetch_assoc();
 
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $ficha_tecnica = isset($_POST['ficha_tecnica']) ? 1 : 0;
-        $muestra_fisica = isset($_POST['muestra_fisica']) ? 1 : 0;
-        $plano_mecanico = isset($_POST['plano_mecanico']) ? 1 : 0;
-        $pdf_art = isset($_POST['pdf_arte']) ? 1 : 0;
-
-        $query = "UPDATE form1 SET 
-                    technical_sheet = '$ficha_tecnica',
-                    physical_sample = '$muestra_fisica',
-                    mechanical_plan = '$plano_mecanico',
-                    pdf_art = '$pdf_art'
-                  WHERE id = $id";
-
-        if (mysqli_query($conn, $query)) {
-            echo "Datos actualizados correctamente.";
-        } else {
-            echo "Error: " . $query . "<br>" . mysqli_error($conn);
+    // Verificar si el archivo anterior existe y eliminarlo
+    if ($file) {
+        $rutaAnterior = $file['file_rute'];
+        if (file_exists($rutaAnterior)) {
+            unlink($rutaAnterior); // Eliminar el archivo anterior
         }
 
-        mysqli_close($conn);
-        exit; // Salir después de la actualización
+        if (isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
+            $nombreArchivo = uniqid() . '-' . basename($_FILES['file']['name']);
+            $rutaArchivo = 'r&d/files/' . $nombreArchivo;
+
+            // Mover el nuevo archivo
+            if (move_uploaded_file($_FILES['file']['tmp_name'], $rutaArchivo)) {
+                $sql = "UPDATE form1 SET file_rute = ?, file_name = ? WHERE id_form1 = ?";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param('ssi', $rutaArchivo, $nombreArchivo, $id);
+                $stmt->execute();
+
+                echo "Archivo actualizado con éxito.";
+            } else {
+                echo "Error al mover el nuevo archivo.";
+            }
+        } else {
+            echo "Error al subir el nuevo archivo.";
+        }
     } else {
-        $query = "SELECT * FROM form1 WHERE id = $id";
-        $result = mysqli_query($conn, $query);
-        
-        // Verifica si la consulta devolvió resultados
-        if ($result && mysqli_num_rows($result) > 0) {
-            $data = mysqli_fetch_assoc($result);
-        } else {
-            echo "No se encontraron datos para el ID especificado.";
-            mysqli_close($conn);
-            exit; // Salir si no hay datos
-        }
+        echo "Archivo no encontrado para la actualización.";
     }
 } else {
-    echo "ID no proporcionado.";
-    exit; // Salir si no hay ID
+    $id = $_GET['id'];
+    $sql = "SELECT * FROM form1 WHERE id_form1 = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('i', $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $file = $result->fetch_assoc();
 }
 ?>
 
-<form action="update.php?id=<?php echo $id; ?>" method="POST">
-    <label for="ficha_tecnica">Ficha Técnica</label>
-    <input type="checkbox" name="ficha_tecnica" id="ficha_tecnica" <?php echo isset($data['technical_sheet']) && $data['technical_sheet'] ? 'checked' : ''; ?>>
-    <br>
-
-    <label for="muestra_fisica">Muestra Física</label>
-    <input type="checkbox" name="muestra_fisica" id="muestra_fisica" <?php echo isset($data['physical_sample']) && $data['physical_sample'] ? 'checked' : ''; ?>>
-    <br>
-
-    <label for="plano_mecanico">Plano Mecánico</label>
-    <input type="checkbox" name="plano_mecanico" id="plano_mecanico" <?php echo isset($data['mechanical_plan']) && $data['mechanical_plan'] ? 'checked' : ''; ?>>
-    <br>
-
-    <label for="pdf_arte">PDF Arte</label>
-    <input type="checkbox" name="pdf_arte" id="pdf_arte" <?php echo isset($data['pdf_art']) && $data['pdf_art'] ? 'checked' : ''; ?>>
-    <br>
-
-    <button type="submit">Actualizar</button>
-</form>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Actualizar Archivo</title>
+</head>
+<body>
+    <h1>Actualizar Archivo</h1>
+    <form method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="id" value="<?php echo $file['id_form1']; ?>">
+        <input type="file" name="file" required>
+        <button type="submit">Actualizar</button>
+    </form>
+</body>
+</html>
