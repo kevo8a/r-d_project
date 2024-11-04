@@ -6,7 +6,7 @@ include '../../php/auth.php';
 $user_id = $_SESSION['user_id'];
 
 // Consulta para obtener los formularios que pertenecen al usuario logueado
-$sql = "SELECT id, id_form1, id_user, name_user, name_client, status_form1, project_name 
+$sql = "SELECT id, id_form2, id_user, name_user, name_client, status_form1, project_name 
         FROM form1 
         WHERE id_user = ?";  // Filtrar por el ID del usuario
 
@@ -86,7 +86,7 @@ $result = $stmt->get_result();
                                 while ($row = $result->fetch_assoc()) {
                                     // Definir la clase de color para el estatus basado en su valor
                                     $status_class = '';
-                                    switch ($row['status_form1']) {
+                                    switch ($row['status_form2']) {
                                         case 'Complete':
                                             $status_class = 'bg-success text-white'; // Verde para "Aprobada"
                                             break;
