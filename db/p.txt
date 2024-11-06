@@ -79,11 +79,11 @@ CREATE TABLE form1 (
     FOREIGN KEY (name_client) REFERENCES client(name)
 );
 
--- Table 'form2'
 CREATE TABLE form2 (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    id_form2 VARCHAR(255),
-    status_form2 VARCHAR(255),
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_form2 VARCHAR(255) UNIQUE,  -- Changed to VARCHAR(255) and added UNIQUE constraint
+    status_form1 VARCHAR(255),
+    table_content JSON NOT NULL,
     id_user INT,
     created_at VARCHAR(255),
     completed_at VARCHAR(255),
@@ -91,15 +91,7 @@ CREATE TABLE form2 (
     name_user VARCHAR(255),
     site_user VARCHAR(255),
     name_client VARCHAR(255),
-    project_name VARCHAR(255),
-    row1 JSON,
-    row2 JSON,
-    row3 JSON,
-    row4 JSON,
-    row5 JSON,
-    row6 JSON,
-    row7 JSON,
-    comments VARCHAR(255),
+    project_name VARCHAR(255)
 );
 
 -- Insert sample values into 'rol'

@@ -1,69 +1,62 @@
 <?php
-session_start();
-require '../php/db_connection.php';
+include '../php/db_connection.php';
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $id = $_POST['id'];
+$id = $_GET['id'];
+$sql = "SELECT table_content FROM form2 WHERE id = :id";
+$stmt = $conn->prepare($sql);
+$stmt->bindParam(':id', $id);
+$stmt->execute();
+$row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    // Obtener la ruta del archivo anterior antes de eliminarlo
-    $sql = "SELECT * FROM form1 WHERE id_form1 = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param('i', $id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $file = $result->fetch_assoc();
-
-    // Verificar si el archivo anterior existe y eliminarlo
-    if ($file) {
-        $rutaAnterior = $file['file_rute'];
-        if (file_exists($rutaAnterior)) {
-            unlink($rutaAnterior); // Eliminar el archivo anterior
-        }
-
-        if (isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
-            $nombreArchivo = uniqid() . '-' . basename($_FILES['file']['name']);
-            $rutaArchivo = 'r&d/files/' . $nombreArchivo;
-
-            // Mover el nuevo archivo
-            if (move_uploaded_file($_FILES['file']['tmp_name'], $rutaArchivo)) {
-                $sql = "UPDATE form1 SET file_rute = ?, file_name = ? WHERE id_form1 = ?";
-                $stmt = $conn->prepare($sql);
-                $stmt->bind_param('ssi', $rutaArchivo, $nombreArchivo, $id);
-                $stmt->execute();
-
-                echo "Archivo actualizado con éxito.";
-            } else {
-                echo "Error al mover el nuevo archivo.";
-            }
-        } else {
-            echo "Error al subir el nuevo archivo.";
-        }
-    } else {
-        echo "Archivo no encontrado para la actualización.";
-    }
+if ($row) {
+    $content = json_decode($row['table_content'], true);
 } else {
-    $id = $_GET['id'];
-    $sql = "SELECT * FROM form1 WHERE id_form1 = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param('i', $id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $file = $result->fetch_assoc();
+    echo "Registro no encontrado";
+    exit;
 }
 ?>
 
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Actualizar Archivo</title>
+    <title>Editar registro</title>
 </head>
 <body>
-    <h1>Actualizar Archivo</h1>
-    <form method="POST" enctype="multipart/form-data">
-        <input type="hidden" name="id" value="<?php echo $file['id_form1']; ?>">
-        <input type="file" name="file" required>
+    <h2>Editar registro</h2>
+    <form action="update.php?id=<?php echo $id; ?>" method="post">
+        <input type="text" name="name" value="<?php echo htmlspecialchars($content['name']); ?>" required><br>
+        <input type="number" name="age" value="<?php echo htmlspecialchars($content['age']); ?>" required><br>
+        <input type="email" name="email" value="<?php echo htmlspecialchars($content['email']); ?>" required><br>
+        <input type="text" name="address" value="<?php echo htmlspecialchars($content['address']); ?>" required><br>
+        <input type="text" name="phone" value="<?php echo htmlspecialchars($content['phone']); ?>" required><br>
         <button type="submit">Actualizar</button>
     </form>
 </body>
 </html>
+
+<?php
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $updatedData = [
+        "name" => $_POST['name'],
+        "age" => (int)$_POST['age'],
+        "email" => $_POST['email'],
+        "address" => $_POST['address'],
+        "phone" => $_POST['phone']
+    ];
+
+    $jsonData = json_encode($updatedData);
+
+    $sql = "UPDATE form2 SET table_content = :table_content WHERE id = :id";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam(':table_content', $jsonData);
+    $stmt->bindParam(':id', $id);
+
+    if ($stmt->execute()) {
+        header("Location: index.php");
+        exit;
+    } else {
+        echo "Error al actualizar el registro";
+    }
+}
+?>
