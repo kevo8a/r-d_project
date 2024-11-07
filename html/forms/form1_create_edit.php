@@ -119,7 +119,7 @@ mysqli_close($conn);
                                 </div>
                             </div>
 
-                            <!-- Aprobado por -->
+                            <!-- Calificado por -->
                             <div class="col-md-3">
                                 <div class="mb-3">
                                     <label for="qualified_by" class="form-label">Calificado por</label>
@@ -142,8 +142,7 @@ mysqli_close($conn);
                                         ?>">
                                 </div>
                             </div>
-
-
+                            
                             <!-- Fecha de finalización -->
                             <div class="col-md-3">
                                 <div class="mb-3">
