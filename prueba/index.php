@@ -1,56 +1,58 @@
 <?php
 include '../php/db_connection.php';
-?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>CRUD con JSON en PHP</title>
-</head>
-<body>
-    <h2>Crear nuevo registro</h2>
-    <form action="create.php" method="post">
-        <input type="text" name="name" placeholder="Nombre" required><br>
-        <input type="number" name="age" placeholder="Edad" required><br>
-        <input type="email" name="email" placeholder="Correo electrónico" required><br>
-        <input type="text" name="address" placeholder="Dirección" required><br>
-        <input type="text" name="phone" placeholder="Teléfono" required><br>
-        <button type="submit">Crear</button>
-    </form>
 
-    <h2>Lista de registros</h2>
-    <table border="1">
-        <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Edad</th>
-            <th>Email</th>
-            <th>Dirección</th>
-            <th>Teléfono</th>
-            <th>Acciones</th>
-        </tr>
-        <?php
-        $sql = "SELECT id, table_content FROM form2";
-        $stmt = $conn->prepare($sql);
-        $stmt->execute();
-        $result = $stmt->get_result();
+// Verificar si se recibió un id de formulario para transferir
+if (isset($_POST['id_form1'])) {
+    $id_form1 = $_POST['id_form1'];
 
-        while ($row = $result->fetch_assoc()) {
-            $content = json_decode($row['table_content'], true);
-            echo "<tr>";
-            echo "<td>" . $row['id'] . "</td>";
-            echo "<td>" . htmlspecialchars($content['name']) . "</td>";
-            echo "<td>" . htmlspecialchars($content['age']) . "</td>";
-            echo "<td>" . htmlspecialchars($content['email']) . "</td>";
-            echo "<td>" . htmlspecialchars($content['address']) . "</td>";
-            echo "<td>" . htmlspecialchars($content['phone']) . "</td>";
-            echo "<td>
-                    <a href='update.php?id=" . $row['id'] . "'>Editar</a> | 
-                    <a href='delete.php?id=" . $row['id'] . "' onclick='return confirm(\"¿Estás seguro?\");'>Eliminar</a>
-                  </td>";
-            echo "</tr>";
+    // Recuperar los datos de form1
+    $sql = "SELECT * FROM form1 WHERE id_form1 = '$id_form1'";
+    $result = $conn->query($sql);
+    
+    if ($result->num_rows > 0) {
+        $form1_data = $result->fetch_assoc();
+
+        // Insertar los datos en form2
+        $id_form2 = $form1_data['id_form1'];
+        $id_user = $form1_data['id_user'];
+        $table_content = '{}';  // Representación JSON vacía
+        $name_user = $form1_data['name_user'];
+        $site_user = $form1_data['site_user'];
+        $name_client = $form1_data['name_client'];
+        $project_name = $form1_data['project_name'];
+        $status_form2 = 'Nuevo';  // Asumiendo que se aprueba al pasar de form1 a form2
+        $created_at = date("Y-m-d H:i:s");
+        $completed_at = null; // Esto podría llenarse más tarde si lo deseas
+        $qualified_by = 'admin'; // Suponiendo que el encargado es 'admin'
+
+        // Insertar en form2
+        $sql2 = "INSERT INTO form2 (id_form2, status_form2, id_user, created_at, table_content ,name_user, site_user, name_client, project_name)
+                 VALUES ('$id_form2', '$status_form2', '$id_user', '$created_at','$table_content ', '$name_user', '$site_user', '$name_client', '$project_name')";
+
+        if ($conn->query($sql2) === TRUE) {
+            echo "Nuevo registro creado exitosamente en form2.";
+        } else {
+            echo "Error: " . $sql2 . "<br>" . $conn->error;
         }
-        ?>
-    </table>
-</body>
-</html>
+
+        // Actualizar estado de form1 a "Complete" (opcional)
+        $sql3 = "UPDATE form1 SET status_form1 = 'Complete' WHERE id_form1 = '$id_form1'";
+        if ($conn->query($sql3) === TRUE) {
+            echo "Formulario de form1 actualizado a 'Complete'.";
+        } else {
+            echo "Error: " . $sql3 . "<br>" . $conn->error;
+        }
+    } else {
+        echo "No se encontró el formulario con ID: $id_form1";
+    }
+}
+
+$conn->close();
+?>
+
+<!-- Formulario para capturar el id_form1 a pasar a form2 -->
+<form method="POST" action="">
+    <label for="id_form1">ID Formulario (form1):</label>
+    <input type="text" id="id_form1" name="id_form1" required>
+    <input type="submit" value="Transferir a Form2">
+</form>

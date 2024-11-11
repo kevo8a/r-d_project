@@ -11,7 +11,7 @@ if ($role != 1 && $role != 2) {
 // Consulta para obtener las cotizaciones
 $sql = "SELECT id, id_form1, id_user, name_user, name_client, status_form1, project_name, qualified_by, created_at, completed_at FROM form1";
 $result = $conn->query($sql);
-?>
+?><
 
 <!DOCTYPE html>
 <html lang="en">
@@ -92,7 +92,7 @@ $result = $conn->query($sql);
                                     echo "<td>" . $row['created_at'] . '-' . $row['completed_at'] . "</td>";
                                     echo "<td>
                                             <a href='/r&d/html/forms/form1_show.php?id=" . $row['id'] . "' class='btn btn-outline-primary btn-sm'>Ver completo</a>";
-                                    
+                                  
                                     // Cambiando a usar el ID en lugar de id_form1
                                     echo "<button class='btn btn-outline-secondary btn-sm ml-2' onclick='calificar(" . $row['id'] . ")'>Calificar</button>";   
 
@@ -121,56 +121,61 @@ $result = $conn->query($sql);
     <script src="../js/sb-admin-2.min.js"></script>
 
     <script>
-        function calificar(id) {
-            closeModal(); // Cierra cualquier modal abierto
+    function calificar(id) {
+        closeModal(); // Cierra cualquier modal abierto
 
-            const modalHtml = `
-                <div class="modal active" id="calificarModal-${id}">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Calificar</h5>
-                                <button type="button" class="btn-close" onclick="closeModal(${id})"></button>
-                            </div>
-                            <div class="modal-body">
-                                <p>Seleccione una opción:</p>
-                                <button class="btn btn-success" onclick="submitCalificacion('Aprobar', ${id})">Aprobar</button>
-                                <button class="btn btn-warning" onclick="submitCalificacion('Corregir', ${id})">Corregir</button>
-                                <button class="btn btn-danger" onclick="submitCalificacion('Rechazar', ${id})">Rechazar</button>
-                            </div>
+        const modalHtml = `
+            <div class="modal active" id="calificarModal-${id}">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Calificar</h5>
+                            <button type="button" class="btn-close" onclick="closeModal(${id})"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Seleccione una opción:</p>
+                            <button class="btn btn-success" onclick="submitCalificacion('Aprobar', ${id})">Aprobar</button>
+                            <button class="btn btn-danger" onclick="submitCalificacion('Rechazar', ${id})">Rechazar</button>
                         </div>
                     </div>
-                </div>`;
-                
-            document.body.insertAdjacentHTML('beforeend', modalHtml);
-        }
+                </div>
+            </div>`;
 
-        function closeModal(id) {
-            const modal = document.getElementById(`calificarModal-${id}`);
-            if (modal) {
-                modal.remove();
-            }
-        }
+        document.body.insertAdjacentHTML('beforeend', modalHtml);
+    }
 
-        async function submitCalificacion(opcion, id) {
-            const response = await fetch('../../php/calificar.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ opcion, id })
-            });
-
-            if (response.ok) {
-                const result = await response.json();
-                alert(result.message); // Mensaje de la respuesta del servidor
-                closeModal(id);
-                location.reload(); // Recargar la página para ver los cambios
-            } else {
-                alert('Error en la solicitud. Por favor intenta nuevamente.');
-            }
+    function closeModal(id) {
+        const modal = document.getElementById(`calificarModal-${id}`);
+        if (modal) {
+            modal.remove();
         }
-    </script>
+    }
+
+    function submitCalificacion(opcion, id) {
+    // Verificar los datos antes de enviarlos
+    console.log('Enviando datos:', { opcion, id });
+
+    // Enviar solicitud AJAX para aprobar o rechazar
+    $.ajax({
+        url: '../../php/aprobar_form1.php',  // Ruta del archivo PHP
+        type: 'POST',  // Usamos el método POST
+        data: {
+            id: id,  // Pasamos el ID del formulario
+            calificacion: opcion  // Agregamos el tipo de calificación (Aprobar/Rechazar)
+        },
+        success: function(response) {
+            var jsonResponse = JSON.parse(response);
+            alert(jsonResponse.message);  // Mostrar el mensaje de la respuesta
+            closeModal(id);  // Cerrar el modal después de recibir la respuesta
+        },
+        error: function() {
+            alert("Hubo un error en la solicitud.");
+        }
+    });
+}
+
+</script>
+
 </body>
 
 </html>
