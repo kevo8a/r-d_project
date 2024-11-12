@@ -9,7 +9,7 @@ if ($role != 1 && $role != 2) {
 }
 
 // Consulta para obtener las cotizaciones
-$sql = "SELECT id, id_form1, id_user, name_user, name_client, status_form1, project_name, qualified_by, created_at, completed_at FROM form1";
+$sql = "SELECT id, id_form2, id_user, name_user, name_client, status_form2, project_name, qualified_by, created_at, completed_at FROM form2";
 $result = $conn->query($sql);
 ?><
 
@@ -64,7 +64,7 @@ $result = $conn->query($sql);
                         if ($result->num_rows > 0) {
                             while ($row = $result->fetch_assoc()) {
                                 $status_class = '';
-                                switch ($row['status_form1']) {
+                                switch ($row['status_form2']) {
                                     case 'Complete':
                                         $status_class = 'bg-success text-white';
                                         break;
@@ -77,31 +77,36 @@ $result = $conn->query($sql);
                                     case 'Corregir':
                                         $status_class = 'bg-warning text-dark';
                                         break;
+                                    case 'Nuevo':
+                                        $status_class = 'bg-info text-white'; 
+                                        break;
                                     default:
                                         $status_class = 'bg-secondary text-white';
                                         break;
                                 }
 
                                 echo "<tr>";
-                                echo "<td>" . $row['id_form1'] . "</td>"; // Usando el ID aquí
+                                echo "<td>" . $row['id_form2'] . "</td>"; // Usando el ID aquí
                                 echo "<td>" . $row['project_name'] . "</td>";
                                 echo "<td>" . $row['name_client'] . "</td>";
                                 echo "<td>" . $row['name_user'] . ' (' . $row['id_user'] . ')' . "</td>";
-                                echo "<td class='$status_class'>" . $row['status_form1'] . "</td>";
+                                echo "<td class='$status_class'>" . $row['status_form2'] . "</td>";
                                 echo "<td>" . $row['qualified_by'] . "</td>";
                                 echo "<td>" . $row['created_at'] . "<br>" . $row['completed_at'] . "</td>";
                                 echo "<td>
-                                        <a href='/r&d/html/forms/form1_show.php?id=" . $row['id'] . "' class='btn btn-outline-primary btn-sm'>Ver completo</a>";
+                                        <a href='/r&d/html/forms/form2_show.php?id=" . $row['id'] . "' class='btn btn-outline-primary btn-sm'>Ver completo</a>";
 
                                 // Mostrar el botón de "Calificar" solo si el estado no es "Complete"
-                                if ($row['status_form1'] !== 'Complete') {
+                                if ($row['status_form2'] !== 'Complete') {
                                     echo "<button class='btn btn-outline-secondary btn-sm ml-2' onclick='calificar(" . $row['id'] . ")'>Calificar</button>";
                                 }
 
-                                // Mostrar el botón de "Editar" solo si el estado es "Corregir"
-                                if ($row['status_form1'] === 'Corregir') {
-                                    echo "<a href='/r&d/html/forms/form1_create_edit.php?id=" . $row['id'] . "' class='btn btn-outline-warning btn-sm ml-2'>Editar</a>";
-                                } 
+                                // Mostrar el botón de Editar solo si el estatus es "Corregir" o "Nuevo"
+                                if ($row['status_form2'] === 'Corregir' || $row['status_form2'] === 'Nuevo') {
+                                    // Cambiar el texto del botón según el estado
+                                    $button_text = ($row['status_form2'] === 'Nuevo') ? 'Completar' : 'Editar';
+                                    echo "<a href='/r&d/html/forms/form2_create_edit.php?id=" . $row['id'] . "' class='btn btn-outline-warning btn-sm ml-2'>$button_text</a>";
+                                }
 
                                 echo "</td>";
                                 echo "</tr>";
@@ -161,7 +166,7 @@ $result = $conn->query($sql);
 
     // Enviar solicitud AJAX para aprobar o rechazar
         $.ajax({
-        url: '../../php/aprobar_form1.php',  // Ruta del archivo PHP
+        url: '../../php/aprobar_form2.php',  // Ruta del archivo PHP
         type: 'POST',  // Usamos el método POST
         data: {
             id: id,  // Pasamos el ID del formulario

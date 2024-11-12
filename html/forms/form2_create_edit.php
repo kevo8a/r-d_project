@@ -24,6 +24,7 @@ if ($id_formulario) {
     die('No se proporcionó un ID válido para editar el formulario.');
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -93,34 +94,36 @@ if ($id_formulario) {
 
                             <!-- Tabla de materiales -->
                             <div class="table-responsive mb-3">
-                                <table class="table table-bordered" id="materialTable">
-                                    <thead class="table-warning">
-                                        <tr>
-                                            <th>MTL</th>
-                                            <th>Material</th>
-                                            <th>Calibre Micras (μ)</th>
-                                            <th>Peso por m² (g/m²)</th>
-                                            <th>% Sólidos</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="tableBody">
-                                    <?php
-                                    for ($i = 0; $i < 5; $i++) {
-                                        $mtl = isset($table_content['mtl' . ($i + 1)]) ? $table_content['mtl' . ($i + 1)] : '';
-                                        $material = isset($table_content['material' . ($i + 1)]) ? $table_content['material' . ($i + 1)] : '';
-                                        $caliber = isset($table_content['caliber' . ($i + 1)]) ? $table_content['caliber' . ($i + 1)] : '';
-                                        $weight = isset($table_content['weight' . ($i + 1)]) ? $table_content['weight' . ($i + 1)] : '';
-                                        $solid = isset($table_content['solid' . ($i + 1)]) ? $table_content['solid' . ($i + 1)] : '';
-                                        echo "<tr>";
-                                        echo "<td><input type='text' name='mtl" . ($i + 1) . "' class='form-control' value='" . htmlspecialchars($mtl) . "'></td>";
-                                        echo "<td><input type='text' name='material" . ($i + 1) . "' class='form-control' value='" . htmlspecialchars($material) . "'></td>";
-                                        echo "<td><input type='number' name='caliber" . ($i + 1) . "' class='form-control' value='" . htmlspecialchars($caliber) . "'></td>";
-                                        echo "<td><input type='number' name='weight" . ($i + 1) . "' class='form-control' value='" . htmlspecialchars($weight) . "'></td>";
-                                        echo "<td><input type='number' name='solid" . ($i + 1) . "' class='form-control' value='" . htmlspecialchars($solid) . "'></td>";
-                                        echo "</tr>";
-                                    }
-                                    ?>
-                                    </tbody>
+                            <table class="table table-bordered" id="materialTable">
+                                <thead class="table-warning">
+                                    <tr>
+                                        <th>MTL</th>
+                                        <th>Material</th>
+                                        <th>Calibre Micras (μ)</th>
+                                        <th>Peso por m² (g/m²)</th>
+                                        <th>% Sólidos</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tableBody">
+                                <?php
+                                // Se obtiene el número de filas desde la base de datos y se recorre
+                                $num_rows = count($table_content) / 5; // Suponiendo que hay 5 campos por fila
+                                for ($i = 0; $i < $num_rows; $i++) {
+                                    $mtl = isset($table_content['mtl' . ($i + 1)]) ? $table_content['mtl' . ($i + 1)] : '';
+                                    $material = isset($table_content['material' . ($i + 1)]) ? $table_content['material' . ($i + 1)] : '';
+                                    $caliber = isset($table_content['caliber' . ($i + 1)]) ? $table_content['caliber' . ($i + 1)] : '';
+                                    $weight = isset($table_content['weight' . ($i + 1)]) ? $table_content['weight' . ($i + 1)] : '';
+                                    $solid = isset($table_content['solid' . ($i + 1)]) ? $table_content['solid' . ($i + 1)] : '';
+                                    echo "<tr>";
+                                    echo "<td><input type='text' name='mtl" . ($i + 1) . "' class='form-control' value='" . htmlspecialchars($mtl) . "'></td>";
+                                    echo "<td><input type='text' name='material" . ($i + 1) . "' class='form-control' value='" . htmlspecialchars($material) . "'></td>";
+                                    echo "<td><input type='number' name='caliber" . ($i + 1) . "' class='form-control' value='" . htmlspecialchars($caliber) . "'></td>";
+                                    echo "<td><input type='number' name='weight" . ($i + 1) . "' class='form-control' value='" . htmlspecialchars($weight) . "'></td>";
+                                    echo "<td><input type='number' name='solid" . ($i + 1) . "' class='form-control' value='" . htmlspecialchars($solid) . "'></td>";
+                                    echo "</tr>";
+                                }
+                                ?>
+                                </tbody>
                                     <tfoot>
                                         <tr>
                                             <td colspan="2" class="text-end">Total</td>
@@ -134,7 +137,7 @@ if ($id_formulario) {
 
                             <!-- Campos adicionales de procesos -->
                             <?php for ($step = 1; $step <= 6; $step++): ?>
-                                <div class="col-md-6 mb-3">
+                                <div class="col-md-12 mb-3">
                                     <label for="proceso<?php echo $step; ?>" class="form-label">Paso <?php echo $step; ?></label>
                                     <input type="text" class="form-control" id="proceso<?php echo $step; ?>" name="proceso<?php echo $step; ?>" value="<?php echo htmlspecialchars($form_data['proceso' . $step] ?? ''); ?>">
                                 </div>
@@ -153,50 +156,96 @@ if ($id_formulario) {
     <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
     <script src="../js/sb-admin-2.min.js"></script>
     <script>
-    // Función para agregar una nueva fila a la tabla
-    function addRow() {
-        const tableBody = document.getElementById('tableBody');
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td><input type="text" name="mtl" class="form-control"></td>
-            <td><input type="text" name="material" class="form-control"></td>
-            <td><input type="number" name="caliber" class="form-control" oninput="calculateTotal()"></td>
-            <td><input type="number" name="weight" class="form-control" oninput="calculateTotal()"></td>
-            <td><input type="number" name="solid" class="form-control" oninput="calculateTotal()"></td>
-        `;
-        tableBody.appendChild(row);
-    }
+// Función para agregar una nueva fila a la tabla
+function addRow() {
+    const tableBody = document.getElementById('tableBody');
+    const row = document.createElement('tr');
+    row.innerHTML = `
+        <td><input type="text" name="mtl[]" class="form-control"></td>
+        <td><input type="text" name="material[]" class="form-control"></td>
+        <td><input type="number" name="caliber[]" class="form-control" oninput="calculateTotal()"></td>
+        <td><input type="number" name="weight[]" class="form-control" oninput="calculateTotal()"></td>
+        <td><input type="number" name="solid[]" class="form-control" oninput="calculateTotal()"></td>
+    `;
+    tableBody.appendChild(row);
+}
 
-    // Función para calcular los totales de Calibre, Peso y % Sólidos
-    function calculateTotal() {
-        let totalCalibre = 0;
-        let totalPeso = 0;
-        let totalSolid = 0;
+// Función para calcular los totales de Calibre, Peso y % Sólidos
+function calculateTotal() {
+    let totalCalibre = 0;
+    let totalPeso = 0;
+    let totalSolid = 0;
 
+    const rows = document.querySelectorAll('#tableBody tr');
+    rows.forEach(row => {
+        const caliber = parseFloat(row.querySelector('input[name*="caliber"]').value) || 0;
+        const weight = parseFloat(row.querySelector('input[name*="weight"]').value) || 0;
+        const solid = parseFloat(row.querySelector('input[name*="solid"]').value) || 0;
+
+        totalCalibre += caliber;
+        totalPeso += weight;
+        totalSolid += solid;
+    });
+
+    // Mostrar los totales en los campos de pie de tabla
+    document.getElementById('totalCalibre').value = totalCalibre.toFixed(2);
+    document.getElementById('totalPeso').value = totalPeso.toFixed(2);
+}
+
+// Captura el evento de envío del formulario
+document.addEventListener("DOMContentLoaded", function() {
+    const inputs = document.querySelectorAll('input[name*="caliber"], input[name*="weight"], input[name*="solid"]');
+    inputs.forEach(input => {
+        input.addEventListener("input", calculateTotal);
+    });
+
+    // Captura el evento de envío del formulario
+    document.querySelector('#form-estructure').addEventListener('submit', function(event) {
+        event.preventDefault(); // Evita la recarga de la página
+
+        // Recopilar los datos de la tabla
+        const tableData = [];
         const rows = document.querySelectorAll('#tableBody tr');
         rows.forEach(row => {
-            const caliber = parseFloat(row.querySelector('input[name*="caliber"]').value) || 0;
-            const weight = parseFloat(row.querySelector('input[name*="weight"]').value) || 0;
-            const solid = parseFloat(row.querySelector('input[name*="solid"]').value) || 0;
+            const mtl = row.querySelector('input[name*="mtl"]').value;
+            const material = row.querySelector('input[name*="material"]').value;
+            const caliber = row.querySelector('input[name*="caliber"]').value;
+            const weight = row.querySelector('input[name*="weight"]').value;
+            const solid = row.querySelector('input[name*="solid"]').value;
 
-            totalCalibre += caliber;
-            totalPeso += weight;
-            totalSolid += solid;
+            tableData.push({
+                mtl: mtl,
+                material: material,
+                caliber: caliber,
+                weight: weight,
+                solid: solid
+            });
         });
 
-        // Mostrar los totales en los campos de pie de tabla
-        document.getElementById('totalCalibre').value = totalCalibre.toFixed(2);
-        document.getElementById('totalPeso').value = totalPeso.toFixed(2);
-        document.getElementById('totalSolid').value = totalSolid.toFixed(2);
-    }
-    
-    // Se añade un evento a los campos de la tabla para recalcular los totales al modificar cualquier valor
-    document.addEventListener("DOMContentLoaded", function() {
-        const inputs = document.querySelectorAll('input[name*="caliber"], input[name*="weight"], input[name*="solid"]');
-        inputs.forEach(input => {
-            input.addEventListener("input", calculateTotal);
+        // Serializa los datos del formulario
+        const formData = new FormData(this);
+        formData.append('table_content', JSON.stringify(tableData));
+
+        // Envía los datos a través de AJAX
+        fetch('../../php/update_form2.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                alert('Formulario enviado correctamente.');
+            } else {
+                alert('Ocurrió un error al enviar el formulario.');
+            }
+        })
+        .catch(error => {
+            alert('Ocurrió un error al enviar el formulario.');
+            console.error(error);
         });
     });
+});
+
 </script>
 
 </body>

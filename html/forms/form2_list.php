@@ -6,8 +6,8 @@ include '../../php/auth.php';
 $user_id = $_SESSION['user_id'];
 
 // Consulta para obtener los formularios que pertenecen al usuario logueado
-$sql = "SELECT id, id_form2, id_user, name_user, name_client, status_form1, project_name 
-        FROM form1 
+$sql = "SELECT id, id_form2, id_user, name_user, name_client, status_form2, project_name 
+        FROM form2
         WHERE id_user = ?";  // Filtrar por el ID del usuario
 
 // Preparar la consulta
@@ -80,55 +80,61 @@ $result = $stmt->get_result();
                             </tr>
                         </thead>
                         <tbody>
-                            <?php
-                            if ($result->num_rows > 0) {
-                                // Mostrar datos de cada fila
-                                while ($row = $result->fetch_assoc()) {
-                                    // Definir la clase de color para el estatus basado en su valor
-                                    $status_class = '';
-                                    switch ($row['status_form2']) {
-                                        case 'Complete':
-                                            $status_class = 'bg-success text-white'; // Verde para "Aprobada"
-                                            break;
-                                        case 'Rechazado':
-                                            $status_class = 'bg-danger text-white'; // Rojo para "Rechazado"
-                                            break;
-                                        case 'En Proceso':
-                                            $status_class = 'bg-primary text-white'; // Azul para "En Proceso"
-                                            break;
-                                        case 'Corregir':
-                                            $status_class = 'bg-warning text-dark'; // Naranja para "Corregir"
-                                            break;
-                                        default:
-                                            $status_class = 'bg-secondary text-white'; // Color por defecto para otros casos
-                                            break;
-                                    }
-
-                                    echo "<tr>";
-                                    echo "<td>" . $row['id_form1'] . "</td>";
-                                    echo "<td>" . $row['project_name'] . "</td>";
-                                    echo "<td>" . $row['name_client'] . "</td>";
-                                    echo "<td>" . $row['name_user'] .' ('. $row['id_user']. ')'. "</td>";
-                                    
-                                    // Aplicar la clase de color al recuadro de estatus
-                                    echo "<td class='$status_class'>" . $row['status_form1'] . "</td>";
-                                    
-                                    // Botón de Ver Completo
-                                    echo "<td><a href='/r&d/html/forms/form1_show.php?id=" . $row['id'] . "' class='btn btn-outline-primary btn-sm'>Ver completo</a> ";
-
-                                    // Mostrar el botón de Editar solo si el estatus es "Corregir"
-                                    if ($row['status_form1'] === 'Corregir') {
-                                        echo "<a href='/r&d/html/forms/form1_create_edit.php?id=" . $row['id'] . "' class='btn btn-outline-warning btn-sm ml-2'>Editar</a>";
-                                    }
-
-                                    echo "</td>"; // Asegúrate de cerrar la celda correctamente
-
-                                    echo "</tr>";
+                        <?php
+                        if ($result->num_rows > 0) {
+                            // Mostrar datos de cada fila
+                            while ($row = $result->fetch_assoc()) {
+                                // Definir la clase de color para el estatus basado en su valor
+                                $status_class = '';
+                                switch ($row['status_form2']) {
+                                    case 'Complete':
+                                        $status_class = 'bg-success text-white'; // Verde para "Aprobada"
+                                        break;
+                                    case 'Rechazado':
+                                        $status_class = 'bg-danger text-white'; // Rojo para "Rechazado"
+                                        break;
+                                    case 'En Proceso':
+                                        $status_class = 'bg-primary text-white'; // Azul para "En Proceso"
+                                        break;
+                                    case 'Corregir':
+                                        $status_class = 'bg-warning text-dark'; // Naranja para "Corregir"
+                                        break;
+                                    case 'Nuevo':
+                                        $status_class = 'bg-info text-white'; // Añadido: color específico para "Nuevo"
+                                        break;
+                                    default:
+                                        $status_class = 'bg-secondary text-white'; // Color por defecto para otros casos
+                                        break;
                                 }
-                            } else {
-                                echo "<tr><td colspan='6' class='text-center'>No hay formularios creados</td></tr>";
+
+                                echo "<tr>";
+                                echo "<td>" . $row['id_form2'] . "</td>";
+                                echo "<td>" . $row['project_name'] . "</td>";
+                                echo "<td>" . $row['name_client'] . "</td>";
+                                echo "<td>" . $row['name_user'] .' ('. $row['id_user']. ')'. "</td>";
+                                
+                                // Aplicar la clase de color al recuadro de estatus
+                                echo "<td class='$status_class'>" . $row['status_form2'] . "</td>";
+                                
+                                // Botón de Ver Completo
+                                echo "<td><a href='/r&d/html/forms/form1_show.php?id=" . $row['id'] . "' class='btn btn-outline-primary btn-sm'>Ver completo</a> ";
+
+                                // Mostrar el botón de Editar solo si el estatus es "Corregir" o "Nuevo"
+                                if ($row['status_form2'] === 'Corregir' || $row['status_form2'] === 'Nuevo') {
+                                    // Cambiar el texto del botón según el estado
+                                    $button_text = ($row['status_form2'] === 'Nuevo') ? 'Completar' : 'Editar';
+                                    echo "<a href='/r&d/html/forms/form2_create_edit.php?id=" . $row['id'] . "' class='btn btn-outline-warning btn-sm ml-2'>$button_text</a>";
+                                }
+
+                                echo "</td>"; // Asegúrate de cerrar la celda correctamente
+
+                                echo "</tr>";
                             }
-                            ?>
+                        } else {
+                            echo "<tr><td colspan='6' class='text-center'>No hay formularios creados</td></tr>";
+                        }
+                        ?>
+
                         </tbody>
                     </table>
                 </div>
