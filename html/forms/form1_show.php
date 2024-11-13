@@ -150,10 +150,10 @@ mysqli_close($conn);
                             <!-- Fecha de finalización -->
                             <div class="col-md-3">
                                 <div class="mb-3">
-                                    <label for="completed_at" class="form-label">Fecha de finalización</label>
-                                    <input type="text" class="form-control" id="completed_at" name="completed_at"
+                                    <label for="completed_at" class="form-label">Estatus</label>
+                                    <input type="text" class="form-control" id="completed_at" name="completed_at" readonly
+                                        value="<?php echo $id_formulario ? htmlspecialchars($form_data['completed_at']) : 'En Proceso'; ?>"
                                         readonly>
-                                    <!-- Permite ingresar manualmente la fecha -->
                                 </div>
                             </div>
 

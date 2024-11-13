@@ -14,35 +14,7 @@ $result = $stmt->get_result();
 $row = $result->fetch_assoc();
 $data = json_decode($row['table_content'], true); // Decodificar JSON a un array
 
-// Guardar cambios del formulario
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $updatedData = [];
 
-    // Process each row and save updated data
-    $counter = 1;
-    while (isset($_POST["MTL$counter"])) {
-        $updatedData[] = [
-            "MTL" => $_POST["MTL$counter"],
-            "Material" => $_POST["Material$counter"],
-            "Calibre" => $_POST["Calibre$counter"],
-            "Peso" => $_POST["Peso$counter"],
-            "Solidos" => $_POST["Solidos$counter"]
-        ];
-        $counter++;
-    }
-
-    $jsonData = json_encode($updatedData);
-
-    // Actualizar en la base de datos usando prepared statement
-    $sql = "UPDATE form2 SET table_content = ? WHERE id = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("si", $jsonData, $id);
-    $stmt->execute();
-    $stmt->close();
-
-    // Redirigir a la página anterior después de guardar los cambios
-    echo "<script>window.history.back();</script>";
-}
 ?>
 
 <!DOCTYPE html>
@@ -135,7 +107,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                                 <th>Calibre</th>
                                                 <th>Peso</th>
                                                 <th>Sólidos</th>
-                                                <th>Acciones</th> <!-- Columna para los botones -->
                                             </tr>
                                         </thead>
                                         <tbody id="tableBody">
@@ -143,17 +114,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                             $counter = 1;
                                             foreach ($data as $item) {
                                                 echo '<tr>';
-                                                echo '<td><input type="text" name="MTL' . $counter . '" class="form-control" value="' . htmlspecialchars($item["MTL"]) . '" required></td>';
-                                                echo '<td><input type="text" name="Material' . $counter . '" class="form-control" value="' . htmlspecialchars($item["Material"]) . '" required></td>';
-                                                echo '<td><input type="text" name="Calibre' . $counter . '" class="form-control" value="' . htmlspecialchars($item["Calibre"]) . '" required onchange="calculateTotal()"></td>';
-                                                echo '<td><input type="text" name="Peso' . $counter . '" class="form-control" value="' . htmlspecialchars($item["Peso"]) . '" required onchange="calculateTotal()"></td>';
-                                                echo '<td><input type="text" name="Solidos' . $counter . '" class="form-control" value="' . htmlspecialchars($item["Solidos"]) . '" required onchange="calculateTotal()"></td>';
-                                                echo '<td><button type="button" class="btn btn-danger" onclick="removeRow(this)">Eliminar</button></td>';
+                                                echo '<td><input type="text" name="MTL' . $counter . '" class="form-control" value="' . htmlspecialchars($item["MTL"]) . '" required disabled></td>';
+                                                echo '<td><input type="text" name="Material' . $counter . '" class="form-control" value="' . htmlspecialchars($item["Material"]) . '" required disabled></td>';
+                                                echo '<td><input type="text" name="Calibre' . $counter . '" class="form-control" value="' . htmlspecialchars($item["Calibre"]) . '" required onchange="calculateTotal()" disabled></td>';
+                                                echo '<td><input type="text" name="Peso' . $counter . '" class="form-control" value="' . htmlspecialchars($item["Peso"]) . '" required onchange="calculateTotal()" disabled></td>';
+                                                echo '<td><input type="text" name="Solidos' . $counter . '" class="form-control" value="' . htmlspecialchars($item["Solidos"]) . '" required onchange="calculateTotal()" disabled></td>';
                                                 echo '</tr>';
                                                 $counter++;
                                             }
                                             ?>
                                         </tbody>
+
                                         <!-- Fila de Totales -->
                                         <tr>
                                             <td colspan="2" class="text-right"><strong>Total:</strong></td>
@@ -161,17 +132,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                             <td><input type="text" id="totalPeso" class="form-control" disabled></td>
                                             <td></td>
                                         </tr>
-                                        <!-- Botón para agregar fila dentro de la tabla -->
-                                        <tr>
-                                            <td colspan="5">
-                                                <button type="button" class="btn btn-success btn-block" onclick="addRow()">Agregar Fila</button>
-                                            </td>
-                                        </tr>
+
                                     </table>
+                                    <!-- Campos adicionales de procesos -->
+                                    <?php for ($step = 1; $step <= 6; $step++): ?>
+                                    <div class="col-md-12 mb-3">
+                                        <label for="proceso<?php echo $step; ?>" class="form-label" >Paso
+                                            <?php echo $step; ?></label>
+                                        <input type="text" class="form-control" id="proceso<?php echo $step; ?>"
+                                            name="proceso<?php echo $step; ?> "
+                                            value="<?php echo htmlspecialchars($row['step_' . $step] ?? ''); ?>" disabled>
+                                    </div>
+                                    <?php endfor; ?>
+
                                     <!-- Campos del formulario de envío -->
                                     <div class="col-md-12 text-center mt-3">
-                                        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-                                        <button type="button" class="btn btn-secondary" onclick="window.history.back()">Cancelar</button>
+                                        <button type="button" class="btn btn-secondary"
+                                            onclick="window.history.back()">Volver</button>
                                     </div>
                                 </div>
                             </div>

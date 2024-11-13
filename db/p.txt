@@ -56,7 +56,7 @@ CREATE TABLE form1 (
     width_tolerance_mm FLOAT,
     continuous_check BOOLEAN,
     photo_distances_mm FLOAT,
-    photo_distances_tolerance_mm FLOAT,
+        photo_distances_tolerance_mm FLOAT,
     thickness_microns FLOAT,
     thickness_tolerance_microns FLOAT,
     weight_gm2 FLOAT,
@@ -82,16 +82,22 @@ CREATE TABLE form1 (
 CREATE TABLE form2 (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_form2 VARCHAR(255) UNIQUE,  -- Changed to VARCHAR(255) and added UNIQUE constraint
-    status_form1 VARCHAR(255),
-    table_content JSON NOT NULL,
+    status_form2 VARCHAR(255),
+    name_user VARCHAR(255),
+    site_user VARCHAR(255),
     id_user INT,
     created_at VARCHAR(255),
     completed_at VARCHAR(255),
     qualified_by VARCHAR(255),
-    name_user VARCHAR(255),
-    site_user VARCHAR(255),
     name_client VARCHAR(255),
-    project_name VARCHAR(255)
+    project_name VARCHAR(255),
+    table_content JSON NOT NULL,
+    step_1 VARCHAR(255),
+    step_2 VARCHAR(255),
+    step_3 VARCHAR(255),
+    step_4 VARCHAR(255),
+    step_5 VARCHAR(255),
+    step_6 VARCHAR(255)
 );
 
 -- Insert sample values into 'rol'

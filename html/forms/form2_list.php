@@ -117,7 +117,7 @@ $result = $stmt->get_result();
                                 echo "<td class='$status_class'>" . $row['status_form2'] . "</td>";
                                 
                                 // Botón de Ver Completo
-                                echo "<td><a href='/r&d/html/forms/form1_show.php?id=" . $row['id'] . "' class='btn btn-outline-primary btn-sm'>Ver completo</a> ";
+                                echo "<td><a href='/r&d/html/forms/form2_show.php?id=" . $row['id'] . "' class='btn btn-outline-primary btn-sm'>Ver completo</a> ";
 
                                 // Mostrar el botón de Editar solo si el estatus es "Corregir" o "Nuevo"
                                 if ($row['status_form2'] === 'Corregir' || $row['status_form2'] === 'Nuevo') {

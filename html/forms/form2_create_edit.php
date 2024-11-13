@@ -2,31 +2,71 @@
 include '../../php/db_connection.php';
 include '../../php/auth.php';
 
-$id_formulario = isset($_GET['id']) ? $_GET['id'] : null;
-$form_data = [];
-$table_content = isset($form_data['table_content']) ? json_decode($form_data['table_content'], true) : [];
+// Obtener ID del registro a editar
+$id = $_GET['id'];
 
-// Si hay un ID, consultar los datos del formulario por su ID
-if ($id_formulario) {
-    $sql = "SELECT * FROM form2 WHERE id = ?";
-    $stmt = mysqli_prepare($conn, $sql);
-    mysqli_stmt_bind_param($stmt, "i", $id_formulario);
-    mysqli_stmt_execute($stmt);
-    $result = mysqli_stmt_get_result($stmt);
+// Obtener datos del registro
+$sql = "SELECT * FROM form2 WHERE id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $id);
+$stmt->execute();
+$result = $stmt->get_result();
+$row = $result->fetch_assoc();
+$data = json_decode($row['table_content'], true); // Decodificar JSON a un array
 
-    if ($result->num_rows === 0) {
-        die('Formulario no encontrado.');
+// Guardar cambios del formulario
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $updatedData = [];
+
+    // Process each row and save updated data
+    $counter = 1;
+    while (isset($_POST["MTL$counter"])) {
+        $updatedData[] = [
+            "MTL" => $_POST["MTL$counter"],
+            "Material" => $_POST["Material$counter"],
+            "Calibre" => $_POST["Calibre$counter"],
+            "Peso" => $_POST["Peso$counter"],
+            "Solidos" => $_POST["Solidos$counter"]
+        ];
+        $counter++;
     }
-    $form_data = mysqli_fetch_assoc($result);
-    // Decodificar table_content
-    $table_content = isset($form_data['table_content']) ? json_decode($form_data['table_content'], true) : [];
+
+    $jsonData = json_encode($updatedData);
+
+// Recoger valores de los pasos
+$steps = [];
+for ($step = 1; $step <= 6; $step++) {
+    $steps["step_$step"] = $_POST["proceso$step"] ?? ''; // Recoger valores de los pasos
+}
+$status = 'En Proceso';
+
+// Actualizar en la base de datos usando prepared statement
+$sql = "UPDATE form2 SET table_content = ?, status_form2 = ?, step_1 = ?, step_2 = ?, step_3 = ?, step_4 = ?, step_5 = ?, step_6 = ? WHERE id = ?";
+$stmt = $conn->prepare($sql);
+
+// Asegúrate de que la variable $jsonData tiene los datos correctos para la columna `table_content`
+// Asegúrate de que $id tiene el valor correcto para identificar el registro a actualizar
+$stmt->bind_param("ssssssssi", $jsonData,$status, $steps['step_1'], $steps['step_2'], $steps['step_3'], $steps['step_4'], $steps['step_5'], $steps['step_6'], $id);
+
+if ($stmt->execute()) {
+    echo "<script>
+            window.history.back();
+            alert('Registro actualizado correctamente.');
+          </script>";
+    exit(); // Asegúrate de que no se ejecute el resto del script después de la redirección
 } else {
-    die('No se proporcionó un ID válido para editar el formulario.');
+    echo "Error al actualizar el registro: " . $stmt->error;
+}
+
+
+$stmt->close();
+ 
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -35,6 +75,7 @@ if ($id_formulario) {
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,400,600,700" rel="stylesheet">
     <link href="../../css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body id="page-top">
@@ -47,103 +88,127 @@ if ($id_formulario) {
                     <div class="container mt-5">
                         <h1 class="text-center mb-4">Editar Formulario de Cotización</h1>
                         <form id="form-estructure" method="POST" enctype="multipart/form-data">
-                            <input type="hidden" name="id_formulario" value="<?php echo $id_formulario; ?>">
                             <div class="row">
-                                <!-- Sección de campos -->
-                                <div class="col-md-3 mb-3">
-                                    <label for="solicitante" class="form-label">Solicitante</label>
-                                    <input type="text" class="form-control" id="solicitante" name="solicitante" value="<?php echo htmlspecialchars($form_data['name_user'] ?? ''); ?>">
-                                </div>
-                                <div class="col-md-3 mb-3">
-                                    <label for="project_name" class="form-label">Nombre del Proyecto/Producto</label>
-                                    <input type="text" class="form-control" id="project_name" name="project_name" value="<?php echo htmlspecialchars($form_data['project_name'] ?? ''); ?>">
-                                </div>
-                                <div class="col-md-3 mb-3">
-                                    <label for="site" class="form-label">Site</label>
-                                    <input type="text" class="form-control" id="site" name="site" value="<?php echo htmlspecialchars($form_data['site_user'] ?? ''); ?>">
-                                </div>
-                                <div class="col-md-3 mb-3">
-                                    <label for="folio" class="form-label">Folio</label>
-                                    <input type="text" class="form-control" id="folio" name="folio" value="<?php echo htmlspecialchars($form_data['id_form2'] ?? ''); ?>">
-                                </div>
-                                <div class="col-md-3 mb-3">
-                                    <label for="id_user" class="form-label">ID del Usuario</label>
-                                    <input type="text" class="form-control" id="id_user" name="id_user" value="<?php echo htmlspecialchars($form_data['id_user'] ?? ''); ?>">
-                                </div>
-                                <div class="col-md-3 mb-3">
-                                    <label for="qualified_by" class="form-label">Calificado por</label>
-                                    <input type="text" class="form-control" id="qualified_by" name="qualified_by" value="<?php echo htmlspecialchars($form_data['qualified_by'] ?? ''); ?>">
-                                </div>
-                                <div class="col-md-3 mb-3">
-                                    <label for="created_at" class="form-label">Fecha de creación</label>
-                                    <input type="text" class="form-control" id="created_at" name="created_at" value="<?php echo htmlspecialchars($form_data['created_at'] ?? ''); ?>">
-                                </div>
-                                <div class="col-md-3 mb-3">
-                                    <label for="completed_at" class="form-label">Fecha de finalización</label>
-                                    <input type="text" class="form-control" id="completed_at" name="completed_at" value="<?php echo htmlspecialchars($form_data['completed_at'] ?? ''); ?>">
-                                </div>
-                                <div class="col-md-3 mb-3">
-                                    <label for="client" class="form-label">Cliente</label>
-                                    <input type="text" class="form-control" id="client" name="client" value="<?php echo htmlspecialchars($form_data['name_client'] ?? ''); ?>">
-                                </div>
-                                <div class="col-md-3 mb-3">
-                                    <label for="status" class="form-label">Estatus</label>
-                                    <input type="text" class="form-control" id="status" name="status" value="<?php echo htmlspecialchars($form_data['status_form2'] ?? ''); ?>">
-                                </div>
-                            </div>
-
-                            <!-- Tabla de materiales -->
-                            <div class="table-responsive mb-3">
-                            <table class="table table-bordered" id="materialTable">
-                                <thead class="table-warning">
-                                    <tr>
-                                        <th>MTL</th>
-                                        <th>Material</th>
-                                        <th>Calibre Micras (μ)</th>
-                                        <th>Peso por m² (g/m²)</th>
-                                        <th>% Sólidos</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tableBody">
-                                <?php
-                                // Se obtiene el número de filas desde la base de datos y se recorre
-                                $num_rows = count($table_content) / 5; // Suponiendo que hay 5 campos por fila
-                                for ($i = 0; $i < $num_rows; $i++) {
-                                    $mtl = isset($table_content['mtl' . ($i + 1)]) ? $table_content['mtl' . ($i + 1)] : '';
-                                    $material = isset($table_content['material' . ($i + 1)]) ? $table_content['material' . ($i + 1)] : '';
-                                    $caliber = isset($table_content['caliber' . ($i + 1)]) ? $table_content['caliber' . ($i + 1)] : '';
-                                    $weight = isset($table_content['weight' . ($i + 1)]) ? $table_content['weight' . ($i + 1)] : '';
-                                    $solid = isset($table_content['solid' . ($i + 1)]) ? $table_content['solid' . ($i + 1)] : '';
-                                    echo "<tr>";
-                                    echo "<td><input type='text' name='mtl" . ($i + 1) . "' class='form-control' value='" . htmlspecialchars($mtl) . "'></td>";
-                                    echo "<td><input type='text' name='material" . ($i + 1) . "' class='form-control' value='" . htmlspecialchars($material) . "'></td>";
-                                    echo "<td><input type='number' name='caliber" . ($i + 1) . "' class='form-control' value='" . htmlspecialchars($caliber) . "'></td>";
-                                    echo "<td><input type='number' name='weight" . ($i + 1) . "' class='form-control' value='" . htmlspecialchars($weight) . "'></td>";
-                                    echo "<td><input type='number' name='solid" . ($i + 1) . "' class='form-control' value='" . htmlspecialchars($solid) . "'></td>";
-                                    echo "</tr>";
-                                }
-                                ?>
-                                </tbody>
-                                    <tfoot>
+                                <div class="row">
+                                    <!-- Sección de campos -->
+                                    <div class="col-md-3 mb-3">
+                                        <label for="solicitante" class="form-label">Solicitante</label>
+                                        <input type="text" class="form-control" id="solicitante" name="solicitante"
+                                            value="<?php echo htmlspecialchars($row['name_user'] ?? ''); ?>" disabled>
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <label for="project_name" class="form-label">Nombre del
+                                            Proyecto/Producto</label>
+                                        <input type="text" class="form-control" id="project_name" name="project_name"
+                                            value="<?php echo htmlspecialchars($row['project_name'] ?? ''); ?>"
+                                            disabled>
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <label for="site" class="form-label">Site</label>
+                                        <input type="text" class="form-control" id="site" name="site"
+                                            value="<?php echo htmlspecialchars($row['site_user'] ?? ''); ?>" disabled>
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <label for="folio" class="form-label">Folio</label>
+                                        <input type="text" class="form-control" id="folio" name="folio"
+                                            value="<?php echo htmlspecialchars($row['id_form2'] ?? ''); ?>" disabled>
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <label for="id_user" class="form-label">ID del Usuario</label>
+                                        <input type="text" class="form-control" id="id_user" name="id_user"
+                                            value="<?php echo htmlspecialchars($row['id_user'] ?? ''); ?>" disabled>
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <label for="qualified_by" class="form-label">Calificado por</label>
+                                        <input type="text" class="form-control" id="qualified_by" name="qualified_by"
+                                            value="<?php echo htmlspecialchars($row['qualified_by'] ?? ''); ?>"
+                                            disabled>
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <label for="created_at" class="form-label">Fecha de creación</label>
+                                        <input type="text" class="form-control" id="created_at" name="created_at"
+                                            value="<?php echo htmlspecialchars($row['created_at'] ?? ''); ?>" disabled>
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <label for="completed_at" class="form-label">Fecha de finalización</label>
+                                        <input type="text" class="form-control" id="completed_at" name="completed_at"
+                                            value="<?php echo htmlspecialchars($row['completed_at'] ?? ''); ?>"
+                                            disabled>
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <label for="client" class="form-label">Cliente</label>
+                                        <input type="text" class="form-control" id="client" name="client"
+                                            value="<?php echo htmlspecialchars($row['name_client'] ?? ''); ?>" disabled>
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <label for="status" class="form-label">Estatus</label>
+                                        <input type="text" class="form-control" id="status" name="status"
+                                            value="<?php echo htmlspecialchars($row['status_form2'] ?? ''); ?>"
+                                            disabled>
+                                    </div>
+                                    <table class="table table-bordered" id="materialTable">
+                                        <thead class="table-warning">
+                                            <tr>
+                                                <th>MTL</th>
+                                                <th>Material</th>
+                                                <th>Calibre</th>
+                                                <th>Peso</th>
+                                                <th>Sólidos</th>
+                                                <th>Acciones</th> <!-- Columna para los botones -->
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tableBody">
+                                            <?php
+                                            $counter = 1;
+                                            foreach ($data as $item) {
+                                                echo '<tr>';
+                                                echo '<td><input type="text" name="MTL' . $counter . '" class="form-control" value="' . htmlspecialchars($item["MTL"]) . '" required></td>';
+                                                echo '<td><input type="text" name="Material' . $counter . '" class="form-control" value="' . htmlspecialchars($item["Material"]) . '" required></td>';
+                                                echo '<td><input type="text" name="Calibre' . $counter . '" class="form-control" value="' . htmlspecialchars($item["Calibre"]) . '" required onchange="calculateTotal()"></td>';
+                                                echo '<td><input type="text" name="Peso' . $counter . '" class="form-control" value="' . htmlspecialchars($item["Peso"]) . '" required onchange="calculateTotal()"></td>';
+                                                echo '<td><input type="text" name="Solidos' . $counter . '" class="form-control" value="' . htmlspecialchars($item["Solidos"]) . '" required onchange="calculateTotal()"></td>';
+                                                echo '<td><button type="button" class="btn btn-danger" onclick="removeRow(this)">Eliminar</button></td>';
+                                                echo '</tr>';
+                                                $counter++;
+                                            }
+                                            ?>
+                                        </tbody>
+                                        <!-- Fila de Totales -->
                                         <tr>
-                                            <td colspan="2" class="text-end">Total</td>
-                                            <td><input type="number" class="form-control" id="totalCalibre" disabled value="0.00"></td>
-                                            <td><input type="number" class="form-control" id="totalPeso" disabled value="0.00"></td>
+                                            <td colspan="2" class="text-right"><strong>Total:</strong></td>
+                                            <td><input type="text" id="totalCalibre" class="form-control" disabled></td>
+                                            <td><input type="text" id="totalPeso" class="form-control" disabled></td>
+                                            <td></td>
                                         </tr>
-                                    </tfoot>
-                                </table>
-                            </div>
-                            <button type="button" class="btn btn-secondary mb-3" onclick="addRow()">Añadir fila</button>
+                                        <!-- Botón para agregar fila dentro de la tabla -->
 
-                            <!-- Campos adicionales de procesos -->
-                            <?php for ($step = 1; $step <= 6; $step++): ?>
-                                <div class="col-md-12 mb-3">
-                                    <label for="proceso<?php echo $step; ?>" class="form-label">Paso <?php echo $step; ?></label>
-                                    <input type="text" class="form-control" id="proceso<?php echo $step; ?>" name="proceso<?php echo $step; ?>" value="<?php echo htmlspecialchars($form_data['proceso' . $step] ?? ''); ?>">
+                                    </table>
+                                    <!-- Botón para agregar fila fuera de la tabla -->
+                                    <tr>
+                                        <td colspan="">
+                                            <button type="button" class="btn btn-success btn-block"
+                                                onclick="addRow()">Agregar Fila</button>
+                                        </td>
+                                    </tr>
+                                    <!-- Campos adicionales de procesos -->
+                                    <?php for ($step = 1; $step <= 6; $step++): ?>
+                                    <div class="col-md-12 mb-3">
+                                        <label for="proceso<?php echo $step; ?>" class="form-label">Paso
+                                            <?php echo $step; ?></label>
+                                        <input type="text" class="form-control" id="proceso<?php echo $step; ?>"
+                                            name="proceso<?php echo $step; ?>"
+                                            value="<?php echo htmlspecialchars($row['step_' . $step] ?? ''); ?>">
+                                    </div>
+                                    <?php endfor; ?>
+
+                                    <!-- Campos del formulario de envío -->
+                                    <div class="col-md-12 text-center mt-3">
+                                        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                                        <button type="button" class="btn btn-secondary"
+                                            onclick="window.history.back()">Cancelar</button>
+                                    </div>
                                 </div>
-                            <?php endfor; ?>
-
-                            <button type="submit" class="btn btn-primary">Enviar</button>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -151,102 +216,54 @@ if ($id_formulario) {
         </div>
     </div>
 
-    <script src="../vendor/jquery/jquery.min.js"></script>
-    <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
-    <script src="../js/sb-admin-2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+
     <script>
-// Función para agregar una nueva fila a la tabla
-function addRow() {
-    const tableBody = document.getElementById('tableBody');
-    const row = document.createElement('tr');
-    row.innerHTML = `
-        <td><input type="text" name="mtl[]" class="form-control"></td>
-        <td><input type="text" name="material[]" class="form-control"></td>
-        <td><input type="number" name="caliber[]" class="form-control" oninput="calculateTotal()"></td>
-        <td><input type="number" name="weight[]" class="form-control" oninput="calculateTotal()"></td>
-        <td><input type="number" name="solid[]" class="form-control" oninput="calculateTotal()"></td>
-    `;
-    tableBody.appendChild(row);
-}
+    let counter = <?php echo $counter; ?>;
 
-// Función para calcular los totales de Calibre, Peso y % Sólidos
-function calculateTotal() {
-    let totalCalibre = 0;
-    let totalPeso = 0;
-    let totalSolid = 0;
+    function addRow() {
+        const tableBody = document.getElementById('tableBody');
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td><input type="text" name="MTL${counter}" class="form-control" required></td>
+            <td><input type="text" name="Material${counter}" class="form-control" required></td>
+            <td><input type="text" name="Calibre${counter}" class="form-control" required onchange="calculateTotal()"></td>
+            <td><input type="text" name="Peso${counter}" class="form-control" required onchange="calculateTotal()"></td>
+            <td><input type="text" name="Solidos${counter}" class="form-control" required onchange="calculateTotal()"></td>
+            <td><button type="button" class="btn btn-danger" onclick="removeRow(this)">Eliminar</button></td>
+        `;
+        tableBody.appendChild(row);
+        counter++;
+    }
 
-    const rows = document.querySelectorAll('#tableBody tr');
-    rows.forEach(row => {
-        const caliber = parseFloat(row.querySelector('input[name*="caliber"]').value) || 0;
-        const weight = parseFloat(row.querySelector('input[name*="weight"]').value) || 0;
-        const solid = parseFloat(row.querySelector('input[name*="solid"]').value) || 0;
+    function removeRow(button) {
+        button.closest('tr').remove();
+        calculateTotal(); // Recalcular totales cuando se elimina una fila
+    }
 
-        totalCalibre += caliber;
-        totalPeso += weight;
-        totalSolid += solid;
-    });
 
-    // Mostrar los totales en los campos de pie de tabla
-    document.getElementById('totalCalibre').value = totalCalibre.toFixed(2);
-    document.getElementById('totalPeso').value = totalPeso.toFixed(2);
-}
+    function calculateTotal() {
+        let totalCalibre = 0;
+        let totalPeso = 0;
 
-// Captura el evento de envío del formulario
-document.addEventListener("DOMContentLoaded", function() {
-    const inputs = document.querySelectorAll('input[name*="caliber"], input[name*="weight"], input[name*="solid"]');
-    inputs.forEach(input => {
-        input.addEventListener("input", calculateTotal);
-    });
-
-    // Captura el evento de envío del formulario
-    document.querySelector('#form-estructure').addEventListener('submit', function(event) {
-        event.preventDefault(); // Evita la recarga de la página
-
-        // Recopilar los datos de la tabla
-        const tableData = [];
         const rows = document.querySelectorAll('#tableBody tr');
         rows.forEach(row => {
-            const mtl = row.querySelector('input[name*="mtl"]').value;
-            const material = row.querySelector('input[name*="material"]').value;
-            const caliber = row.querySelector('input[name*="caliber"]').value;
-            const weight = row.querySelector('input[name*="weight"]').value;
-            const solid = row.querySelector('input[name*="solid"]').value;
+            const caliber = parseFloat(row.querySelector('input[name*="Calibre"]').value) || 0;
+            const weight = parseFloat(row.querySelector('input[name*="Peso"]').value) || 0;
 
-            tableData.push({
-                mtl: mtl,
-                material: material,
-                caliber: caliber,
-                weight: weight,
-                solid: solid
-            });
+            totalCalibre += caliber;
+            totalPeso += weight;
         });
 
-        // Serializa los datos del formulario
-        const formData = new FormData(this);
-        formData.append('table_content', JSON.stringify(tableData));
+        document.getElementById('totalCalibre').value = totalCalibre.toFixed(2);
+        document.getElementById('totalPeso').value = totalPeso.toFixed(2);
+    }
 
-        // Envía los datos a través de AJAX
-        fetch('../../php/update_form2.php', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.status === 'success') {
-                alert('Formulario enviado correctamente.');
-            } else {
-                alert('Ocurrió un error al enviar el formulario.');
-            }
-        })
-        .catch(error => {
-            alert('Ocurrió un error al enviar el formulario.');
-            console.error(error);
-        });
-    });
-});
-
-</script>
-
+    window.onload = function() {
+        calculateTotal();
+    };
+    </script>
 </body>
+
 </html>

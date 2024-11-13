@@ -11,7 +11,7 @@ if ($role != 1 && $role != 2) {
 // Consulta para obtener las cotizaciones
 $sql = "SELECT id, id_form2, id_user, name_user, name_client, status_form2, project_name, qualified_by, created_at, completed_at FROM form2";
 $result = $conn->query($sql);
-?><
+?>
 
 <!DOCTYPE html>
 <html lang="en">

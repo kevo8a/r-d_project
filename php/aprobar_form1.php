@@ -22,7 +22,7 @@ if (isset($_POST['id'])) {
         // Asignar valores para la inserción en form2
         $id_form2 = $form1_data['id_form1'];
         $id_user = $form1_data['id_user'];
-        $table_content = '{}';  // Representación JSON vacía
+        $table_content = '[]';  // Representación JSON vacía
         $name_user = $form1_data['name_user'];
         $site_user = $form1_data['site_user'];
         $name_client = $form1_data['name_client'];
