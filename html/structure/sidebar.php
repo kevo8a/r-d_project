@@ -53,7 +53,7 @@
                 <div id="submenuForm3" class="collapse bg-lightblue rounded">
                     <a class="collapse-item text-primary" href="/r&d/html/plantilla.php">Crear
                         Formulario</a>
-                    <a class="collapse-item text-primary" href="/r&d/html/plantilla.php">Ver mis forms 3</a>
+                    <a class="collapse-item text-primary" href="/r&d/html/forms/form3_list.php">Ver mis forms 3</a>
                 </div>
 
                 <!-- Form Artículo Muestra -->
@@ -83,6 +83,7 @@
                 <h6 class="collapse-header">Validacion de Forms:</h6>
                 <a class="collapse-item" href="/r&d/html/forms/form1_list_all.php">Ver Forms 1</a>
                 <a class="collapse-item" href="/r&d/html/forms/form2_list_all.php">Ver Forms 2</a>
+                <a class="collapse-item" href="/r&d/html/forms/form3_list_all.php">Ver Forms 3</a>
             </div>
         </div>
     </li>

@@ -659,8 +659,8 @@ mysqli_close($conn);
                             <!-- Comentarios -->
                             <div class="col-md-12">
                                 <div class="mb-3">
-                                    <label for="nombre_proyecto" class="form-label">Comentarios</label>
-                                    <input type="text" class="form-control" id="Comentarios" name="Comentarios"
+                                    <label for="comentarios" class="form-label">Comentarios</label>
+                                    <input type="text" class="form-control" id="comentarios" name="comentarios"
                                         value="<?php echo $id_formulario ? htmlspecialchars($form_data['comments']) : ''; ?>"
                                         <?php echo ($role != 1 && $role != 2) ? 'readonly' : ''; ?> required>
                                 </div>

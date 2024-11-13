@@ -156,33 +156,34 @@ $result = $conn->query($sql);
     }
 
     function submitCalificacion(opcion, id) {
-    // Verificar los datos antes de enviarlos
-    console.log('Enviando datos:', { opcion, id });
+        // Define la URL según la opción seleccionada
+        const url = (opcion === 'Rechazar') ? '../../php/rechazar_form1.php' : '../../php/aprobar_form1.php';
 
-    // Enviar solicitud AJAX para aprobar o rechazar
+        // Verificar los datos antes de enviarlos
+        console.log('Enviando datos:', { opcion, id });
+
+        // Enviar solicitud AJAX para aprobar o rechazar
         $.ajax({
-        url: '../../php/aprobar_form1.php',  // Ruta del archivo PHP
-        type: 'POST',  // Usamos el método POST
-        data: {
-            id: id,  // Pasamos el ID del formulario
-            calificacion: opcion  // Agregamos el tipo de calificación (Aprobar/Rechazar)
-        },
-        success: function(response) {
-            var jsonResponse = JSON.parse(response);
-            alert(jsonResponse.message);  // Mostrar el mensaje de la respuesta
-            closeModal(id);  // Cerrar el modal después de recibir la respuesta
-            
-            if (jsonResponse.status === "success") {
-                location.reload();  // Recargar la página si el estado es "success"
+            url: url,  // Usa la URL definida basada en la opción
+            type: 'POST',
+            data: {
+                id: id,
+                calificacion: opcion
+            },
+            success: function(response) {
+                var jsonResponse = JSON.parse(response);
+                alert(jsonResponse.message);
+                closeModal(id);
+
+                if (jsonResponse.status === "success") {
+                    location.reload();
+                }
+            },
+            error: function() {
+                alert("Hubo un error en la solicitud.");
             }
-        },
-        error: function() {
-            alert("Hubo un error en la solicitud.");
-        }
-    });
-
-}
-
+        });
+    }
 </script>
 
 </body>

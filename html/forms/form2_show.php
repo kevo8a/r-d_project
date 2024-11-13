@@ -144,7 +144,13 @@ $data = json_decode($row['table_content'], true); // Decodificar JSON a un array
                                             value="<?php echo htmlspecialchars($row['step_' . $step] ?? ''); ?>" disabled>
                                     </div>
                                     <?php endfor; ?>
-
+                                    <!-- Comentarios -->
+                                    <div class="col-md-12">
+                                            <label for="comentarios" class="form-label">Comentarios</label>
+                                            <input type="text" class="form-control" id="comentarios" name="comentarios"
+                                            value="<?php echo htmlspecialchars($row['comment'] ?? '');
+                                                ?>" disabled>
+                                    </div>
                                     <!-- Campos del formulario de envío -->
                                     <div class="col-md-12 text-center mt-3">
                                         <button type="button" class="btn btn-secondary"

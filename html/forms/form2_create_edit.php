@@ -14,54 +14,6 @@ $result = $stmt->get_result();
 $row = $result->fetch_assoc();
 $data = json_decode($row['table_content'], true); // Decodificar JSON a un array
 
-// Guardar cambios del formulario
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $updatedData = [];
-
-    // Process each row and save updated data
-    $counter = 1;
-    while (isset($_POST["MTL$counter"])) {
-        $updatedData[] = [
-            "MTL" => $_POST["MTL$counter"],
-            "Material" => $_POST["Material$counter"],
-            "Calibre" => $_POST["Calibre$counter"],
-            "Peso" => $_POST["Peso$counter"],
-            "Solidos" => $_POST["Solidos$counter"]
-        ];
-        $counter++;
-    }
-
-    $jsonData = json_encode($updatedData);
-
-// Recoger valores de los pasos
-$steps = [];
-for ($step = 1; $step <= 6; $step++) {
-    $steps["step_$step"] = $_POST["proceso$step"] ?? ''; // Recoger valores de los pasos
-}
-$status = 'En Proceso';
-
-// Actualizar en la base de datos usando prepared statement
-$sql = "UPDATE form2 SET table_content = ?, status_form2 = ?, step_1 = ?, step_2 = ?, step_3 = ?, step_4 = ?, step_5 = ?, step_6 = ? WHERE id = ?";
-$stmt = $conn->prepare($sql);
-
-// Asegúrate de que la variable $jsonData tiene los datos correctos para la columna `table_content`
-// Asegúrate de que $id tiene el valor correcto para identificar el registro a actualizar
-$stmt->bind_param("ssssssssi", $jsonData,$status, $steps['step_1'], $steps['step_2'], $steps['step_3'], $steps['step_4'], $steps['step_5'], $steps['step_6'], $id);
-
-if ($stmt->execute()) {
-    echo "<script>
-            window.history.back();
-            alert('Registro actualizado correctamente.');
-          </script>";
-    exit(); // Asegúrate de que no se ejecute el resto del script después de la redirección
-} else {
-    echo "Error al actualizar el registro: " . $stmt->error;
-}
-
-
-$stmt->close();
- 
-}
 ?>
 
 <!DOCTYPE html>
@@ -76,6 +28,7 @@ $stmt->close();
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,400,600,700" rel="stylesheet">
     <link href="../../css/sb-admin-2.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body id="page-top">
@@ -200,7 +153,13 @@ $stmt->close();
                                             value="<?php echo htmlspecialchars($row['step_' . $step] ?? ''); ?>">
                                     </div>
                                     <?php endfor; ?>
-
+                                    <!-- Comentarios -->
+                                    <div class="col-md-12">
+                                            <label for="comentarios" class="form-label">Comentarios</label>
+                                            <input type="text" class="form-control" id="comentarios" name="comentarios"
+                                                value="<?php echo $id_formulario ? htmlspecialchars($form_data['comments']) : ''; 
+                                                ?>" disabled>
+                                    </div>
                                     <!-- Campos del formulario de envío -->
                                     <div class="col-md-12 text-center mt-3">
                                         <button type="submit" class="btn btn-primary">Guardar Cambios</button>
@@ -263,7 +222,38 @@ $stmt->close();
     window.onload = function() {
         calculateTotal();
     };
-    </script>
+
+$(document).ready(function() {
+    $('#form-estructure').on('submit', function(e) {
+        e.preventDefault(); // Prevenir el envío normal del formulario
+
+        // Crear un objeto FormData con los datos del formulario
+        var formData = new FormData(this);
+
+        // Enviar la solicitud AJAX
+        $.ajax({
+            url: '../../php/update_form2.php?id=' + <?php echo $_GET['id']; ?>, // Ajusta la URL al archivo PHP correcto
+            type: 'POST',
+            data: formData,
+            processData: false,  // No procesar los datos
+            contentType: false,  // No establecer el tipo de contenido (esto es importante para el FormData)
+            success: function(response) {
+                // Si la respuesta es exitosa, redirigir
+                alert('Registro actualizado correctamente.');
+                window.location.href = '/r&d/html/index.php'; // Redirigir después de actualizar
+            },
+            error: function(xhr, status, error) {
+                // Manejar errores
+                alert("Hubo un error en la comunicación con el servidor.");
+            }
+        });
+    });
+});
+</script>
+
+
+
+
 </body>
 
 </html>

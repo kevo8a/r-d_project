@@ -56,7 +56,7 @@ CREATE TABLE form1 (
     width_tolerance_mm FLOAT,
     continuous_check BOOLEAN,
     photo_distances_mm FLOAT,
-        photo_distances_tolerance_mm FLOAT,
+    photo_distances_tolerance_mm FLOAT,
     thickness_microns FLOAT,
     thickness_tolerance_microns FLOAT,
     weight_gm2 FLOAT,
@@ -97,8 +97,69 @@ CREATE TABLE form2 (
     step_3 VARCHAR(255),
     step_4 VARCHAR(255),
     step_5 VARCHAR(255),
-    step_6 VARCHAR(255)
+    step_6 VARCHAR(255),
+    comments VARCHAR(255)
 );
+
+CREATE TABLE form3 (
+    id INT AUTO_INCREMENT PRIMARY KEY,  -- Identificador único de la tabla
+    id_form3 VARCHAR(255) UNIQUE,  -- ID único para el formulario 3
+    status_form3 VARCHAR(255),  -- Estado del formulario 3
+    name_user VARCHAR(255),  -- Nombre del usuario
+    site_user VARCHAR(255),  -- Sitio del usuario
+    id_user INT,  -- ID del usuario
+    created_at VARCHAR(255),  -- Fecha de creación
+    completed_at VARCHAR(255),  -- Fecha de finalización
+    qualified_by VARCHAR(255),  -- Calificado por
+    name_client VARCHAR(255),  -- Nombre del cliente
+    project_name VARCHAR(255),  -- Nombre del proyecto
+    comments VARCHAR(255),  -- Comentarios generales
+    
+    requested_qty INT,  -- Cantidad solicitada
+    requested_units INT,  -- Unidades de la cantidad solicitada
+    billable_sample VARCHAR(10),  -- Indica si la muestra es facturable
+    photocell VARCHAR(255),  -- Indica si hay fotocelda
+    num_colors INT,  -- Número de colores
+    photocell_colors JSON NOT NULL,  -- Colores de la fotocelda
+    printing_system VARCHAR(255),  -- Sistema de impresión
+    
+    ext_diameter FLOAT,  -- Diámetro externo (mm)
+    tol_sign_ext_diameter VARCHAR(10),  -- Signo de tolerancia para el diámetro externo
+    tol_ext_diameter FLOAT,  -- Tolerancia del diámetro externo (mm)
+    
+    int_diameter FLOAT,  -- Diámetro interno (pulgadas)
+    tol_sign_int_diameter VARCHAR(10),  -- Signo de tolerancia para el diámetro interno
+    tol_int_diameter FLOAT,  -- Tolerancia del diámetro interno (pulgadas)
+    
+    coil_width FLOAT,  -- Ancho de bobina (mm)
+    tol_sign_coil_width VARCHAR(10),  -- Signo de tolerancia para el ancho de bobina
+    tol_coil_width FLOAT,  -- Tolerancia del ancho de bobina (mm)
+    
+    coil_weight_kg  FLOAT,  -- Peso de la bobina (kg)
+    tol_sign_coil_weight VARCHAR(10),  -- Signo de tolerancia para el peso de la bobina
+    tol_coil_weight_kg  FLOAT,  -- Tolerancia del peso de la bobina (kg)
+    
+    winding_count INT,  -- Número de embobinados
+    winding_direction VARCHAR(255),  -- Sentido de embobinados
+    tack_dist FLOAT,  -- Distancia entre tacómetros o fotodistancia (mm)
+    tol_sign_tack_dist VARCHAR(10),  -- Signo de tolerancia para la distancia entre tacómetros
+    tol_tack_dist FLOAT,  -- Tolerancia de la distancia entre tacómetros (mm)
+    
+    photcell1_edge_dist FLOAT,  -- Distancia de la fotocelda 1 al borde más cercano (mm)
+    tol_sign_photocell1_edge VARCHAR(10),  -- Signo de tolerancia para la distancia fotocelda 1
+    tol_photocell1_edge FLOAT,  -- Tolerancia de la distancia de fotocelda 1 al borde (mm)
+    photocell1_width FLOAT,  -- Ancho de la fotocelda 1 (mm)
+    photocell1_height FLOAT,  -- Alto de la fotocelda 1 (mm)
+    photocell1_position VARCHAR(255),  -- Posición de la fotocelda 1
+    
+    photcell2_edge_dist FLOAT,  -- Distancia de la fotocelda 2 al borde más cercano (mm)
+    tol_sign_photocell2_edge VARCHAR(10),  -- Signo de tolerancia para la distancia fotocelda 2
+    tol_photocell2_edge FLOAT,  -- Tolerancia de la distancia de fotocelda 2 al borde (mm)
+    photocell2_width FLOAT,  -- Ancho de la fotocelda 2 (mm)
+    photocell2_height FLOAT,  -- Alto de la fotocelda 2 (mm)
+    photocell2_position VARCHAR(255)  -- Posición de la fotocelda 2
+);
+
 
 -- Insert sample values into 'rol'
 INSERT INTO rol (id, description) VALUES 
