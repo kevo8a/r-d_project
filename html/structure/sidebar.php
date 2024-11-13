@@ -51,7 +51,7 @@
                     Solicitud Muestra
                 </a>
                 <div id="submenuForm3" class="collapse bg-lightblue rounded">
-                    <a class="collapse-item text-primary" href="/r&d/html/plantilla.php">Crear
+                    <a class="collapse-item text-primary" href="/r&d/html/forms/form3_create_edit.php">Crear
                         Formulario</a>
                     <a class="collapse-item text-primary" href="/r&d/html/forms/form3_list.php">Ver mis forms 3</a>
                 </div>
