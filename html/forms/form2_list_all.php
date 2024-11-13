@@ -102,12 +102,11 @@ $result = $conn->query($sql);
                                 }
 
                                 // Mostrar el botón de "Editar" solo si el estado es "Corregir"
-                                if ($row['status_form2'] === 'Corregir') {
-                                    if ($row['status_form2'] === 'Corregir' || $row['status_form2'] === 'Nuevo') {
-                                        // Cambiar el texto del botón según el estado
-                                        $button_text = ($row['status_form2'] === 'Nuevo') ? 'Completar' : 'Editar';
-                                        echo "<a href='/r&d/html/forms/form2_create_edit.php?id=" . $row['id'] . "' class='btn btn-outline-warning btn-sm ml-2'>$button_text</a>";
-                                    }
+                                if ($row['status_form2'] === 'Corregir' || $row['status_form2'] === 'Nuevo') {
+                                    // Cambiar el texto del botón según el estado
+                                    $button_text = ($row['status_form2'] === 'Nuevo') ? 'Completar' : 'Editar';
+                                    echo "<a href='/r&d/html/forms/form2_create_edit.php?id=" . $row['id'] . "' class='btn btn-outline-warning btn-sm ml-2'>$button_text</a>";
+                                }
 
                                 echo "</td>";
                                 echo "</tr>";
