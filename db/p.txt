@@ -173,6 +173,7 @@ VALUES
 (3664, 'Jonathan', 'Solis', 'Jonathan.Solis@amcor.com', 'password123', 2, 'Zacapu'),
 (4567, 'Jane', 'Smith', 'jane.smith@amcor.com', 'password456', 3, 'London'),
 (3324, 'Kevin', 'Ochoa', 'kevin.ochoa@amcor.com', 'password123', 1, 'Tlaquepaque');
+(3327, 'Jorge', 'Molina', 'jorge.molina@amcor.com', 'password123', 1, 'Tlaquepaque');
 
 -- Insert sample values into 'client'
 INSERT INTO client (name, email) VALUES 
