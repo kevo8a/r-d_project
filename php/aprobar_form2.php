@@ -32,12 +32,12 @@ if (isset($_POST['id']) && isset($_POST['calificacion'])) {
             $name_client = $form2_data['name_client'];
             $project_name = $form2_data['project_name'];
             $photocell_colors = json_encode([]);  // Si no tienes colores, puedes enviarlos como un array vacío JSON
-
+            $created_at = date("Y-m-d H:i"); 
             // Insertar en form3
             $sql2 = "INSERT INTO form3 (id_form3, status_form3, id_user, name_user, created_at, site_user, name_client, project_name, photocell_colors) 
                      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt2 = mysqli_prepare($conn, $sql2);
-            mysqli_stmt_bind_param($stmt2, "ssissssss", $id_form3, $status_form3, $id_user,$created_at, $name_user, $site_user, $name_client, $project_name, $photocell_colors);
+            mysqli_stmt_bind_param($stmt2, "ssissssss", $id_form3, $status_form3, $id_user, $name_user,$created_at, $site_user, $name_client, $project_name, $photocell_colors);
 
             // Ejecución de la inserción en form3
             if (mysqli_stmt_execute($stmt2)) {

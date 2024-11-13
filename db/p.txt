@@ -107,6 +107,7 @@ CREATE TABLE form3 (
     status_form3 VARCHAR(255),  -- Estado del formulario 3
     name_user VARCHAR(255),  -- Nombre del usuario
     site_user VARCHAR(255),  -- Sitio del usuario
+    
     id_user INT,  -- ID del usuario
     created_at VARCHAR(255),  -- Fecha de creación
     completed_at VARCHAR(255),  -- Fecha de finalización

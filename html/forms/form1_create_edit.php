@@ -765,7 +765,7 @@ $(document).ready(function() {
                 if (response.trim() === 'success') {
                     alert('Formulario guardado con éxito.');
                     // Redireccionar a la página de lista de formularios u otra acción
-                    window.history.back();
+                    window.location.href = "/r&d/html/index.php";
                 } else {
                     // Mostrar el mensaje de error devuelto por PHP
                     alert('Error: ' + response);

@@ -157,7 +157,7 @@ $data = json_decode($row['table_content'], true); // Decodificar JSON a un array
                                     <div class="col-md-12">
                                             <label for="comentarios" class="form-label">Comentarios</label>
                                             <input type="text" class="form-control" id="comentarios" name="comentarios"
-                                                value="<?php echo $id_formulario ? htmlspecialchars($form_data['comments']) : ''; 
+                                                value="<?php echo $row ? htmlspecialchars($row['comments']) : ''; 
                                                 ?>" disabled>
                                     </div>
                                     <!-- Campos del formulario de envío -->

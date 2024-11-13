@@ -1,61 +1,225 @@
 ﻿<?php
 include '../../php/db_connection.php';
 include '../../php/auth.php';
+
+// Obtener el ID del formulario de la URL (para editar)
+$id_formulario = isset($_GET['id']) ? $_GET['id'] : null;
+$form_data = [];
+
+// Si hay un ID, consultar los datos del formulario por su ID
+if ($id_formulario) {
+    $sql = "SELECT * FROM form3 WHERE id = ?";
+    $stmt = mysqli_prepare($conn, $sql);
+    mysqli_stmt_bind_param($stmt, "i", $id_formulario);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+
+    // Verificar si se encontró el formulario
+    if ($result->num_rows === 0) {
+        die('Formulario no encontrado.');
+    }
+    // Obtener los datos del formulario
+    $form_data = mysqli_fetch_assoc($result);
+}
+
+mysqli_close($conn);
 ?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <title>SB Admin 2 - Dashboard</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Amcor - Solicitud Muestra</title>
+
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom fonts for this template -->
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="../../css/sb-admin-2.css" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../../css/sb-admin-2.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="../js/js.js"></script>
 </head>
+
 
 <body id="page-top">
     <!-- Page Wrapper -->
     <div id="wrapper">
+        <!-- Sidebar -->
         <?php include '../structure/sidebar.php'; ?>
 
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
             <!-- Main Content -->
             <div id="content">
+                <!-- Navbar -->
                 <?php include '../structure/navbar.php'; ?>
 
-                <!-- Contenido -->   
-                <div class="container-fluid">
-                <div class="container mt-5">
-                    <h2 class="mb-4">Solicitud de Muestra</h2>
-                    <form>
-                        <!-- Información del Proyecto -->
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="nombreProducto" class="form-label">Nombre del proyecto/Producto</label>
-                                <input type="text" class="form-control" id="nombreProducto">
+                <!-- Contenido del Formulario -->
+                <div class="container">
+                    <h1 class="text-center mb-4"><?php echo $id_formulario ? 'Editar' : 'Crear'; ?> Formulario de
+                        Solicitud Muestra</h1>
+                    <form id="form-cotizacion" method="POST" enctype="multipart/form-data">
+                        <?php if ($id_formulario): ?>
+                        <input type="hidden" name="id_formulario" value="<?php echo $id_formulario; ?>">
+                        <?php endif; ?>
+                        <div class="row">
+                        <!-- Solicitante -->
+                        <div class="col-md-3">
+                             <div class="mb-3">
+                                <label for="solicitante" class="form-label">Solicitante</label>
+                                <input type="text" class="form-control" id="solicitante" name="solicitante" value="<?php 
+                                        // Verifica si está en modo edición (si $form_data['name_user'] tiene un valor guardado)
+                                        if (isset($form_data['name_user']) && !empty($form_data['name_user'])) {
+                                            echo htmlspecialchars($form_data['name_user'], ENT_QUOTES, 'UTF-8'); 
+                                        } else {
+                                                // Si no, muestra el nombre por defecto
+                                                echo htmlspecialchars($name . ' ' . $last_name, ENT_QUOTES, 'UTF-8'); // Ajusta esto según lo que necesites
+                                        }
+                                    ?>" readonly>
                             </div>
-                            <div class="col-md-6">
-                                <label for="solicitadoPor" class="form-label">Solicitado por</label>
-                                <input type="text" class="form-control" id="solicitadoPor">
+                        </div>                   
+                         <!-- Site -->
+                         <div class="col-md-3">
+                                <div class="mb-3">
+                                    <label for="site" class="form-label">Site</label>
+                                    <input type="text" class="form-control" id="site" name="site_user" value="<?php 
+                                            // Verifica si está en modo edición (si $form_data['site_user'] tiene un valor guardado)
+                                            if (isset($form_data['site_user']) && !empty($form_data['site_user'])) {
+                                                echo htmlspecialchars($form_data['site_user'], ENT_QUOTES, 'UTF-8'); 
+                                            } else {
+                                                // Muestra un valor por defecto cuando no hay un site_user
+                                                echo htmlspecialchars($site, ENT_QUOTES, 'UTF-8'); // Cambia $default_site por el valor por defecto que quieras
+                                            }
+                                        ?>" readonly>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="row mb-3">
-                            <div class="col-md-6">
+                            <!-- ID Usuario -->
+                            <div class="col-md-3">
+                                <div class="mb-3">
+                                    <label for="id_user" class="form-label">ID del Usuario</label>
+                                    <input type="text" class="form-control" id="id_user" name="id_user" value="<?php 
+                                            // Verifica si está en modo edición (si $form_data['id_user'] tiene un valor guardado)
+                                            if (isset($form_data['id_user']) && !empty($form_data['id_user'])) {
+                                                echo htmlspecialchars($form_data['id_user'], ENT_QUOTES, 'UTF-8'); 
+                                            } else {
+                                                // Muestra un valor por defecto cuando no hay un id_user
+                                                echo htmlspecialchars($user_id, ENT_QUOTES, 'UTF-8'); // Cambia $default_id_user por el valor por defecto que quieras
+                                            }
+                                        ?>" readonly>
+                                </div>
+                            </div>
+
+                            <!-- Calificado por -->
+                            <div class="col-md-3">
+                                <div class="mb-3">
+                                    <label for="qualified_by" class="form-label">Calificado por</label>
+                                    <input type="text" class="form-control" id="qualified_by" name="qualified_by"
+                                        value="<?php echo isset($id_formulario) && $id_formulario ? htmlspecialchars($form_data['qualified_by']) : ''; ?>"
+                                        readonly>
+                                </div>
+                            </div>
+
+                            <!-- Fecha de creación -->
+                            <div class="col-md-3">
+                                <div class="mb-3">
+                                    <label for="created_at" class="form-label">Fecha de creación</label>
+                                    <input type="text" class="form-control" id="created_at" name="created_at" readonly
+                                        value="<?php 
+                                            // Verifica si está en modo edición (si $form_data['created_at'] tiene un valor guardado)
+                                            echo isset($form_data['created_at']) && !empty($form_data['created_at']) 
+                                                ? htmlspecialchars($form_data['created_at'], ENT_QUOTES, 'UTF-8') 
+                                                : date('d-m-Y H:i'); // Muestra la fecha actual si no hay un valor guardado
+                                        ?>">
+                                </div>
+                            </div>
+
+                            <!-- Fecha de finalización -->
+                            <div class="col-md-3">
+                                <div class="mb-3">
+                                    <label for="completed_at" class="form-label">Fecha de finalización</label>
+                                    <input type="text" class="form-control" id="completed_at" name="completed_at"
+                                        value="<?php echo $id_formulario ? htmlspecialchars($form_data['completed_at']) : ''; ?>"
+                                        readonly>
+                                </div>
+                            </div>
+                            <!-- Estatus -->
+                            <div class="col-md-3">
+                                <div class="mb-3">
+                                    <label for="estatus" class="form-label">Estatus</label>
+                                    <input type="text" class="form-control" id="estatus" name="estatus"
+                                        value="<?php echo $id_formulario ? htmlspecialchars($form_data['status_form3']) : 'En Proceso'; ?>"
+                                        readonly>
+                                </div>
+                            </div>
+
+                            <!-- folio -->
+                            <div class="col-md-3">
+                                <div class="mb-3">
+                                    <label for="folio" class="form-label">Folio</label>
+                                    <input type="text" class="form-control" id="folio" name="folio"
+                                        value="<?php echo $id_formulario ? htmlspecialchars($form_data['id_form3']): ''; ?>"
+                                        readonly>
+                                </div>
+                            </div>
+                        <!-- Cliente -->
+                        <div class="col-md-6">
+                            <div class="mb-3">
                                 <label for="cliente" class="form-label">Cliente</label>
-                                <input type="text" class="form-control" id="cliente">
-                            </div>
-                            <div class="col-md-6">
-                                <label for="cantidadSolicitada" class="form-label">Cantidad Solicitada</label>
-                                <input type="text" class="form-control" id="cantidadSolicitada">
+
+                                <?php
+                                require '../../php/db_connection.php';
+
+                                // Obtener clientes de la base de datos
+                                $sql_clientes = "SELECT name FROM client";
+                                $result_clientes = mysqli_query($conn, $sql_clientes);
+
+                                // Revisar si el formulario está en modo edición y tiene un cliente asignado
+                                $isReadOnly = ($id_formulario && !empty($form_data['name_client'])) ? 'disabled' : '';
+                                ?>
+
+                                <!-- Lista de selección de cliente, desactivada si ya tiene cliente asignado -->
+                                <select class="form-control" id="cliente" name="cliente" required <?= $isReadOnly ?>>
+                                    <option value="" disabled <?= !$id_formulario ? 'selected' : '' ?>>Selecciona un cliente</option>
+
+                                    <?php
+                                    if ($result_clientes) {
+                                        while ($row_cliente = mysqli_fetch_assoc($result_clientes)) {
+                                            // Selecciona el cliente actual del formulario si se está editando
+                                            $selected = ($id_formulario && $row_cliente['name'] == $form_data['name_client']) ? 'selected' : '';
+                                            echo '<option value="' . htmlspecialchars($row_cliente['name']) . '" ' . $selected . '>' . htmlspecialchars($row_cliente['name']) . '</option>';
+                                        }
+                                    }
+                                    mysqli_close($conn);
+                                    ?>
+                                </select>
                             </div>
                         </div>
 
+                        <!-- Nombre de proyecto -->
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="nombre_proyecto" class="form-label">Nombre del Proyecto/Producto</label>
+
+                                <?php
+                                // Determinar si el campo debe estar en solo lectura (readonly) si tiene un valor de proyecto
+                                $isReadOnly = ($id_formulario && !empty($form_data['project_name'])) ? 'readonly' : '';
+                                ?>
+
+                                <input type="text" class="form-control" id="nombre_proyecto" name="nombre_proyecto"
+                                    value="<?php echo $id_formulario ? htmlspecialchars($form_data['project_name']) : ''; ?>"
+                                    required <?= $isReadOnly ?>>
+
+                            </div>
+                        </div>
                         <!-- Opciones adicionales -->
                         <div class="row mb-3">
                             <div class="col-md-6">
