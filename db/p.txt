@@ -117,7 +117,7 @@ CREATE TABLE form3 (
     comments VARCHAR(255),  -- Comentarios generales
     
     requested_qty INT,  -- Cantidad solicitada
-    requested_units INT,  -- Unidades de la cantidad solicitada
+    requested_units VARCHAR(255),  -- Unidades de la cantidad solicitada
     billable_sample VARCHAR(10),  -- Indica si la muestra es facturable
     photocell VARCHAR(255),  -- Indica si hay fotocelda
     num_colors INT,  -- Número de colores
