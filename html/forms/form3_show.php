@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 include '../../php/db_connection.php';
 include '../../php/auth.php';
 
@@ -63,7 +63,7 @@ mysqli_close($conn);
 
                 <!-- Contenido del Formulario -->
                 <div class="container">
-                    <h1 class="text-center mb-4"><?php echo $id_formulario ? 'Editar' : 'Crear'; ?> Formulario de
+                    <h1 class="text-center mb-4">Ver Formulario de
                         Solicitud Muestra</h1>
                     <form id="form-muestra" method="POST" enctype="multipart/form-data">
                         <?php if ($id_formulario): ?>
@@ -81,12 +81,13 @@ mysqli_close($conn);
                                         if (isset($form_data['name_user']) && !empty($form_data['name_user'])) {
                                             echo htmlspecialchars($form_data['name_user'], ENT_QUOTES, 'UTF-8'); 
                                         } else {
-                                                // Si no, muestra el nombre por defecto
-                                                echo htmlspecialchars($name . ' ' . $last_name, ENT_QUOTES, 'UTF-8'); // Ajusta esto según lo que necesites
+                                            // Si no, muestra el nombre por defecto
+                                            echo htmlspecialchars($name . ' ' . $last_name, ENT_QUOTES, 'UTF-8'); 
                                         }
                                     ?>" readonly>
                                 </div>
                             </div>
+
                             <!-- Site -->
                             <div class="col-md-3">
                                 <div class="mb-3">
@@ -171,38 +172,29 @@ mysqli_close($conn);
                                         readonly>
                                 </div>
                             </div>
+
                             <!-- Cliente -->
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="cliente" class="form-label">Cliente</label>
-
-                                    <?php
-                                require '../../php/db_connection.php';
-
-                                // Obtener clientes de la base de datos
-                                $sql_clientes = "SELECT name FROM client";
-                                $result_clientes = mysqli_query($conn, $sql_clientes);
-
-                                // Revisar si el formulario está en modo edición y tiene un cliente asignado
-                                $isReadOnly = ($id_formulario && !empty($form_data['name_client'])) ? 'disabled' : '';
-                                ?>
-
-                                    <!-- Lista de selección de cliente, desactivada si ya tiene cliente asignado -->
-                                    <select class="form-control" id="cliente" name="cliente" required
-                                        <?= $isReadOnly ?>>
-                                        <option value="" disabled <?= !$id_formulario ? 'selected' : '' ?>>Selecciona un
-                                            cliente</option>
-
+                                    <select class="form-control" id="cliente" name="cliente" readonly>
+                                        <option value="" disabled selected>Selecciona un cliente</option>
                                         <?php
-                                    if ($result_clientes) {
-                                        while ($row_cliente = mysqli_fetch_assoc($result_clientes)) {
-                                            // Selecciona el cliente actual del formulario si se está editando
-                                            $selected = ($id_formulario && $row_cliente['name'] == $form_data['name_client']) ? 'selected' : '';
-                                            echo '<option value="' . htmlspecialchars($row_cliente['name']) . '" ' . $selected . '>' . htmlspecialchars($row_cliente['name']) . '</option>';
+                                        require '../../php/db_connection.php';
+
+                                        $sql_clientes = "SELECT name FROM client";
+                                        $result_clientes = mysqli_query($conn, $sql_clientes);
+
+                                        if ($result_clientes) {
+                                            while ($row_cliente = mysqli_fetch_assoc($result_clientes)) {
+                                                // Selecciona el cliente actual del formulario si se está editando
+                                                $selected = ($id_formulario && $row_cliente['name'] == $form_data['name_client']) ? 'selected' : '';
+                                                echo '<option value="' . htmlspecialchars($row_cliente['name']) . '" ' . $selected . '>' . htmlspecialchars($row_cliente['name']) . '</option>';
+                                            }
                                         }
-                                    }
-                                    mysqli_close($conn);
-                                    ?>
+
+                                        mysqli_close($conn);
+                                        ?>
                                     </select>
                                 </div>
                             </div>
@@ -211,36 +203,26 @@ mysqli_close($conn);
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="nombre_proyecto" class="form-label">Nombre del Proyecto/Producto</label>
-                                    <?php
-                                // Determinar si el campo debe estar en solo lectura (readonly) si tiene un valor de proyecto
-                                $isReadOnly = ($id_formulario && !empty($form_data['project_name'])) ? 'readonly' : '';
-                                ?>
                                     <input type="text" class="form-control" id="nombre_proyecto" name="nombre_proyecto"
                                         value="<?php echo $id_formulario ? htmlspecialchars($form_data['project_name']) : ''; ?>"
-                                        required <?= $isReadOnly ?>>
-
+                                        readonly>
                                 </div>
                             </div>
                             <!-- Cantidad Solicitada -->
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="cantidad_solicitada" class="form-label">Cantidad Solicitada</label>
-                                    <?php
-                                    // Determinar si el campo debe estar en solo lectura (readonly) si tiene un valor de cantidad solicitada
-                                    $isReadOnly = ($id_formulario && !empty($form_data['requested_qty'])) ? : '';
-                                    ?>
                                     <input type="text" class="form-control" id="cantidad_solicitada"
                                         name="cantidad_solicitada"
                                         value="<?php echo $id_formulario ? htmlspecialchars($form_data['requested_qty']) : ''; ?>"
-                                        required <?= $isReadOnly ?>>
+                                        readonly>
                                 </div>
                             </div>
-
                             <!-- Unidades Cantidad Solicitada -->
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="unidad_cantidad" class="form-label">Unidades Cantidad Solicitada</label>
-                                    <select class="form-select" id="unidad_cantidad" name="unidad_cantidad">
+                                    <select class="form-select" id="unidad_cantidad" name="unidad_cantidad" disabled>
                                         <option value="" disabled selected>Selecciona una opción</option>
                                         <option value="unidades"
                                             <?php echo (isset($form_data['requested_units']) && $form_data['requested_units'] == 'unidades') ? 'selected' : ''; ?>>
@@ -271,7 +253,7 @@ mysqli_close($conn);
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="facturable" class="form-label">Muestra Facturable</label>
-                                    <select class="form-select" id="facturable" name="facturable">
+                                    <select class="form-select" id="facturable" name="facturable" disabled>
                                         <option value="" disabled selected>Selecciona una opción</option>
                                         <option value="si"
                                             <?php echo (isset($form_data['billable_sample']) && $form_data['billable_sample'] == 'si') ? 'selected' : ''; ?>>
@@ -287,7 +269,7 @@ mysqli_close($conn);
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="fotocelda" class="form-label">¿Fotocelda?</label>
-                                    <select class="form-select" id="fotocelda" name="fotocelda">
+                                    <select class="form-select" id="fotocelda" name="fotocelda" disabled>
                                         <option value="" disabled selected>Selecciona una opción</option>
                                         <option value="si"
                                             <?php echo (isset($form_data['photocell']) && $form_data['photocell'] == 'si') ? 'selected' : ''; ?>>
@@ -302,9 +284,9 @@ mysqli_close($conn);
                             <!-- Número de Colores -->
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="num_colores" class="form-label">Número de Colores</label>
-                                    <input type="number" class="form-control" id="num_colores" name="num_colores"
-                                        value="<?php echo isset($form_data['num_colors']) ? htmlspecialchars($form_data['num_colors']) : ''; ?>" />
+                                    <label for="num_colores" class="form-label">Número de Colores</labelreadonly>
+                                        <input type="number" class="form-control" id="num_colores" name="num_colores"
+                                            value="<?php echo isset($form_data['num_colors']) ? htmlspecialchars($form_data['num_colors']) : ''; ?>" />
                                 </div>
                             </div>
                             <!-- Colores de la Fotocelda -->
@@ -312,7 +294,7 @@ mysqli_close($conn);
                                 <div class="mb-3">
                                     <label for="colores_fotocelda" class="form-label">Colores de la Fotocelda</label>
                                     <input type="text" class="form-control" id="colores_fotocelda"
-                                        name="colores_fotocelda"
+                                        name="colores_fotocelda" readonly
                                         value="<?php echo isset($form_data['']) ? htmlspecialchars($form_data['photocell_colors']) : ''; ?>" />
                                 </div>
                             </div>
@@ -320,7 +302,7 @@ mysqli_close($conn);
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="sistema_impresion" class="form-label">Sistema de Impresión</label>
-                                    <select class="form-select" id="sistema_impresion" name="sistema_impresion"
+                                    <select class="form-select" id="sistema_impresion" name="sistema_impresion" disabled
                                         onchange="toggleColores()">
                                         <option value="" disabled selected>Selecciona una opción</option>
                                         <option value="rotograbado"
@@ -346,13 +328,15 @@ mysqli_close($conn);
                                 <div class="mb-3">
                                     <label for="ext_diameter" class="form-label">Diámetro Externo (mm)</label>
                                     <input type="number" class="form-control" id="ext_diameter" name="ext_diameter"
+                                        readonly
                                         value="<?= $id_formulario ? htmlspecialchars($form_data['ext_diameter']) : ''; ?>">
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="mb-3">
                                     <label for="tol_sign_ext_diameter" class="form-label">Signo Tolerancia</label>
-                                    <select class="form-select" id="tol_sign_ext_diameter" name="tol_sign_ext_diameter">
+                                    <select class="form-select" id="tol_sign_ext_diameter" name="tol_sign_ext_diameter"
+                                        disabled>
                                         <option value="" disabled <?= !$id_formulario ? 'selected' : ''; ?>>Seleccionar
                                         </option>
                                         <option value="+"
@@ -372,7 +356,7 @@ mysqli_close($conn);
                                     <label for="tol_ext_diameter" class="form-label">Tolerancia Diámetro
                                         Externo
                                         (mm)</label>
-                                    <input type="text" class="form-control" id="tol_ext_diameter"
+                                    <input type="text" class="form-control" id="tol_ext_diameter" readonly
                                         name="tol_ext_diameter"
                                         value="<?= $id_formulario ? htmlspecialchars($form_data['tol_ext_diameter']) : ''; ?>">
                                 </div>
@@ -382,13 +366,15 @@ mysqli_close($conn);
                                 <div class="mb-3">
                                     <label for="int_diameter" class="form-label">Diámetro Interno (pulgadas)</label>
                                     <input type="number" class="form-control" id="int_diameter" name="int_diameter"
+                                        readonly
                                         value="<?= $id_formulario ? htmlspecialchars($form_data['int_diameter']) : ''; ?>">
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="mb-3">
                                     <label for="tol_sign_int_diameter" class="form-label">Signo Tolerancia</label>
-                                    <select class="form-select" id="tol_sign_int_diameter" name="tol_sign_int_diameter">
+                                    <select class="form-select" id="tol_sign_int_diameter" name="tol_sign_int_diameter"
+                                        disabled>
                                         <option value="" disabled <?= !$id_formulario ? 'selected' : ''; ?>>Seleccionar
                                         </option>
                                         <option value="+"
@@ -407,7 +393,7 @@ mysqli_close($conn);
                                 <div class="mb-3">
                                     <label for="tol_int_diameter" class="form-label">Tolerancia Diámetro Interno
                                         (pulgadas)</label>
-                                    <input type="text" class="form-control" id="tol_int_diameter"
+                                    <input type="text" class="form-control" id="tol_int_diameter" readonly
                                         name="tol_int_diameter"
                                         value="<?= $id_formulario ? htmlspecialchars($form_data['tol_int_diameter']) : ''; ?>">
                                 </div>
@@ -416,14 +402,15 @@ mysqli_close($conn);
                             <div class="col-md-5">
                                 <div class="mb-3">
                                     <label for="coil_width" class="form-label">Ancho de Bobina (mm)</label>
-                                    <input type="number" class="form-control" id="coil_width" name="coil_width"
+                                    <input type="number" class="form-control" id="coil_width" name="coil_width" readonly
                                         value="<?= $id_formulario ? htmlspecialchars($form_data['coil_width']) : ''; ?>">
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="mb-3">
                                     <label for="tol_sign_coil_width" class="form-label">Signo Tolerancia</label>
-                                    <select class="form-select" id="tol_sign_coil_width" name="tol_sign_coil_width">
+                                    <select class="form-select" id="tol_sign_coil_width" name="tol_sign_coil_width"
+                                        disabled>
                                         <option value="" disabled <?= !$id_formulario ? 'selected' : ''; ?>>Seleccionar
                                         </option>
                                         <option value="+"
@@ -443,6 +430,7 @@ mysqli_close($conn);
                                     <label for="tol_coil_width" class="form-label">Tolerancia Ancho de Bobina
                                         (mm)</label>
                                     <input type="text" class="form-control" id="tol_coil_width" name="tol_coil_width"
+                                        readonly
                                         value="<?= $id_formulario ? htmlspecialchars($form_data['tol_coil_width']) : ''; ?>">
                                 </div>
                             </div>
@@ -451,13 +439,15 @@ mysqli_close($conn);
                                 <div class="mb-3">
                                     <label for="coil_weight_kg" class="form-label">Peso de la Bobina (Kg)</label>
                                     <input type="number" class="form-control" id="coil_weight_kg" name="coil_weight_kg"
+                                        readonly
                                         value="<?= $id_formulario ? htmlspecialchars($form_data['coil_weight_kg']) : ''; ?>">
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="mb-3">
                                     <label for="tol_sign_coil_weight" class="form-label">Signo Tolerancia</label>
-                                    <select class="form-select" id="tol_sign_coil_weight" name="tol_sign_coil_weight">
+                                    <select class="form-select" id="tol_sign_coil_weight" name="tol_sign_coil_weight"
+                                        disabled>
                                         <option value="" disabled <?= !$id_formulario ? 'selected' : ''; ?>>Seleccionar
                                         </option>
                                         <option value="+"
@@ -476,7 +466,7 @@ mysqli_close($conn);
                                 <div class="mb-3">
                                     <label for="tol_coil_weight_kg" class="form-label">Tolerancia Peso de la Bobina
                                         (Kg)</label>
-                                    <input type="number" class="form-control" id="tol_coil_weight_kg"
+                                    <input type="number" class="form-control" id="tol_coil_weight_kg" readonly
                                         name="tol_coil_weight_kg"
                                         value="<?= $id_formulario ? htmlspecialchars($form_data['tol_coil_weight_kg']) : ''; ?>">
                                 </div>
@@ -489,7 +479,7 @@ mysqli_close($conn);
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="winding_count" class="form-label">Número de Embobinado</label>
-                                    <select class="form-select" id="winding_count" name="winding_count">
+                                    <select class="form-select" id="winding_count" name="winding_count" disabled>
                                         <option value="" disabled <?= !$id_formulario ? 'selected' : ''; ?>>Seleccionar
                                             opción</option>
                                         <option value="1"
@@ -510,7 +500,8 @@ mysqli_close($conn);
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="winding_direction" class="form-label">Sentido Embobinado</label>
-                                    <select class="form-select" id="winding_direction" name="winding_direction">
+                                    <select class="form-select" id="winding_direction" name="winding_direction"
+                                        disabled>
                                         <option value="" disabled <?= !$id_formulario ? 'selected' : ''; ?>>Seleccionar
                                             opción</option>
                                         <option value="dentro"
@@ -534,14 +525,15 @@ mysqli_close($conn);
                                 <div class="mb-3">
                                     <label for="tack_dist" class="form-label">Distancia entre Tacas o Fotodistancia
                                         (mm)</label>
-                                    <input type="number" class="form-control" id="tack_dist" name="tack_dist"
+                                    <input type="number" class="form-control" id="tack_dist" name="tack_dist" readonly
                                         value="<?= $id_formulario ? htmlspecialchars($form_data['tack_dist'], ENT_QUOTES, 'UTF-8') : ''; ?>">
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="mb-3">
                                     <label for="tol_sign_tack_dist" class="form-label">Signo Tolerancia</label>
-                                    <select class="form-select" id="tol_sign_tack_dist" name="tol_sign_tack_dist">
+                                    <select class="form-select" id="tol_sign_tack_dist" name="tol_sign_tack_dist"
+                                        disabled>
                                         <option value="" disabled <?= !$id_formulario ? 'selected' : ''; ?>>Seleccionar
                                         </option>
                                         <option value="+"
@@ -561,6 +553,7 @@ mysqli_close($conn);
                                     <label for="tol_tack_dist" class="form-label">Tolerancia Distancia entre Tacas
                                         (mm)</label>
                                     <input type="text" class="form-control" id="tol_tack_dist" name="tol_tack_dist"
+                                        readonly
                                         value="<?= $id_formulario ? htmlspecialchars($form_data['tol_tack_dist'], ENT_QUOTES, 'UTF-8') : ''; ?>">
                                 </div>
                             </div>
@@ -576,7 +569,7 @@ mysqli_close($conn);
                                 <div class="mb-3">
                                     <label for="photcell1_edge_dist" class="form-label">Distancia Fotocelda 1 al borde
                                         más cercano (mm)</label>
-                                    <input type="number" class="form-control" id="photcell1_edge_dist"
+                                    <input type="number" class="form-control" id="photcell1_edge_dist" readonly
                                         name="photcell1_edge_dist"
                                         value="<?= $id_formulario ? htmlspecialchars($form_data['photcell1_edge_dist'], ENT_QUOTES, 'UTF-8') : ''; ?>">
                                 </div>
@@ -584,7 +577,7 @@ mysqli_close($conn);
                             <div class="col-md-2">
                                 <div class="mb-3">
                                     <label for="tol_sign_photocell1_edge" class="form-label">Signo Tolerancia</label>
-                                    <select class="form-select" id="tol_sign_photocell1_edge"
+                                    <select class="form-select" id="tol_sign_photocell1_edge" disabled
                                         name="tol_sign_photocell1_edge">
                                         <option value="" disabled <?= !$id_formulario ? 'selected' : ''; ?>>Seleccionar
                                         </option>
@@ -605,7 +598,7 @@ mysqli_close($conn);
                                 <div class="mb-3">
                                     <label for="tol_photocell1_edge" class="form-label">Tolerancia Fotocelda 1 al borde
                                         más cercano (mm)</label>
-                                    <input type="number" class="form-control" id="tol_photocell1_edge"
+                                    <input type="number" class="form-control" id="tol_photocell1_edge" readonly
                                         name="tol_photocell1_edge"
                                         value="<?= $id_formulario ? htmlspecialchars($form_data['tol_photocell1_edge'], ENT_QUOTES, 'UTF-8') : ''; ?>">
                                 </div>
@@ -613,7 +606,7 @@ mysqli_close($conn);
                             <div class="col-md-4">
                                 <div class="mb-3">
                                     <label for="photocell1_width" class="form-label">Fotocelda 1 Ancho (mm)</label>
-                                    <input type="number" class="form-control" id="photocell1_width"
+                                    <input type="number" class="form-control" id="photocell1_width" readonly
                                         name="photocell1_width"
                                         value="<?= $id_formulario ? htmlspecialchars($form_data['photocell1_width'], ENT_QUOTES, 'UTF-8') : ''; ?>">
                                 </div>
@@ -621,7 +614,7 @@ mysqli_close($conn);
                             <div class="col-md-4">
                                 <div class="mb-3">
                                     <label for="photocell1_height" class="form-label">Fotocelda 1 Alto (mm)</label>
-                                    <input type="number" class="form-control" id="photocell1_height"
+                                    <input type="number" class="form-control" id="photocell1_height" readonly
                                         name="photocell1_height"
                                         value="<?= $id_formulario ? htmlspecialchars($form_data['photocell1_height'], ENT_QUOTES, 'UTF-8') : ''; ?>">
                                 </div>
@@ -630,7 +623,8 @@ mysqli_close($conn);
                             <div class="col-md-4">
                                 <div class="mb-3">
                                     <label for="photocell1_position" class="form-label">Posición Fotocelda 1</label>
-                                    <select class="form-select" id="photocell1_position" name="photocell1_position">
+                                    <select class="form-select" id="photocell1_position" name="photocell1_position"
+                                        disabled>
                                         <option value="" disabled <?= !$id_formulario ? 'selected' : ''; ?>>Seleccionar
                                             opción</option>
                                         <option value="izquierda"
@@ -659,7 +653,7 @@ mysqli_close($conn);
                                 <div class="mb-3">
                                     <label for="photcell2_edge_dist" class="form-label">Distancia Fotocelda 2 al borde
                                         más cercano (mm)</label>
-                                    <input type="number" class="form-control" id="photcell2_edge_dist"
+                                    <input type="number" class="form-control" id="photcell2_edge_dist" readonly
                                         name="photcell2_edge_dist"
                                         value="<?= $id_formulario ? htmlspecialchars($form_data['photcell2_edge_dist'], ENT_QUOTES, 'UTF-8') : ''; ?>">
                                 </div>
@@ -667,7 +661,7 @@ mysqli_close($conn);
                             <div class="col-md-2">
                                 <div class="mb-3">
                                     <label for="tol_sign_photocell2_edge" class="form-label">Signo Tolerancia</label>
-                                    <select class="form-select" id="tol_sign_photocell2_edge"
+                                    <select class="form-select" id="tol_sign_photocell2_edge" disabled
                                         name="tol_sign_photocell2_edge">
                                         <option value="" disabled <?= !$id_formulario ? 'selected' : ''; ?>>Seleccionar
                                         </option>
@@ -688,7 +682,7 @@ mysqli_close($conn);
                                 <div class="mb-3">
                                     <label for="tol_photocell2_edge" class="form-label">Tolerancia Fotocelda 2 al borde
                                         más cercano (mm)</label>
-                                    <input type="number" class="form-control" id="tol_photocell2_edge"
+                                    <input type="number" class="form-control" id="tol_photocell2_edge" readonly
                                         name="tol_photocell2_edge"
                                         value="<?= $id_formulario ? htmlspecialchars($form_data['tol_photocell2_edge'], ENT_QUOTES, 'UTF-8') : ''; ?>">
                                 </div>
@@ -696,7 +690,7 @@ mysqli_close($conn);
                             <div class="col-md-4">
                                 <div class="mb-3">
                                     <label for="photocell2_width" class="form-label">Fotocelda 2 Ancho (mm)</label>
-                                    <input type="number" class="form-control" id="photocell2_width"
+                                    <input type="number" class="form-control" id="photocell2_width" readonly
                                         name="photocell2_width"
                                         value="<?= $id_formulario ? htmlspecialchars($form_data['photocell2_width'], ENT_QUOTES, 'UTF-8') : ''; ?>">
                                 </div>
@@ -704,7 +698,7 @@ mysqli_close($conn);
                             <div class="col-md-4">
                                 <div class="mb-3">
                                     <label for="photocell2_height" class="form-label">Fotocelda 2 Alto (mm)</label>
-                                    <input type="number" class="form-control" id="photocell2_height"
+                                    <input type="number" class="form-control" id="photocell2_height" readonly
                                         name="photocell2_height"
                                         value="<?= $id_formulario ? htmlspecialchars($form_data['photocell2_height'], ENT_QUOTES, 'UTF-8') : ''; ?>">
                                 </div>
@@ -713,7 +707,8 @@ mysqli_close($conn);
                             <div class="col-md-4">
                                 <div class="mb-3">
                                     <label for="photocell2_position" class="form-label">Posición Fotocelda 2</label>
-                                    <select class="form-select" id="photocell2_position" name="photocell2_position">
+                                    <select class="form-select" id="photocell2_position" name="photocell2_position"
+                                        disabled>
                                         <option value="" disabled <?= !$id_formulario ? 'selected' : ''; ?>>Seleccionar
                                             opción</option>
                                         <option value="izquierda"
@@ -725,7 +720,7 @@ mysqli_close($conn);
                                             Derecha
                                         </option>
                                         <option value="centro"
-                                            <?= $id_formulario && $form_data['photocell2_position'] == 'centro' ? 'selected' : ''; ?>>
+                                            <?= $id_formulario && $form_data['posicionFotocelda2'] == 'centro' ? 'selected' : ''; ?>>
                                             Centro
                                         </option>
                                     </select>
@@ -734,7 +729,11 @@ mysqli_close($conn);
 
 
                         </div>
-                        <button type="submit" id="submit-btn" class="btn btn-primary">Enviar</button>
+                        <div class="d-flex justify-content-center">
+                            <button type="button" id="back-btn" class="btn btn-primary"
+                                onclick="window.history.back();">Regresar</button>
+                        </div>
+
                     </form>
                 </div>
             </div>
@@ -749,41 +748,7 @@ mysqli_close($conn);
     <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
     <script src="../js/sb-admin-2.min.js"></script>
 
-    <!-- Custom script -->
-    <script>
-    $(document).ready(function() {
-        $('#submit-btn').click(function(event) {
-            event.preventDefault(); // Evita el envío predeterminado del formulario
 
-            // Captura los datos del formulario
-            var formData = new FormData($('#form-muestra')[0]); // Usa FormData para incluir archivos
-
-            // Realiza la solicitud AJAX
-            $.ajax({
-                url: '../../php/<?php echo isset($id_formulario) ? 'update_form3.php' : 'send_form3.php'; ?>',
-                type: 'POST',
-                data: formData,
-                contentType: false, // Evita que jQuery establezca el Content-Type
-                processData: false, // Evita que jQuery procese los datos
-                success: function(response) {
-                    // Verifica el contenido de la respuesta y actúa en consecuencia
-                    if (response.trim() === 'success') {
-                        alert('Formulario guardado con éxito.');
-                        // Redireccionar a la página de lista de formularios u otra acción
-                        window.location.href = "/r&d/html/index.php";
-                    } else {
-                        // Mostrar el mensaje de error devuelto por PHP
-                        alert('Error: ' + response);
-                    }
-                },
-                error: function() {
-                    // Muestra una alerta de error si hay algún problema con la solicitud
-                    alert('Hubo un error al procesar la solicitud. Intenta de nuevo.');
-                }
-            });
-        });
-    });
-    </script>
 </body>
 
 </html>

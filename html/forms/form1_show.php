@@ -181,7 +181,7 @@ mysqli_close($conn);
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="cliente" class="form-label">Cliente</label>
-                                    <select class="form-control" id="cliente" name="cliente" disabled>
+                                    <select class="form-control" id="cliente" name="cliente" readonly>
                                         <option value="" disabled selected>Selecciona un cliente</option>
                                         <?php
                                         require '../../php/db_connection.php';

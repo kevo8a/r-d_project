@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($stmt) {
         // Bind the parameters to the prepared statement
         mysqli_stmt_bind_param($stmt, "ssisissssssiisiiiiiiiiiiiiiiiiiiiiii", 
-  $cliente                  ,$nombre_proyecto , $numero_rfq        ,
+        $cliente                  ,$nombre_proyecto        , $numero_rfq        ,
         $estatus                  , $numero_rfq            , $formato_entrega   ,
         $formato_empaque          , $elemento_conveniencia , $proceso_llenado   ,
         $sistema_empaque          , $unidad_venta          , $volumen_pedido    ,
