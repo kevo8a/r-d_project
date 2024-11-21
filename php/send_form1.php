@@ -101,9 +101,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Preparar la declaración SQL
     $stmt = mysqli_prepare($conn, "
         INSERT INTO form1 (
-            id_form1, status_form1,
-            id_user, name_user,
-            name_client, project_name,
+            id_form1, status_form1, id_user, 
+            name_user,name_client, project_name,
             rfq_number, delivery_format,
             packaging_format, convenience_element_of_packaging,
             filling_process, packaging_system,
