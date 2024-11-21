@@ -6,6 +6,7 @@ include 'auth.php';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Retrieve the form data
     $id_formulario            = isset($_POST['id_formulario'])              ? $_POST['id_formulario'] : null;
+    $estatus                   = 'En Proceso';
     $cantidad_solicitada      = isset($_POST['cantidad_solicitada'])        ? $_POST['cantidad_solicitada'] : '';
     $unidad_cantidad          = isset($_POST['unidad_cantidad'])            ? $_POST['unidad_cantidad'] : '';
     $facturable               = isset($_POST['facturable'])                 ? $_POST['facturable'] : '';
@@ -59,13 +60,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             photcell1_edge_dist =?, tol_sign_photocell1_edge =?, tol_photocell1_edge   =?, 
             photocell1_width    =?, photocell1_height        =?, photocell1_position   =?, 
             photcell2_edge_dist =?, tol_sign_photocell2_edge =?, tol_photocell2_edge   =?, 
-            photocell2_width    =?, photocell2_height        =?, photocell2_position   =?
+            photocell2_width    =?, photocell2_height        =?, photocell2_position   =? , status_form3   =?
     WHERE id = ?";
     $stmt = mysqli_prepare($conn, $sql);
 
     if ($stmt) {
         // Bind the parameters to the prepared statement
-        mysqli_stmt_bind_param($stmt, "isssisisiisiisiisiisisiisiiisisiiisi", 
+        mysqli_stmt_bind_param($stmt, "isssisisiisiisiisiisisiisiiisisiiissi", 
         $cantidad_solicitada , $unidad_cantidad          , $facturable            , 
         $fotocelda           , $num_colores              ,
         $sistema_impresion   , $ext_diameter             , $tol_sign_ext_diameter , 
@@ -77,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $photcell1_edge_dist , $tol_sign_photocell1_edge , $tol_photocell1_edge   , 
         $photocell1_width    , $photocell1_height        , $photocell1_position   , 
         $photcell2_edge_dist , $tol_sign_photocell2_edge , $tol_photocell2_edge   , 
-        $photocell2_width    , $photocell2_height        , $photocell2_position   ,
+        $photocell2_width    , $photocell2_height        , $photocell2_position   , $estatus   ,
         $id_formulario);
 
         // Execute the query

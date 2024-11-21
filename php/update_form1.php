@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $cliente                   = isset($_POST['cliente'])                  ? $_POST['cliente'] : '';
     $nombre_proyecto           = isset($_POST['nombre_proyecto'])          ? $_POST['nombre_proyecto'] : '';
     $numero_rfq                = isset($_POST['numero_rfq'])               ? $_POST['numero_rfq'] : '';
-    $estatus                   = isset($_POST['estatus'])                  ? $_POST['estatus'] : '';
+    $estatus                   = 'En Proceso';
     $numero_rfq                = isset($_POST['numero_rfq'])               ? $_POST['numero_rfq'] : '';
     $formato_entrega           = isset($_POST['formato_entrega'])          ? $_POST['formato_entrega'] : '';
     $formato_empaque           = isset($_POST['formato_empaque'])          ? $_POST['formato_empaque'] : '';
