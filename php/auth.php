@@ -29,11 +29,11 @@ if (!isset($_SESSION['user_id'])) {
 session_regenerate_id(true);
 
 // Obtener los datos del usuario de la sesión
-$user_id = $_SESSION['user_id'];
-$name = htmlspecialchars($_SESSION['user_name'], ENT_QUOTES, 'UTF-8');
+$user_id   = $_SESSION['user_id'];
+$name      = htmlspecialchars($_SESSION['user_name'], ENT_QUOTES, 'UTF-8');
 $last_name = htmlspecialchars($_SESSION['user_last_name'], ENT_QUOTES, 'UTF-8');
-$site = htmlspecialchars($_SESSION['site'], ENT_QUOTES, 'UTF-8');
-$role = $_SESSION['id_rol'] ?? null; // Si no está definido, será null
+$site      = htmlspecialchars($_SESSION['site'], ENT_QUOTES, 'UTF-8');
+$role      = $_SESSION['id_rol'] ?? null; // Si no está definido, será null
 
 // Validar el rol del usuario (si lo necesitas para accesos específicos)
 if ($role === null) {

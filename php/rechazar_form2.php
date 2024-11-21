@@ -22,10 +22,10 @@ if (isset($_POST['id'])) {
 
         // Ejecutar consulta y verificar si fue exitosa
         if (mysqli_stmt_execute($stmt)) {
-            $response["status"] = "success";
+            $response["status"]  = "success";
             $response["message"] = "Formulario actualizado a 'Corregir'.";
         } else {
-            $response["status"] = "error";
+            $response["status"]  = "error";
             $response["message"] = "Error al actualizar form2: " . mysqli_stmt_error($stmt);
         }
 

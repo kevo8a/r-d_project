@@ -20,21 +20,29 @@ if (isset($_POST['id'])) {
         $form1_data = $result->fetch_assoc();
 
         // Asignar valores para la inserción en form2
-        $id_form2 = $form1_data['id_form1'];
-        $id_user = $form1_data['id_user'];
+        $id_form2      = $form1_data['id_form1'];
+        $id_user       = $form1_data['id_user'];
         $table_content = '[]';  // Representación JSON vacía
-        $name_user = $form1_data['name_user'];
-        $site_user = $form1_data['site_user'];
-        $name_client = $form1_data['name_client'];
-        $project_name = $form1_data['project_name'];
-        $status_form2 = 'Nuevo';  // Estado inicial en form2
-        $created_at = date("Y-m-d H:i");
+        $name_user     = $form1_data['name_user'];
+        $site_user     = $form1_data['site_user'];
+        $name_client   = $form1_data['name_client'];
+        $project_name  = $form1_data['project_name'];
+        $status_form2  = 'Nuevo';  // Estado inicial en form2
+        $created_at    = date("Y-m-d H:i");
 
         // Insertar en form2
-        $sql2 = "INSERT INTO form2 (id_form2, status_form2, id_user, created_at, table_content, name_user, site_user, name_client, project_name) 
+        $sql2 = "INSERT INTO form2 (
+                id_form2  , status_form2 , id_user      , 
+                created_at, table_content, name_user    , 
+                site_user , name_client  , project_name
+                ) 
                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt2 = mysqli_prepare($conn, $sql2);
-        mysqli_stmt_bind_param($stmt2, "ssissssss", $id_form2, $status_form2, $id_user, $created_at, $table_content, $name_user, $site_user, $name_client, $project_name);
+        mysqli_stmt_bind_param($stmt2, "ssissssss",
+                $id_form2   , $status_form2 , $id_user     , 
+                $created_at , $table_content, $name_user   , 
+                $site_user  , $name_client  , $project_name
+            );
 
         if (mysqli_stmt_execute($stmt2)) {
             $response["status"] = "success";
@@ -54,11 +62,11 @@ if (isset($_POST['id'])) {
             mysqli_stmt_bind_param($stmt3, "sssi", $status_form1, $qualified_by, $created_at, $id);
 
             if (mysqli_stmt_execute($stmt3)) {
-                $response["status"] = "success";
+                $response["status"]   = "success";
                 $response["message"] .= " Formulario de form1 actualizado a 'Complete'.";
             } else {
-                $response["status"] = "error";
-                $response["message"] = "Error al actualizar form1: " . mysqli_stmt_error($stmt3);
+                $response["status"]   = "error";
+                $response["message"]  = "Error al actualizar form1: " . mysqli_stmt_error($stmt3);
             }
             mysqli_stmt_close($stmt3);
         }

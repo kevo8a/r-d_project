@@ -22,17 +22,17 @@ if (isset($_POST['id'])) {
 
         // Ejecutar consulta y verificar si fue exitosa
         if (mysqli_stmt_execute($stmt)) {
-            $response["status"] = "success";
+            $response["status"]  = "success";
             $response["message"] = "Formulario actualizado a 'Corregir'.";
         } else {
-            $response["status"] = "error";
+            $response["status"]  = "error";
             $response["message"] = "Error al actualizar form1: " . mysqli_stmt_error($stmt);
         }
 
         // Cerrar la declaración
         mysqli_stmt_close($stmt);
     } else {
-        $response["status"] = "error";
+        $response["status"]  = "error";
         $response["message"] = "Error al preparar la consulta.";
     }
 } else {
