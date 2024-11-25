@@ -2,13 +2,13 @@
 include 'db_connection.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $id_user = $_POST['id_user'];
-    $name = $_POST['name'];
+    $id_user   = $_POST['id_user'];
+    $name      = $_POST['name'];
     $last_name = $_POST['last_name'];
-    $email = $_POST['email'] . '@amcor.com'; // Asumiendo que siempre se concatena el dominio
-    $password = $_POST['password'];
-    $id_rol = $_POST['id_rol'];
-    $site = $_POST['site'];
+    $email     = $_POST['email'] . '@amcor.com'; // Asumiendo que siempre se concatena el dominio
+    $password  = $_POST['password'];
+    $id_rol    = $_POST['id_rol'];
+    $site      = $_POST['site'];
 
     // Validación de campos obligatorios
     if (empty($id_user) || empty($name) || empty($last_name) || empty($id_rol) || empty($site)) {
@@ -28,10 +28,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Si se proporciona una nueva contraseña, actualizarla
     if (!empty($password)) {
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-        $query = "UPDATE users SET name='$name', last_name='$last_name', email='$email', password='$hashed_password', id_rol='$id_rol', site='$site' WHERE id_user='$id_user'";
+        $query = "UPDATE users SET
+                name     ='$name'           , last_name ='$last_name', email='$email', 
+                password ='$hashed_password', id_rol    ='$id_rol'   , site ='$site' 
+        WHERE   id_user  ='$id_user'"       ;
     } else {
         // No se actualiza la contraseña
-        $query = "UPDATE users SET name='$name', last_name='$last_name', email='$email', id_rol='$id_rol', site='$site' WHERE id_user='$id_user'";
+        $query = "UPDATE users SET 
+                name='$name'    , last_name='$last_name', email='$email', 
+                id_rol='$id_rol', site='$site' 
+        WHERE id_user='$id_user'";
     }
 
     if (mysqli_query($conn, $query)) {

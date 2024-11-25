@@ -121,7 +121,7 @@ CREATE TABLE form3 (
     billable_sample VARCHAR(10),  -- Indica si la muestra es facturable
     photocell VARCHAR(255),  -- Indica si hay fotocelda
     num_colors INT,  -- Número de colores
-    photocell_colors JSON NOT NULL,  -- Colores de la fotocelda
+    photocell_colors VARCHAR(255),  -- Colores de la fotocelda
     printing_system VARCHAR(255),  -- Sistema de impresión
     
     ext_diameter FLOAT,  -- Diámetro externo (mm)
@@ -161,6 +161,21 @@ CREATE TABLE form3 (
     photocell2_position VARCHAR(255)  -- Posición de la fotocelda 2
 );
 
+CREATE TABLE form4 (
+    id INT AUTO_INCREMENT PRIMARY KEY,  -- Identificador único de la tabla
+    id_form4 VARCHAR(255) UNIQUE,  -- ID único para el formulario 3
+    status_form4 VARCHAR(255),  -- Estado del formulario 3
+    name_user VARCHAR(255),  -- Nombre del usuario
+    site_user VARCHAR(255),  -- Sitio del usuario
+    id_user INT,  -- ID del usuario
+    created_at VARCHAR(255),  -- Fecha de creación
+    completed_at VARCHAR(255),  -- Fecha de finalización
+    qualified_by VARCHAR(255),  -- Calificado por
+    name_client VARCHAR(255),  -- Nombre del cliente
+    project_name VARCHAR(255),  -- Nombre del proyecto
+    comments VARCHAR(255)  -- Comentarios generales
+    
+);
 
 -- Insert sample values into 'rol'
 INSERT INTO rol (id, description) VALUES 

@@ -13,7 +13,6 @@ $stmt->execute();
 $result = $stmt->get_result();
 $row = $result->fetch_assoc();
 $data = json_decode($row['table_content'], true); // Decodificar JSON a un array
-
 ?>
 
 <!DOCTYPE html>
@@ -107,7 +106,6 @@ $data = json_decode($row['table_content'], true); // Decodificar JSON a un array
                                                 <th>Calibre</th>
                                                 <th>Peso</th>
                                                 <th>Sólidos</th>
-                                                <th>Acciones</th> <!-- Columna para los botones -->
                                             </tr>
                                         </thead>
                                         <tbody id="tableBody">
@@ -115,12 +113,11 @@ $data = json_decode($row['table_content'], true); // Decodificar JSON a un array
                                             $counter = 1;
                                             foreach ($data as $item) {
                                                 echo '<tr>';
-                                                echo '<td><input type="text" name="MTL' . $counter . '" class="form-control" value="' . htmlspecialchars($item["MTL"]) . '" required></td>';
+                                                echo '<td><input type="text" name="MTL'      . $counter . '" class="form-control" value="' . htmlspecialchars($item["MTL"])      . '" required></td>';
                                                 echo '<td><input type="text" name="Material' . $counter . '" class="form-control" value="' . htmlspecialchars($item["Material"]) . '" required></td>';
-                                                echo '<td><input type="text" name="Calibre' . $counter . '" class="form-control" value="' . htmlspecialchars($item["Calibre"]) . '" required onchange="calculateTotal()"></td>';
-                                                echo '<td><input type="text" name="Peso' . $counter . '" class="form-control" value="' . htmlspecialchars($item["Peso"]) . '" required onchange="calculateTotal()"></td>';
-                                                echo '<td><input type="text" name="Solidos' . $counter . '" class="form-control" value="' . htmlspecialchars($item["Solidos"]) . '" required onchange="calculateTotal()"></td>';
-                                                echo '<td><button type="button" class="btn btn-danger" onclick="removeRow(this)">Eliminar</button></td>';
+                                                echo '<td><input type="text" name="Calibre'  . $counter . '" class="form-control" value="' . htmlspecialchars($item["Calibre"])  . '" required onchange="calculateTotal()"></td>';
+                                                echo '<td><input type="text" name="Peso'     . $counter . '" class="form-control" value="' . htmlspecialchars($item["Peso"])     . '" required onchange="calculateTotal()"></td>';
+                                                echo '<td><input type="text" name="Solidos'  . $counter . '" class="form-control" value="' . htmlspecialchars($item["Solidos"])  . '" required onchange="calculateTotal()"></td>';
                                                 echo '</tr>';
                                                 $counter++;
                                             }
@@ -141,6 +138,8 @@ $data = json_decode($row['table_content'], true); // Decodificar JSON a un array
                                         <td colspan="">
                                             <button type="button" class="btn btn-success btn-block"
                                                 onclick="addRow()">Agregar Fila</button>
+                                            <button type="button" class="btn btn-danger btn-block"
+                                                onclick="removeLastRow()">Eliminar Última Fila</button>
                                         </td>
                                     </tr>
                                     <!-- Campos adicionales de procesos -->
@@ -155,9 +154,9 @@ $data = json_decode($row['table_content'], true); // Decodificar JSON a un array
                                     <?php endfor; ?>
                                     <!-- Comentarios -->
                                     <div class="col-md-12">
-                                            <label for="comentarios" class="form-label">Comentarios</label>
-                                            <input type="text" class="form-control" id="comentarios" name="comentarios"
-                                                value="<?php echo $row ? htmlspecialchars($row['comments']) : ''; 
+                                        <label for="comentarios" class="form-label">Comentarios</label>
+                                        <input type="text" class="form-control" id="comentarios" name="comentarios"
+                                            value="<?php echo $row ? htmlspecialchars($row['comments']) : ''; 
                                                 ?>" disabled>
                                     </div>
                                     <!-- Campos del formulario de envío -->
@@ -181,27 +180,37 @@ $data = json_decode($row['table_content'], true); // Decodificar JSON a un array
     <script>
     let counter = <?php echo $counter; ?>;
 
+    // Función para agregar una fila
     function addRow() {
         const tableBody = document.getElementById('tableBody');
         const row = document.createElement('tr');
         row.innerHTML = `
-            <td><input type="text" name="MTL${counter}" class="form-control" required></td>
-            <td><input type="text" name="Material${counter}" class="form-control" required></td>
-            <td><input type="text" name="Calibre${counter}" class="form-control" required onchange="calculateTotal()"></td>
-            <td><input type="text" name="Peso${counter}" class="form-control" required onchange="calculateTotal()"></td>
-            <td><input type="text" name="Solidos${counter}" class="form-control" required onchange="calculateTotal()"></td>
-            <td><button type="button" class="btn btn-danger" onclick="removeRow(this)">Eliminar</button></td>
-        `;
+        <td><input type="text" name="MTL${counter}" class="form-control" required></td>
+        <td><input type="text" name="Material${counter}" class="form-control" required></td>
+        <td><input type="text" name="Calibre${counter}" class="form-control" required onchange="calculateTotal()"></td>
+        <td><input type="text" name="Peso${counter}" class="form-control" required onchange="calculateTotal()"></td>
+        <td><input type="text" name="Solidos${counter}" class="form-control" required onchange="calculateTotal()"></td>
+    `;
         tableBody.appendChild(row);
         counter++;
+        updateFieldNames(); // Actualizar nombres después de agregar
     }
 
-    function removeRow(button) {
-        button.closest('tr').remove();
-        calculateTotal(); // Recalcular totales cuando se elimina una fila
+    // Función para eliminar la última fila
+    function removeLastRow() {
+        const tableBody = document.getElementById('tableBody');
+        const rows = tableBody.getElementsByTagName('tr');
+        if (rows.length > 0) {
+            tableBody.removeChild(rows[rows.length - 1]);
+            counter--; // Ajustar el contador
+            updateFieldNames(); // Actualizar nombres después de eliminar
+            calculateTotal(); // Recalcular los totales
+        } else {
+            alert("No hay filas para eliminar.");
+        }
     }
 
-
+    // Función para recalcular los totales
     function calculateTotal() {
         let totalCalibre = 0;
         let totalPeso = 0;
@@ -219,37 +228,55 @@ $data = json_decode($row['table_content'], true); // Decodificar JSON a un array
         document.getElementById('totalPeso').value = totalPeso.toFixed(2);
     }
 
+    // Función para actualizar los nombres de los campos después de agregar/eliminar filas
+    function updateFieldNames() {
+        const rows = document.querySelectorAll('#tableBody tr');
+        let index = 1; // Reiniciar el índice
+        rows.forEach(row => {
+            row.querySelector('input[name*="MTL"]').setAttribute('name', `MTL${index}`);
+            row.querySelector('input[name*="Material"]').setAttribute('name', `Material${index}`);
+            row.querySelector('input[name*="Calibre"]').setAttribute('name', `Calibre${index}`);
+            row.querySelector('input[name*="Peso"]').setAttribute('name', `Peso${index}`);
+            row.querySelector('input[name*="Solidos"]').setAttribute('name', `Solidos${index}`);
+            index++;
+        });
+    }
+
+    // Ejecutar cuando cargue la página
     window.onload = function() {
         calculateTotal();
+        updateFieldNames();
     };
 
-$(document).ready(function() {
-    $('#form-estructure').on('submit', function(e) {
-        e.preventDefault(); // Prevenir el envío normal del formulario
+    $(document).ready(function() {
+        $('#form-estructure').on('submit', function(e) {
+            e.preventDefault(); // Prevenir el envío normal del formulario
 
-        // Crear un objeto FormData con los datos del formulario
-        var formData = new FormData(this);
+            // Crear un objeto FormData con los datos del formulario
+            var formData = new FormData(this);
 
-        // Enviar la solicitud AJAX
-        $.ajax({
-            url: '../../php/update_form2.php?id=' + <?php echo $_GET['id']; ?>, // Ajusta la URL al archivo PHP correcto
-            type: 'POST',
-            data: formData,
-            processData: false,  // No procesar los datos
-            contentType: false,  // No establecer el tipo de contenido (esto es importante para el FormData)
-            success: function(response) {
-                // Si la respuesta es exitosa, redirigir
-                alert('Registro actualizado correctamente.');
-                window.location.href = '/r&d/html/index.php'; // Redirigir después de actualizar
-            },
-            error: function(xhr, status, error) {
-                // Manejar errores
-                alert("Hubo un error en la comunicación con el servidor.");
-            }
+            // Enviar la solicitud AJAX
+            $.ajax({
+                url: '../../php/update_form2.php?id=' +
+                    <?php echo $_GET['id']; ?>, // Ajusta la URL al archivo PHP correcto
+                type: 'POST',
+                data: formData,
+                processData: false, // No procesar los datos
+                contentType: false, // No establecer el tipo de contenido (esto es importante para el FormData)
+                success: function(response) {
+                    // Si la respuesta es exitosa, redirigir
+                    alert('Registro actualizado correctamente.');
+                    window.location.href =
+                        '/r&d/html/index.php'; // Redirigir después de actualizar
+                },
+                error: function(xhr, status, error) {
+                    // Manejar errores
+                    alert("Hubo un error en la comunicación con el servidor.");
+                }
+            });
         });
     });
-});
-</script>
+    </script>
 
 
 

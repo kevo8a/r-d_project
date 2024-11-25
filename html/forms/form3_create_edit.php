@@ -175,34 +175,24 @@ mysqli_close($conn);
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="cliente" class="form-label">Cliente</label>
-
-                                    <?php
-                                require '../../php/db_connection.php';
-
-                                // Obtener clientes de la base de datos
-                                $sql_clientes = "SELECT name FROM client";
-                                $result_clientes = mysqli_query($conn, $sql_clientes);
-
-                                // Revisar si el formulario está en modo edición y tiene un cliente asignado
-                                $isReadOnly = ($id_formulario && !empty($form_data['name_client'])) ? 'disabled' : '';
-                                ?>
-
-                                    <!-- Lista de selección de cliente, desactivada si ya tiene cliente asignado -->
-                                    <select class="form-control" id="cliente" name="cliente" required
-                                        <?= $isReadOnly ?>>
-                                        <option value="" disabled <?= !$id_formulario ? 'selected' : '' ?>>Selecciona un
-                                            cliente</option>
-
+                                    <select class="form-control" id="cliente" name="cliente" required>
+                                        <option value="" disabled selected>Selecciona un cliente</option>
                                         <?php
-                                    if ($result_clientes) {
-                                        while ($row_cliente = mysqli_fetch_assoc($result_clientes)) {
-                                            // Selecciona el cliente actual del formulario si se está editando
-                                            $selected = ($id_formulario && $row_cliente['name'] == $form_data['name_client']) ? 'selected' : '';
-                                            echo '<option value="' . htmlspecialchars($row_cliente['name']) . '" ' . $selected . '>' . htmlspecialchars($row_cliente['name']) . '</option>';
+                                        require '../../php/db_connection.php';
+
+                                        $sql_clientes = "SELECT name FROM client";
+                                        $result_clientes = mysqli_query($conn, $sql_clientes);
+
+                                        if ($result_clientes) {
+                                            while ($row_cliente = mysqli_fetch_assoc($result_clientes)) {
+                                                // Selecciona el cliente actual del formulario si se está editando
+                                                $selected = ($id_formulario && $row_cliente['name'] == $form_data['name_client']) ? 'selected' : '';
+                                                echo '<option value="' . htmlspecialchars($row_cliente['name']) . '" ' . $selected . '>' . htmlspecialchars($row_cliente['name']) . '</option>';
+                                            }
                                         }
-                                    }
-                                    mysqli_close($conn);
-                                    ?>
+
+                                        mysqli_close($conn);
+                                        ?>
                                     </select>
                                 </div>
                             </div>
@@ -210,15 +200,11 @@ mysqli_close($conn);
                             <!-- Nombre de proyecto -->
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="nombre_proyecto" class="form-label">Nombre del Proyecto/Producto</label>
-                                    <?php
-                                // Determinar si el campo debe estar en solo lectura (readonly) si tiene un valor de proyecto
-                                $isReadOnly = ($id_formulario && !empty($form_data['project_name'])) ? 'readonly' : '';
-                                ?>
+                                    <label for="nombre_proyecto" class="form-label">Nombre del
+                                        Proyecto/Producto</label>
                                     <input type="text" class="form-control" id="nombre_proyecto" name="nombre_proyecto"
                                         value="<?php echo $id_formulario ? htmlspecialchars($form_data['project_name']) : ''; ?>"
-                                        required <?= $isReadOnly ?>>
-
+                                        required>
                                 </div>
                             </div>
                             <!-- Cantidad Solicitada -->
@@ -246,7 +232,7 @@ mysqli_close($conn);
                                             <?php echo (isset($form_data['requested_units']) && $form_data['requested_units'] == 'unidades') ? 'selected' : ''; ?>>
                                             Unidades</option>
                                         <option value="kilogramos"
-                                            <?php echo (isset($form_data['requested_units']) && $form_data['requested_units'] == 'kilogramos') ? 'selected' : ''; ?>>
+                                            <?php echo (isset($form_data['requested_units']) && $form_data['requested_units'] == 'Kilogramos (KG)') ? 'selected' : ''; ?>>
                                             Kilogramos (KG)</option>
                                         <option value="metros"
                                             <?php echo (isset($form_data['requested_units']) && $form_data['requested_units'] == 'metros') ? 'selected' : ''; ?>>
@@ -324,13 +310,13 @@ mysqli_close($conn);
                                         onchange="toggleColores()">
                                         <option value="" disabled selected>Selecciona una opción</option>
                                         <option value="rotograbado"
-                                            <?php echo (isset($form_data['printing_system']) && $form_data['printing_system'] == 'rotograbado') ? 'selected' : ''; ?>>
+                                            <?php echo (isset($form_data['printing_system']) && $form_data['printing_system'] == 'Rotograbado') ? 'selected' : ''; ?>>
                                             Rotograbado</option>
                                         <option value="flexografia"
-                                            <?php echo (isset($form_data['printing_system']) && $form_data['printing_system'] == 'flexografia') ? 'selected' : ''; ?>>
+                                            <?php echo (isset($form_data['printing_system']) && $form_data['printing_system'] == 'Flexografía') ? 'selected' : ''; ?>>
                                             Flexografía</option>
                                         <option value="sinImpresion"
-                                            <?php echo (isset($form_data['printing_system']) && $form_data['printing_system'] == 'sinImpresion') ? 'selected' : ''; ?>>
+                                            <?php echo (isset($form_data['printing_system']) && $form_data['printing_system'] == 'Sin impresión') ? 'selected' : ''; ?>>
                                             Sin impresión</option>
                                     </select>
                                 </div>
@@ -353,8 +339,7 @@ mysqli_close($conn);
                                 <div class="mb-3">
                                     <label for="tol_sign_ext_diameter" class="form-label">Signo Tolerancia</label>
                                     <select class="form-select" id="tol_sign_ext_diameter" name="tol_sign_ext_diameter">
-                                        <option value="" disabled <?= !$id_formulario ? 'selected' : ''; ?>>Seleccionar
-                                        </option>
+                                        <option value="" disabled selected>Seleccionar</option>
                                         <option value="+"
                                             <?= $id_formulario && $form_data['tol_sign_ext_diameter'] == '+' ? 'selected' : ''; ?>>
                                             +</option>
@@ -389,8 +374,7 @@ mysqli_close($conn);
                                 <div class="mb-3">
                                     <label for="tol_sign_int_diameter" class="form-label">Signo Tolerancia</label>
                                     <select class="form-select" id="tol_sign_int_diameter" name="tol_sign_int_diameter">
-                                        <option value="" disabled <?= !$id_formulario ? 'selected' : ''; ?>>Seleccionar
-                                        </option>
+                                        <option value="" disabled selected>Seleccionar</option>
                                         <option value="+"
                                             <?= $id_formulario && $form_data['tol_sign_int_diameter'] == '+' ? 'selected' : ''; ?>>
                                             +</option>
@@ -424,8 +408,7 @@ mysqli_close($conn);
                                 <div class="mb-3">
                                     <label for="tol_sign_coil_width" class="form-label">Signo Tolerancia</label>
                                     <select class="form-select" id="tol_sign_coil_width" name="tol_sign_coil_width">
-                                        <option value="" disabled <?= !$id_formulario ? 'selected' : ''; ?>>Seleccionar
-                                        </option>
+                                        <option value="" disabled selected>Seleccionar</option>
                                         <option value="+"
                                             <?= $id_formulario && $form_data['tol_sign_coil_width'] == '+' ? 'selected' : ''; ?>>
                                             +</option>
@@ -458,8 +441,7 @@ mysqli_close($conn);
                                 <div class="mb-3">
                                     <label for="tol_sign_coil_weight" class="form-label">Signo Tolerancia</label>
                                     <select class="form-select" id="tol_sign_coil_weight" name="tol_sign_coil_weight">
-                                        <option value="" disabled <?= !$id_formulario ? 'selected' : ''; ?>>Seleccionar
-                                        </option>
+                                        <option value="" disabled selected>Seleccionar</option>
                                         <option value="+"
                                             <?= $id_formulario && $form_data['tol_sign_coil_weight'] == '+' ? 'selected' : ''; ?>>
                                             +</option>
@@ -490,8 +472,7 @@ mysqli_close($conn);
                                 <div class="mb-3">
                                     <label for="winding_count" class="form-label">Número de Embobinado</label>
                                     <select class="form-select" id="winding_count" name="winding_count">
-                                        <option value="" disabled <?= !$id_formulario ? 'selected' : ''; ?>>Seleccionar
-                                            opción</option>
+                                        <option value="" disabled selected>Seleccionar</option>
                                         <option value="1"
                                             <?= $id_formulario && $form_data['winding_count'] == '1' ? 'selected' : ''; ?>>
                                             1</option>
@@ -511,8 +492,8 @@ mysqli_close($conn);
                                 <div class="mb-3">
                                     <label for="winding_direction" class="form-label">Sentido Embobinado</label>
                                     <select class="form-select" id="winding_direction" name="winding_direction">
-                                        <option value="" disabled <?= !$id_formulario ? 'selected' : ''; ?>>Seleccionar
-                                            opción</option>
+                                        <option value="" disabled selected>Seleccionar opción</option>
+
                                         <option value="dentro"
                                             <?= $id_formulario && $form_data['winding_direction'] == 'Impresión por dentro' ? 'selected' : ''; ?>>
                                             Impresión por dentro
@@ -542,8 +523,7 @@ mysqli_close($conn);
                                 <div class="mb-3">
                                     <label for="tol_sign_tack_dist" class="form-label">Signo Tolerancia</label>
                                     <select class="form-select" id="tol_sign_tack_dist" name="tol_sign_tack_dist">
-                                        <option value="" disabled <?= !$id_formulario ? 'selected' : ''; ?>>Seleccionar
-                                        </option>
+                                        <option value="" disabled selected>Seleccionar</option>
                                         <option value="+"
                                             <?= $id_formulario && $form_data['tol_sign_tack_dist'] == '+' ? 'selected' : ''; ?>>
                                             +</option>
@@ -586,8 +566,7 @@ mysqli_close($conn);
                                     <label for="tol_sign_photocell1_edge" class="form-label">Signo Tolerancia</label>
                                     <select class="form-select" id="tol_sign_photocell1_edge"
                                         name="tol_sign_photocell1_edge">
-                                        <option value="" disabled <?= !$id_formulario ? 'selected' : ''; ?>>Seleccionar
-                                        </option>
+                                        <option value="" disabled selected>Seleccionar</option>
                                         <option value="+"
                                             <?= $id_formulario && $form_data['tol_sign_photocell1_edge'] == '+' ? 'selected' : ''; ?>>
                                             +</option>
@@ -631,8 +610,7 @@ mysqli_close($conn);
                                 <div class="mb-3">
                                     <label for="photocell1_position" class="form-label">Posición Fotocelda 1</label>
                                     <select class="form-select" id="photocell1_position" name="photocell1_position">
-                                        <option value="" disabled <?= !$id_formulario ? 'selected' : ''; ?>>Seleccionar
-                                            opción</option>
+                                        <option value="" disabled selected>Seleccionar opción</option>
                                         <option value="izquierda"
                                             <?= $id_formulario && $form_data['photocell1_position'] == 'izquierda' ? 'selected' : ''; ?>>
                                             Izquierda
@@ -664,13 +642,13 @@ mysqli_close($conn);
                                         value="<?= $id_formulario ? htmlspecialchars($form_data['photcell2_edge_dist'], ENT_QUOTES, 'UTF-8') : ''; ?>">
                                 </div>
                             </div>
+
                             <div class="col-md-2">
                                 <div class="mb-3">
                                     <label for="tol_sign_photocell2_edge" class="form-label">Signo Tolerancia</label>
                                     <select class="form-select" id="tol_sign_photocell2_edge"
                                         name="tol_sign_photocell2_edge">
-                                        <option value="" disabled <?= !$id_formulario ? 'selected' : ''; ?>>Seleccionar
-                                        </option>
+                                        <option value="" disabled selected>Seleccionar</option>
                                         <option value="+"
                                             <?= $id_formulario && $form_data['tol_sign_photocell2_edge'] == '+' ? 'selected' : ''; ?>>
                                             +</option>
@@ -693,6 +671,7 @@ mysqli_close($conn);
                                         value="<?= $id_formulario ? htmlspecialchars($form_data['tol_photocell2_edge'], ENT_QUOTES, 'UTF-8') : ''; ?>">
                                 </div>
                             </div>
+
                             <div class="col-md-4">
                                 <div class="mb-3">
                                     <label for="photocell2_width" class="form-label">Fotocelda 2 Ancho (mm)</label>
@@ -701,6 +680,7 @@ mysqli_close($conn);
                                         value="<?= $id_formulario ? htmlspecialchars($form_data['photocell2_width'], ENT_QUOTES, 'UTF-8') : ''; ?>">
                                 </div>
                             </div>
+
                             <div class="col-md-4">
                                 <div class="mb-3">
                                     <label for="photocell2_height" class="form-label">Fotocelda 2 Alto (mm)</label>
@@ -714,8 +694,7 @@ mysqli_close($conn);
                                 <div class="mb-3">
                                     <label for="photocell2_position" class="form-label">Posición Fotocelda 2</label>
                                     <select class="form-select" id="photocell2_position" name="photocell2_position">
-                                        <option value="" disabled <?= !$id_formulario ? 'selected' : ''; ?>>Seleccionar
-                                            opción</option>
+                                        <option value="" disabled selected>Seleccionar opción</option>
                                         <option value="izquierda"
                                             <?= $id_formulario && $form_data['photocell2_position'] == 'izquierda' ? 'selected' : ''; ?>>
                                             Izquierda

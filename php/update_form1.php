@@ -41,6 +41,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $muestra_fisica            = isset($_POST['muestra_fisica'])           ? 1 : 0;
     $plano_mecanico            = isset($_POST['plano_mecanico'])           ? 1 : 0;
     $pdf_arte                  = isset($_POST['pdf_arte'])                 ? 1 : 0;
+    $created_at                = date("Y-m-d H:i");
+
 
     // Prepare the SQL query to update the record
     $sql = "UPDATE form1 SET 
@@ -55,13 +57,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     continuous_check             =?, length_mm                          =?, length_tolerance_mm         =?,
     gusset_mm                    =?, gusset_tolerance_mm                =?, overlap_mm                  =?,
     overlap_tolerance_mm         =?, technical_sheet                    =?, physical_sample             =?, 
-    mechanical_plan              =?, pdf_art                            =?
+    mechanical_plan              =?, pdf_art                            =?, created_at                  =?
     WHERE id = ?";
     $stmt = mysqli_prepare($conn, $sql);
 
     if ($stmt) {
         // Bind the parameters to the prepared statement
-        mysqli_stmt_bind_param($stmt, "ssisissssssiisiiiiiiiiiiiiiiiiiiiiii", 
+        mysqli_stmt_bind_param($stmt, "ssisissssssiisiiiiiiiiiiiiiiiiiiiiisi", 
         $cliente                  ,$nombre_proyecto        , $numero_rfq        ,
         $estatus                  , $numero_rfq            , $formato_entrega   ,
         $formato_empaque          , $elemento_conveniencia , $proceso_llenado   ,
@@ -73,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $continuous_check         , $largo                 , $tolerancia_largo  ,
         $fuelle                   , $tolerancia_fuelle     , $traslape          , 
         $tolerancia_traslape      , $ficha_tecnica         , $muestra_fisica    ,
-        $plano_mecanico           , $pdf_arte              ,
+        $plano_mecanico           , $pdf_arte              , $created_at        ,
         $id_formulario);
 
         // Execute the query

@@ -191,7 +191,6 @@ mysqli_close($conn);
                                                 echo '<option value="' . htmlspecialchars($row_cliente['name']) . '" ' . $selected . '>' . htmlspecialchars($row_cliente['name']) . '</option>';
                                             }
                                         }
-
                                         mysqli_close($conn);
                                         ?>
                                     </select>
@@ -333,18 +332,30 @@ mysqli_close($conn);
                             <!-- Unidad de Venta -->
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="unidad_venta" class="form-label">Unidad de Venta</label>
-                                    <select class="form-control" id="unidad_venta" name="unidad_venta" required>
-                                        <option value="" disabled selected>Selecciona una opcion</option>
-                                        <option value="Unidades"
-                                            <?php echo ($id_formulario && $form_data['sales_unit'] == 'Unidades') ? 'selected' : ''; ?>>
+                                    <label for="unidad_venta" class="form-label">Unidades Cantidad Solicitada</label>
+                                    <select class="form-select" id="unidad_venta" name="unidad_venta">
+                                        <option value="" disabled selected>Selecciona una opción</option>
+                                        <option value="unidades"
+                                            <?php echo (isset($form_data['sales_unit']) && $form_data['sales_unit'] == 'unidades') ? 'selected' : ''; ?>>
                                             Unidades</option>
-                                        <option value="Kilogramos (KG)"
-                                            <?php echo ($id_formulario && $form_data['sales_unit'] == 'Kilogramos (KG)') ? 'selected' : ''; ?>>
+                                        <option value="kilogramos"
+                                            <?php echo (isset($form_data['sales_unit']) && $form_data['sales_unit'] == 'Kilogramos (KG)') ? 'selected' : ''; ?>>
                                             Kilogramos (KG)</option>
-                                        <option value="Metros"
-                                            <?php echo ($id_formulario && $form_data['sales_unit'] == 'Metros') ? 'selected' : ''; ?>>
+                                        <option value="metros"
+                                            <?php echo (isset($form_data['sales_unit']) && $form_data['sales_unit'] == 'metros') ? 'selected' : ''; ?>>
                                             Metros</option>
+                                        <option value="rollos"
+                                            <?php echo (isset($form_data['sales_unit']) && $form_data['sales_unit'] == 'rollos') ? 'selected' : ''; ?>>
+                                            Rollos</option>
+                                        <option value="km"
+                                            <?php echo (isset($form_data['sales_unit']) && $form_data['sales_unit'] == 'km') ? 'selected' : ''; ?>>
+                                            Kilómetro (KM)</option>
+                                        <option value="pieza"
+                                            <?php echo (isset($form_data['sales_unit']) && $form_data['sales_unit'] == 'pieza') ? 'selected' : ''; ?>>
+                                            Pieza (PC)</option>
+                                        <option value="millares"
+                                            <?php echo (isset($form_data['sales_unit']) && $form_data['sales_unit'] == 'millares') ? 'selected' : ''; ?>>
+                                            Millares</option>
                                     </select>
                                 </div>
                             </div>

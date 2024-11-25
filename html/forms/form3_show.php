@@ -284,9 +284,9 @@ mysqli_close($conn);
                             <!-- Número de Colores -->
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="num_colores" class="form-label">Número de Colores</labelreadonly>
-                                        <input type="number" class="form-control" id="num_colores" name="num_colores"
-                                            value="<?php echo isset($form_data['num_colors']) ? htmlspecialchars($form_data['num_colors']) : ''; ?>" />
+                                    <label for="num_colores" class="form-label">Número de Colores</label>
+                                    <input type="number" class="form-control" id="num_colores" name="num_colores" readonly
+                                        value="<?php echo isset($form_data['num_colors']) ? htmlspecialchars($form_data['num_colors']) : ''; ?>" />
                                 </div>
                             </div>
                             <!-- Colores de la Fotocelda -->
