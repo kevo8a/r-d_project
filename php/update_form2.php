@@ -33,11 +33,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $counter = 1;
     while (isset($_POST["MTL$counter"])) {
         $updatedData[] = [
-            "MTL" => $_POST["MTL$counter"],
+            "MTL"      => $_POST["MTL$counter"],
             "Material" => $_POST["Material$counter"],
-            "Calibre" => $_POST["Calibre$counter"],
-            "Peso" => $_POST["Peso$counter"],
-            "Solidos" => $_POST["Solidos$counter"]
+            "Calibre"  => $_POST["Calibre$counter"],
+            "Peso"     => $_POST["Peso$counter"],
+            "Solidos"  => $_POST["Solidos$counter"]
         ];
         $counter++;
     }
@@ -52,12 +52,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $status = 'En Proceso'; // Establecer el estado como 'En Proceso'
 
     // Actualizar en la base de datos usando prepared statement
-    $sql = "UPDATE form2 SET table_content = ?, status_form2 = ?, step_1 = ?, step_2 = ?, step_3 = ?, step_4 = ?, step_5 = ?, step_6 = ? WHERE id = ?";
+    $sql = "UPDATE form2 SET 
+            table_content = , status_form2 =?, step_1 =?, 
+            step_2        =?, step_3       =?, step_4 =?, 
+            step_5        =?, step_6       =? 
+            WHERE id =?";
     $stmt = $conn->prepare($sql);
 
     // Asegúrate de que la variable $jsonData tiene los datos correctos para la columna `table_content`
     // Asegúrate de que $id tiene el valor correcto para identificar el registro a actualizar
-    $stmt->bind_param("ssssssssi", $jsonData, $status, $steps['step_1'], $steps['step_2'], $steps['step_3'], $steps['step_4'], $steps['step_5'], $steps['step_6'], $id);
+    $stmt->bind_param("ssssssssi", 
+    $jsonData, $status, $steps['step_1'], 
+    $steps['step_2'], $steps['step_3'], $steps['step_4'], 
+    $steps['step_5'], $steps['step_6'], 
+    $id);
 
     // Responder al cliente con JSON
     $response = [];
