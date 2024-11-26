@@ -28,10 +28,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Si se proporciona una nueva contraseña, actualizarla
     if (!empty($password)) {
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-        $query = "UPDATE users SET name='$name', last_name='$last_name', email='$email', password='$hashed_password', id_rol='$id_rol', site='$site' WHERE id_user='$id_user'";
+        $query = "UPDATE users SET
+                name     ='$name'           , last_name ='$last_name', email='$email', 
+                password ='$hashed_password', id_rol    ='$id_rol'   , site ='$site' 
+        WHERE   id_user  ='$id_user'"       ;
     } else {
         // No se actualiza la contraseña
-        $query = "UPDATE users SET name='$name', last_name='$last_name', email='$email', id_rol='$id_rol', site='$site' WHERE id_user='$id_user'";
+        $query = "UPDATE users SET 
+                name='$name'    , last_name='$last_name', email='$email', 
+                id_rol='$id_rol', site='$site' 
+        WHERE id_user='$id_user'";
     }
 
     if (mysqli_query($conn, $query)) {

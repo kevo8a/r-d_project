@@ -5,7 +5,7 @@ include 'auth.php';
 // Obtener ID del registro a editar
 $id = $_GET['id'] ?? null;
 
-if (!$id) {
+if (!$id || !is_numeric($id)) {
     echo json_encode(['success' => false, 'message' => 'ID no válido.']);
     exit();
 }
@@ -13,6 +13,12 @@ if (!$id) {
 // Obtener datos del registro
 $sql = "SELECT * FROM form2 WHERE id = ?";
 $stmt = $conn->prepare($sql);
+
+if (!$stmt) {
+    echo json_encode(['success' => false, 'message' => 'Error al preparar la consulta: ' . $conn->error]);
+    exit();
+}
+
 $stmt->bind_param("i", $id);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -26,18 +32,26 @@ if (!$row) {
 $data = json_decode($row['table_content'], true); // Decodificar JSON a un array
 
 // Guardar cambios del formulario
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $updatedData = [];
 
     // Procesar cada fila y guardar los datos actualizados
     $counter = 1;
     while (isset($_POST["MTL$counter"])) {
         $updatedData[] = [
+<<<<<<< HEAD
             "MTL"      => $_POST["MTL$counter"],
             "Material" => $_POST["Material$counter"],
             "Calibre"  => $_POST["Calibre$counter"],
             "Peso"     => $_POST["Peso$counter"],
             "Solidos"  => $_POST["Solidos$counter"]
+=======
+            "MTL"      => htmlspecialchars($_POST["MTL$counter"]),
+            "Material" => htmlspecialchars($_POST["Material$counter"]),
+            "Calibre"  => htmlspecialchars($_POST["Calibre$counter"]),
+            "Peso"     => htmlspecialchars($_POST["Peso$counter"]),
+            "Solidos"  => htmlspecialchars($_POST["Solidos$counter"])
+>>>>>>> 9fb1e8b514c023b6b97b5dbc99138e2d9398cf51
         ];
         $counter++;
     }
@@ -47,12 +61,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Recoger valores de los pasos
     $steps = [];
     for ($step = 1; $step <= 6; $step++) {
-        $steps["step_$step"] = $_POST["proceso$step"] ?? ''; // Recoger valores de los pasos
+        $steps["step_$step"] = htmlspecialchars($_POST["proceso$step"] ?? '');
     }
+
     $status = 'En Proceso'; // Establecer el estado como 'En Proceso'
+    $created_at = date("Y-m-d H:i:s");
 
     // Actualizar en la base de datos usando prepared statement
     $sql = "UPDATE form2 SET 
+<<<<<<< HEAD
             table_content = , status_form2 =?, step_1 =?, 
             step_2        =?, step_3       =?, step_4 =?, 
             step_5        =?, step_6       =? 
@@ -66,8 +83,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $steps['step_2'], $steps['step_3'], $steps['step_4'], 
     $steps['step_5'], $steps['step_6'], 
     $id);
+=======
+            table_content = ?, status_form2 = ?, step_1     = ?, 
+            step_2        = ?, step_3       = ?, step_4     = ?, 
+            step_5        = ?, step_6       = ?, created_at = ?
+            WHERE id = ?";
+    $stmt = $conn->prepare($sql);
 
-    // Responder al cliente con JSON
+    if (!$stmt) {
+        echo json_encode(['success' => false, 'message' => 'Error al preparar la consulta de actualización: ' . $conn->error]);
+        exit();
+    }
+
+    // Vincular parámetros (ajustar los tipos según las columnas de la base de datos)
+    $stmt->bind_param(
+        "sssssssssi", 
+        $jsonData       , $status         , $steps['step_1'], 
+        $steps['step_2'], $steps['step_3'], $steps['step_4'], 
+        $steps['step_5'], $steps['step_6'], $created_at     ,
+        $id
+    );
+>>>>>>> 9fb1e8b514c023b6b97b5dbc99138e2d9398cf51
+
     $response = [];
     if ($stmt->execute()) {
         $response['success'] = true;
@@ -79,6 +116,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Cerrar el statement
     $stmt->close();
+
+    // Cerrar la conexión
+    $conn->close();
 
     // Devolver la respuesta en formato JSON
     echo json_encode($response);
