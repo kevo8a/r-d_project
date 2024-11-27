@@ -176,30 +176,30 @@ CREATE TABLE form4 (
     type_project VARCHAR(255), -- tipo de proyecto
     start_plant VARCHAR(255), -- Planta Identificado
     end_plant VARCHAR(255), -- Planta finalización
-    task_beam VARCHAR(255), -- Rayo de tarea
+    task_ray VARCHAR(255), -- Rayo de tarea
     shipping_type VARCHAR(255), -- tipo de envio
     procces_type VARCHAR(255), -- tipo de proceso   
-    task_ray VARCHAR(255), -- Tarea Ray
+    n_task VARCHAR(255), -- Numero de Tarea Ray
     TCH VARCHAR(255), --  TCH
     printing_system VARCHAR(255),  -- Sistema de impresión
     printing_type VARCHAR(255),  -- Tipo de impresión
     num_colors INT,  -- Número de colores
     photocell_colors VARCHAR(255),  -- Colores de la fotocelda
     table_content JSON NOT NULL,
-    spot_width_cm FLOAT,  -- Ancho del spot en cm
-    spot_length_cm FLOAT,  -- Largo del spot en cm
+    spot_width FLOAT,  -- Ancho del spot en cm
+    spot_length FLOAT,  -- Largo del spot en cm
     repeat_cm FLOAT,  -- Repetición en cm
-    accumulative_repeat_1m FLOAT,  -- Repetición acumulativa en 1 m
-    actual_repeat_cm FLOAT,  -- Repetición actual en cm
-    photographic_rep_cm FLOAT,  -- Repetición fotográfica en cm
-    cylinder_sleeve_cm FLOAT,  -- Cilindro/Manga en cm
-    number_of_repetitions FLOAT,  -- Número de repeticiones
-    number_of_reels FLOAT,  -- Número de carretes
-    set_cut_line FLOAT,  -- Línea de corte
+    accumulative_repeat FLOAT,  -- Repetición acumulativa en 1 m
+    actual_repeat FLOAT,  -- Repetición actual en cm
+    photographic_rep FLOAT,  -- Repetición fotográfica en cm
+    cylinder_sleeve FLOAT,  -- Cilindro/Manga en cm
+    n_repetitions FLOAT,  -- Número de repeticiones
+    n_reels FLOAT,  -- Número de carretes
+    cut_line FLOAT,  -- Línea de corte
     spot_color VARCHAR(255),  -- Color del spot
-    area_m2 FLOAT,  -- Área en m2
-    print_x_m2 FLOAT,  -- Impresión por m2
-    print_x_linear_m FLOAT,  -- Impresión por metro lineal
+    area FLOAT,  -- Área en m2
+    print_m2 FLOAT,  -- Impresión por m2
+    print_linear FLOAT,  -- Impresión por metro lineal
     comments VARCHAR(255)  -- Comentarios generales
 );
 

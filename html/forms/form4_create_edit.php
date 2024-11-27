@@ -2,28 +2,19 @@
 include '../../php/db_connection.php';
 include '../../php/auth.php';
 
-// Obtener el ID del formulario de la URL (para editar)
-$id_formulario = isset($_GET['id']) ? $_GET['id'] : null;
-$form_data = [];
+// Obtener ID del registro a editar
+$id = $_GET['id'];
 
-// Si hay un ID, consultar los datos del formulario por su ID
-if ($id_formulario) {
-    $sql = "SELECT * FROM form4 WHERE id = ?";
-    $stmt = mysqli_prepare($conn, $sql);
-    mysqli_stmt_bind_param($stmt, "i", $id_formulario);
-    mysqli_stmt_execute($stmt);
-    $result = mysqli_stmt_get_result($stmt);
-
-    // Verificar si se encontró el formulario
-    if ($result->num_rows === 0) {
-        die('Formulario no encontrado.');
-    }
-    // Obtener los datos del formulario
-    $form_data = mysqli_fetch_assoc($result);
-}
-
-mysqli_close($conn);
+// Obtener datos del registro
+$sql = "SELECT * FROM form4 WHERE id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $id);
+$stmt->execute();
+$result = $stmt->get_result();
+$row = $result->fetch_assoc();
+$data = json_decode($row['table_content'], true); // Decodificar JSON a un array
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -59,226 +50,228 @@ mysqli_close($conn);
                     <h2 class="mb-4">Formulario de Proyecto</h2>
                     <div class="row">
                         <!-- Solicitante -->
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <label for="solicitante" class="form-label">Solicitante</label>
-                                <input type="text" class="form-control" id="solicitante" name="solicitante" value="<?php 
-                                        // Verifica si está en modo edición (si $form_data['name_user'] tiene un valor guardado)
-                                        if (isset($form_data['name_user']) && !empty($form_data['name_user'])) {
-                                            echo htmlspecialchars($form_data['name_user'], ENT_QUOTES, 'UTF-8'); 
-                                        } else {
-                                                // Si no, muestra el nombre por defecto
-                                                echo htmlspecialchars($name . ' ' . $last_name, ENT_QUOTES, 'UTF-8'); // Ajusta esto según lo que necesites
-                                        }
-                                    ?>" readonly>
-                            </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="name_user" class="form-label">Solicitante</label>
+                            <input type="text" class="form-control" id="solicitante" name="name_user"
+                                value="<?php echo htmlspecialchars($row['name_user'] ?? ''); ?>" disabled>
                         </div>
+
                         <!-- Site -->
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <label for="site" class="form-label">Site</label>
-                                <input type="text" class="form-control" id="site" name="site_user" value="<?php 
-                                            // Verifica si está en modo edición (si $form_data['site_user'] tiene un valor guardado)
-                                            if (isset($form_data['site_user']) && !empty($form_data['site_user'])) {
-                                                echo htmlspecialchars($form_data['site_user'], ENT_QUOTES, 'UTF-8'); 
-                                            } else {
-                                                // Muestra un valor por defecto cuando no hay un site_user
-                                                echo htmlspecialchars($site, ENT_QUOTES, 'UTF-8'); // Cambia $default_site por el valor por defecto que quieras
-                                            }
-                                        ?>" readonly>
-                            </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="site_user" class="form-label">Sitio</label>
+                            <input type="text" class="form-control" id="site_user" name="site_user"
+                                value="<?php echo htmlspecialchars($row['site_user'] ?? ''); ?>" disabled>
                         </div>
 
                         <!-- ID Usuario -->
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <label for="id_user" class="form-label">ID del Usuario</label>
-                                <input type="text" class="form-control" id="id_user" name="id_user" value="<?php 
-                                            // Verifica si está en modo edición (si $form_data['id_user'] tiene un valor guardado)
-                                            if (isset($form_data['id_user']) && !empty($form_data['id_user'])) {
-                                                echo htmlspecialchars($form_data['id_user'], ENT_QUOTES, 'UTF-8'); 
-                                            } else {
-                                                // Muestra un valor por defecto cuando no hay un id_user
-                                                echo htmlspecialchars($user_id, ENT_QUOTES, 'UTF-8'); // Cambia $default_id_user por el valor por defecto que quieras
-                                            }
-                                        ?>" readonly>
-                            </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="id_user" class="form-label">ID del Usuario</label>
+                            <input type="text" class="form-control" id="id_user" name="id_user"
+                                value="<?php echo htmlspecialchars($row['id_user'] ?? ''); ?>" disabled>
                         </div>
 
                         <!-- Calificado por -->
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <label for="qualified_by" class="form-label">Calificado por</label>
-                                <input type="text" class="form-control" id="qualified_by" name="qualified_by"
-                                    value="<?php echo isset($id_formulario) && $id_formulario ? htmlspecialchars($form_data['qualified_by']) : ''; ?>"
-                                    readonly>
-                            </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="qualified_by" class="form-label">Calificado por</label>
+                            <input type="text" class="form-control" id="qualified_by" name="qualified_by"
+                                value="<?php echo htmlspecialchars($row['qualified_by'] ?? ''); ?>" disabled>
                         </div>
 
                         <!-- Fecha de creación -->
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <label for="created_at" class="form-label">Fecha de creación</label>
-                                <input type="text" class="form-control" id="created_at" name="created_at" readonly
-                                    value="<?php 
-                                            // Verifica si está en modo edición (si $form_data['created_at'] tiene un valor guardado)
-                                            echo isset($form_data['created_at']) && !empty($form_data['created_at']) 
-                                                ? htmlspecialchars($form_data['created_at'], ENT_QUOTES, 'UTF-8') 
-                                                : date('d-m-Y H:i'); // Muestra la fecha actual si no hay un valor guardado
-                                        ?>">
-                            </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="created_at" class="form-label">Fecha de creación</label>
+                            <input type="text" class="form-control" id="created_at" name="created_at"
+                                value="<?php echo htmlspecialchars($row['created_at'] ?? ''); ?>" disabled>
                         </div>
 
                         <!-- Fecha de finalización -->
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <label for="completed_at" class="form-label">Fecha de finalización</label>
-                                <input type="text" class="form-control" id="completed_at" name="completed_at"
-                                    value="<?php echo $id_formulario ? htmlspecialchars($form_data['completed_at']) : ''; ?>"
-                                    readonly>
-                            </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="completed_at" class="form-label">Fecha de finalización</label>
+                            <input type="text" class="form-control" id="completed_at" name="completed_at"
+                                value="<?php echo htmlspecialchars($row['completed_at'] ?? ''); ?>" disabled>
                         </div>
                         <!-- Estatus -->
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <label for="status" class="form-label">Estatus</label>
-                                <input type="text" class="form-control" id="status" name="status"
-                                    value="<?php echo $id_formulario ? htmlspecialchars($form_data['status_form4']) : 'En Proceso'; ?>"
-                                    readonly>
-                            </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="status" class="form-label">Estatus</label>
+                            <input type="text" class="form-control" id="status" name="status"
+                                value="<?php echo htmlspecialchars($row['status_form4'] ?? ''); ?>" disabled>
                         </div>
 
                         <!-- folio -->
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <label for="folio" class="form-label">Folio</label>
-                                <input type="text" class="form-control" id="folio" name="folio"
-                                    value="<?php echo $id_formulario ? htmlspecialchars($form_data['id_form4']): ''; ?>"
-                                    readonly>
-                            </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="folio" class="form-label">Folio</label>
+                            <input type="text" class="form-control" id="folio" name="folio"
+                                value="<?php echo htmlspecialchars($row['id_form4'] ?? ''); ?>" disabled>
                         </div>
+
                         <!-- Cliente -->
+                        <div class="col-md-3 mb-3">
+                            <label for="client" class="form-label">Cliente</label>
+                            <input type="text" class="form-control" id="client" name="client"
+                                value="<?php echo htmlspecialchars($row['name_client'] ?? ''); ?>" disabled>
+                        </div>
+
+                        <!-- Nombre de proyecto -->
+                        <div class="col-md-3 mb-3">
+                            <label for="project_name" class="form-label">Nombre del
+                                Proyecto/Producto</label>
+                            <input type="text" class="form-control" id="project_name" name="project_name"
+                                value="<?php echo htmlspecialchars($row['project_name'] ?? ''); ?>">
+                        </div>
+
+                        <!-- Tipo de proyecto -->
+                        <div class="col-md-3 mb-3">
+                            <label for="type_project" class="form-label">Tipo de proyecto</label>
+                            <select class="form-control" id="type_project" name="type_project">
+                                <option value="">Seleccione una opción</option> <!-- Opción por defecto -->
+                                <option value="Muestra"
+                                    <?php echo (isset($row['type_project']) && $row['type_project'] === 'Muestra') ? 'selected' : ''; ?>>
+                                    Muestra</option>
+                                <option value="Escalamiento/OE"
+                                    <?php echo (isset($row['type_project']) && $row['type_project'] === 'Escalamiento/OE') ? 'selected' : ''; ?>>
+                                    Escalamiento/OE</option>
+                            </select>
+                        </div>
+
+
+                        <!-- Planta Inicio -->
                         <div class="col-md-3">
                             <div class="mb-3">
-                                <label for="cliente" class="form-label">Cliente</label>
-                                <select class="form-control" id="cliente" name="cliente" required>
-                                    <option value="" disabled selected>Selecciona un cliente</option>
-                                    <?php
-                                        require '../../php/db_connection.php';
-
-                                        $sql_clientes = "SELECT name FROM client";
-                                        $result_clientes = mysqli_query($conn, $sql_clientes);
-
-                                        if ($result_clientes) {
-                                            while ($row_cliente = mysqli_fetch_assoc($result_clientes)) {
-                                                // Selecciona el cliente actual del formulario si se está editando
-                                                $selected = ($id_formulario && $row_cliente['name'] == $form_data['name_client']) ? 'selected' : '';
-                                                echo '<option value="' . htmlspecialchars($row_cliente['name']) . '" ' . $selected . '>' . htmlspecialchars($row_cliente['name']) . '</option>';
-                                            }
-                                        }
-
-                                        mysqli_close($conn);
-                                        ?>
+                                <label for="start_plant" class="form-label">Planta Inicio</label>
+                                <select class="form-control" id="start_plant" name="start_plant" required>
+                                    <option value="">Seleccione una opción</option> <!-- Opción por defecto -->
+                                    <option value="Zacapu"
+                                        <?php echo (isset($row['start_plant']) && $row['start_plant'] === 'Zacapu') ? 'selected' : ''; ?>>
+                                        Zacapu</option>
+                                    <option value="Tlaquepaque"
+                                        <?php echo (isset($row['start_plant']) && $row['start_plant'] === 'Tlaquepaque') ? 'selected' : ''; ?>>
+                                        Tlaquepaque</option>
+                                    <option value="Tultitlán"
+                                        <?php echo (isset($row['start_plant']) && $row['start_plant'] === 'Tultitlán') ? 'selected' : ''; ?>>
+                                        Tultitlán</option>
                                 </select>
                             </div>
                         </div>
 
-                        <!-- Nombre de proyecto -->
+                        <!-- Planta Fin -->
                         <div class="col-md-3">
                             <div class="mb-3">
-                                <label for="nombre_proyecto" class="form-label">Nombre del
-                                    Proyecto/Producto</label>
-                                <input type="text" class="form-control" id="nombre_proyecto" name="nombre_proyecto"
-                                    value="<?php echo $id_formulario ? htmlspecialchars($form_data['project_name']) : ''; ?>"
+                                <label for="end_plant" class="form-label">Planta Fin</label>
+                                <select class="form-control" id="end_plant" name="end_plant" required>
+                                    <option value="">Seleccione una opción</option> <!-- Opción por defecto -->
+                                    <option value="Zacapu"
+                                        <?php echo (isset($row['end_plant']) && $row['end_plant'] === 'Zacapu') ? 'selected' : ''; ?>>
+                                        Zacapu</option>
+                                    <option value="Tlaquepaque"
+                                        <?php echo (isset($row['end_plant']) && $row['end_plant'] === 'Tlaquepaque') ? 'selected' : ''; ?>>
+                                        Tlaquepaque</option>
+                                    <option value="Tultitlán"
+                                        <?php echo (isset($row['end_plant']) && $row['end_plant'] === 'Tultitlán') ? 'selected' : ''; ?>>
+                                        Tultitlán</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- TASK RAY -->
+                        <div class="col-md-3 mb-3">
+                            <label for="task_ray" class="form-label">Rayo de tarea</label>
+                            <input type="text" class="form-control" id="task_ray" name="task_ray"
+                                value="<?php echo htmlspecialchars($row['task_ray'] ?? ''); ?>">
+                        </div>
+
+                        <!-- Tipo de envío -->
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                <label for="shipping_type" class="form-label">Tipo de envío</label>
+                                <select class="form-control" id="shipping_type" name="shipping_type" required>
+                                    <option value="">Seleccione una opción</option> <!-- Opción por defecto -->
+                                    <option value="Nacional"
+                                        <?php echo (isset($row['shipping_type']) && $row['shipping_type'] === 'Nacional') ? 'selected' : ''; ?>>
+                                        Nacional</option>
+                                    <option value="Exportación"
+                                        <?php echo (isset($row['shipping_type']) && $row['shipping_type'] === 'Exportación') ? 'selected' : ''; ?>>
+                                        Exportación</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Tipo de proceso -->
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                <label for="procces_type" class="form-label"> Tipo de proceso</label>
+                                <select class="form-control" id="procces_type" name="procces_type" required>
+                                    <option value="">Seleccione una opción</option> <!-- Opción por defecto -->
+                                    <option value="Standard trials"
+                                        <?php echo (isset($row['procces_type']) && $row['procces_type'] === 'Standard trials') ? 'selected' : ''; ?>>
+                                        Standard trials</option>
+                                    <option value="Non-Standard trials"
+                                        <?php echo (isset($row['procces_type']) && $row['procces_type'] === 'Non-Standard trials') ? 'selected' : ''; ?>>
+                                        Non-Standard trials</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- #Task Ray -->
+                        <div class="col-md-3 mb-3">
+                            <label for="n_task" class="form-label">#Task Ray</label>
+                            <input type="text" class="form-control" id="n_task" name="n_task"
+                                value="<?php echo htmlspecialchars($row['n_task'] ?? ''); ?>">
+                        </div>
+
+                        <!-- TCH -->
+                        <div class="col-md-3 mb-3">
+                            <label for="TCH" class="form-label">TCH</label>
+                            <input type="text" class="form-control" id="TCH" name="TCH"
+                                value="<?php echo htmlspecialchars($row['TCH'] ?? ''); ?>">
+                        </div>
+                        <!-- Sistema de impresíon -->
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                <label for="printing_system" class="form-label">Sistema de impresión</label>
+                                <select class="form-control" id="printing_system" name="printing_system" required>
+                                    <option value="">Seleccione una opción</option> <!-- Opción por defecto -->
+                                    <option value="Rotograbado"
+                                        <?php echo (isset($row['printing_system']) && strpos($row['printing_system'], 'Rotograbado') !== false) ? 'selected' : ''; ?>>
+                                        Rotograbado</option>
+                                    <option value="Flexografía"
+                                        <?php echo (isset($row['printing_system']) && strpos($row['printing_system'], 'Flexografía') !== false) ? 'selected' : ''; ?>>
+                                        Flexografía</option>
+                                    <option value="Sin impresión"
+                                        <?php echo (isset($row['printing_system']) && strpos($row['printing_system'], 'Sin impresión') !== false) ? 'selected' : ''; ?>>
+                                        Sin impresión</option>
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <!-- Tipo de impresíon -->
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                <label for="printing_type" class="form-label">Tipo de impresión</label>
+                                <select class="form-control" id="printing_type" name="printing_type" required>
+                                    <option value="">Seleccione una opción</option> <!-- Opción por defecto -->
+                                    <option value="Interna"
+                                        <?php echo (isset($row['printing_type']) && $row['printing_type'] === 'Interna') ? 'selected' : ''; ?>>
+                                        Interna</option>
+                                    <option value="Externa"
+                                        <?php echo (isset($row['printing_type']) && $row['printing_type'] === 'Externa') ? 'selected' : ''; ?>>
+                                        Externa</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Número de colores -->
+                        <div class="col-md-3 mb-3">
+                            <label for="num_colors" class="form-label">Número de colores</label>
+                            <input type="text" class="form-control" id="num_colors" name="num_colors"
+                                value="<?php echo htmlspecialchars($row['num_colors'] ?? ''); ?>">
+                        </div>
+                        <!-- Colores -->
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                <label for="photocell_colors" class="form-label">Colores</label>
+                                <input type="text" class="form-control" id="photocell_colors" name="photocell_colors"
+                                    value="<?php echo $id_formulario ? htmlspecialchars($form_data['photocell_colors']) : ''; ?>"
                                     required>
-                            </div>
-                        </div>
-
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <label for="project">Proyecto:</label>
-                                <input type="text" id="project" class="form-control" placeholder="Ingrese el proyecto">
-                            </div>
-                        </div>
-
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <label for="startPlant">PLANTA INICIO:</label>
-                                <input type="text" id="startPlant" class="form-control"
-                                    placeholder="Ingrese Planta Inicio">
-                            </div>
-                        </div>
-
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <label for="endPlant">PLANTA FIN (SI ES DIFERENTE):</label>
-                                <input type="text" id="endPlant" class="form-control"
-                                    placeholder="Planta Fin (si es diferente)">
-                            </div>
-                        </div>
-
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <label for="taskRay">TASK RAY:</label>
-                                <input type="text" id="taskRay" class="form-control" placeholder="Ingrese Task Ray">
-                            </div>
-                        </div>
-
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <label for="shippingType">TIPO DE ENVÍO:</label>
-                                <input type="text" id="shippingType" class="form-control"
-                                    placeholder="Ingrese el tipo de envío">
-                            </div>
-                        </div>
-
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <label for="processType">TIPO DE PROCESO:</label>
-                                <input type="text" id="processType" class="form-control" placeholder="Tipo de proceso">
-                            </div>
-                        </div>
-
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <label for="taskRayNum">#Task Ray:</label>
-                                <input type="text" id="taskRayNum" class="form-control" placeholder="#Task Ray">
-                            </div>
-                        </div>
-
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <label for="tch">TCH:</label>
-                                <input type="text" id="tch" class="form-control" placeholder="TCH">
-                            </div>
-                        </div>
-
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <label for="printingSystem">Sistema de Impresión:</label>
-                                <input type="text" id="printingSystem" class="form-control"
-                                    placeholder="Sistema de Impresión">
-                            </div>
-                        </div>
-
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <label for="printingType">Tipo de Impresión:</label>
-                                <input type="text" id="printingType" class="form-control"
-                                    placeholder="Tipo de Impresión">
-                            </div>
-                        </div>
-
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <label for="numColors">#Colores:</label>
-                                <input type="number" id="numColors" class="form-control" placeholder="#Colores">
-                            </div>
-                        </div>
-
-                        <div class="col-md-12">
-                            <div class="text-center">
-                                <h4 class="mt-5">Características de Calidad de Producto Terminado </h4>
                             </div>
                         </div>
 
@@ -286,7 +279,7 @@ mysqli_close($conn);
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th>CARACTERÍSTICA</th>
+                                    <th>Caracteristica</th>
                                     <th>UNID</th>
                                     <th>VALOR NOMINAL</th>
                                     <th>Tolerancia</th>
@@ -295,7 +288,7 @@ mysqli_close($conn);
                             </thead>
                             <tbody id="calidadBody">
                                 <tr>
-                                    <td><input type="text" class="form-control" value="GRAMAJE"></td>
+                                    <td><input type="text" name= "feature1"class="form-control" value="<?php echo htmlspecialchars($data[0]["feature"] ?? 'GRAMA44JE'); ?>" required></td>
                                     <td><input type="text" class="form-control" value="g/m2"></td>
                                     <td><input type="text" class="form-control"></td>
                                     <td><input type="text" class="form-control"></td>
@@ -400,66 +393,69 @@ mysqli_close($conn);
                                     <td><input type="text" class="form-control"></td>
                                     <td><input type="text" class="form-control"></td>
                                     <td><input type="text" class="form-control"></td>
+                                <tr>
+                                    <td><button type="button" class="btn btn-primary" onclick="agregarFila()">Agregar
+                                            fila</button>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
 
-                        <!-- Botón para agregar fila -->
-                        <button type="button" class="btn btn-primary" onclick="agregarFila()">Agregar
-                            fila</button>
+
                         <!-- Sección de Datos adicionales de Impresión -->
 
                         <div class="text-center">
                             <h4 class="mt-5">Datos adicionales de Impresión</h4>
                         </div>
 
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th colspan="2">SPOT ANCHO (cm)</th>
-                                    <td><input type="text" class="form-control"></td>
-                                </tr>
-                                <tr>
-                                    <th colspan="2">SPOT LARGO (cm)</th>
-                                    <td><input type="text" class="form-control"></td>
-                                </tr>
-                                <tr>
-                                    <th colspan="2" style="background-color: yellow">REPETICIÓN (cm)</th>
-                                    <td><input type="text" class="form-control" style="background-color: yellow;">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th colspan="2" style="background-color: yellow;">REPETICIÓN ACUMULADA 1 M
-                                    </th>
-                                    <td><input type="text" class="form-control" style="background-color: yellow;">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th colspan="2">REPETICIÓN REAL (cm)</th>
-                                    <td><input type="text" class="form-control"></td>
-                                </tr>
-                                <tr>
-                                    <th colspan="2">REP. FOTOGRÁFICA (cm)</th>
-                                    <td><input type="text" class="form-control"></td>
-                                </tr>
-                                <tr>
-                                    <th colspan="2">CILINDRO/ MANGA (cm)</th>
-                                    <td><input type="text" class="form-control"></td>
-                                </tr>
-                                <tr>
-                                    <th colspan="2">NUM DE REPETICIONES</th>
-                                    <td><input type="text" class="form-control"></td>
-                                </tr>
-                                <tr>
-                                    <th colspan="2">NUM DE BOBINAS</th>
-                                    <td><input type="text" class="form-control"></td>
-                                </tr>
-                                <tr>
-                                    <th colspan="2">PONER LÍNEA DE CORTE</th>
-                                    <td><input type="text" class="form-control"></td>
-                                </tr>
-                            </thead>
-                        </table>
+                        <!-- Spot ancho (cm) -->
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                <label for="spot_width" class="form-label">Spot ancho (cm) </label>
+                                <input type="text" class="form-control" id="spot_width" name="spot_width"
+                                    value="<?php echo $id_formulario ? htmlspecialchars($form_data['spot_width']) : ''; ?>"
+                                    required>
+                            </div>
+                        </div>
+                        <tr>
+                            <th colspan="2">SPOT LARGO (cm)</th>
+                            <td><input type="text" class="form-control"></td>
+                        </tr>
+                        <tr>
+                            <th colspan="2" style="background-color: yellow">REPETICIÓN (cm)</th>
+                            <td><input type="text" class="form-control" style="background-color: yellow;">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="2" style="background-color: yellow;">REPETICIÓN ACUMULADA 1 M
+                            </th>
+                            <td><input type="text" class="form-control" style="background-color: yellow;">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="2">REPETICIÓN REAL (cm)</th>
+                            <td><input type="text" class="form-control"></td>
+                        </tr>
+                        <tr>
+                            <th colspan="2">REP. FOTOGRÁFICA (cm)</th>
+                            <td><input type="text" class="form-control"></td>
+                        </tr>
+                        <tr>
+                            <th colspan="2">CILINDRO/ MANGA (cm)</th>
+                            <td><input type="text" class="form-control"></td>
+                        </tr>
+                        <tr>
+                            <th colspan="2">NUM DE REPETICIONES</th>
+                            <td><input type="text" class="form-control"></td>
+                        </tr>
+                        <tr>
+                            <th colspan="2">NUM DE BOBINAS</th>
+                            <td><input type="text" class="form-control"></td>
+                        </tr>
+                        <tr>
+                            <th colspan="2">PONER LÍNEA DE CORTE</th>
+                            <td><input type="text" class="form-control"></td>
+                        </tr>
 
                         <!-- Sección de Descripción del Proyecto -->
                         <h4 class="mt-5">Descripción del Proyecto</h4>
