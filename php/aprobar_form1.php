@@ -28,7 +28,7 @@ if (isset($_POST['id'])) {
         $name_client   = $form1_data['name_client'];
         $project_name  = $form1_data['project_name'];
         $status_form2  = 'Nuevo';  // Estado inicial en form2
-        $created_at    = date("Y-m-d H:i");
+        $created_at    = date("y-m-d H:i");
 
         // Insertar en form2
         $sql2 = "INSERT INTO form2 (

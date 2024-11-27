@@ -8,7 +8,7 @@ $response = array();
 // Verificar si se recibió un ID de formulario para rechazar
 if (isset($_POST['id'])) {
     $id = $_POST['id'];
-    $completed_at = date("Y-m-d H:i:s"); // Fecha y hora actual
+    $completed_at = date("y-m-d H:i:s"); // Fecha y hora actual
 
     // Actualizar el estado de form1 a "Corregir"
     $sql = "UPDATE form2 SET status_form2 = ?, qualified_by = ?, completed_at = ? WHERE id = ?";

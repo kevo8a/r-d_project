@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $muestra_fisica            = isset($_POST['muestra_fisica'])           ? 1 : 0;
     $plano_mecanico            = isset($_POST['plano_mecanico'])           ? 1 : 0;
     $pdf_arte                  = isset($_POST['pdf_arte'])                 ? 1 : 0;
-    $created_at                = date("Y-m-d H:i");
+    $created_at                = date("y-m-d H:i");
 
 
     // Prepare the SQL query to update the record

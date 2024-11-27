@@ -15,7 +15,7 @@ $response = array();
 if (isset($_POST['id']) && isset($_POST['calificacion'])) {
     $id           = intval($_POST['id']); // Asegurar que el ID sea un entero
     $calificacion = $_POST['calificacion'];
-    $completed_at = date("Y-m-d H:i"); // Fecha y hora actual
+    $completed_at = date("y-m-d H:i"); // Fecha y hora actual
 
     // Verificar que la calificación sea "Aprobar"
     if ($calificacion === 'Aprobar') {
@@ -46,7 +46,7 @@ if (isset($_POST['id']) && isset($_POST['calificacion'])) {
                 $status_form3      = 'Nuevo';  // Estado inicial en form3
                 $id_user           = $form2_data['id_user'];
                 $name_user         = $form2_data['name_user'];
-                $created_at        = date("Y-m-d H:i");
+                $created_at        = date("y-m-d H:i");
                 $site_user         = $form2_data['site_user'];
                 $name_client       = $form2_data['name_client'];
                 $project_name      = $form2_data['project_name'];

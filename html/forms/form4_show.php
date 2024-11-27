@@ -1,7 +1,30 @@
-<?php
-include '../php/db_connection.php';
-include '../php/auth.php';
+﻿<?php
+include '../../php/db_connection.php';
+include '../../php/auth.php';
+
+// Obtener el ID del formulario de la URL (para editar)
+$id_formulario = isset($_GET['id']) ? $_GET['id'] : null;
+$form_data = [];
+
+// Si hay un ID, consultar los datos del formulario por su ID
+if ($id_formulario) {
+    $sql = "SELECT * FROM form4 WHERE id = ?";
+    $stmt = mysqli_prepare($conn, $sql);
+    mysqli_stmt_bind_param($stmt, "i", $id_formulario);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+
+    // Verificar si se encontró el formulario
+    if ($result->num_rows === 0) {
+        die('Formulario no encontrado.');
+    }
+    // Obtener los datos del formulario
+    $form_data = mysqli_fetch_assoc($result);
+}
+
+mysqli_close($conn);
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,23 +35,23 @@ include '../php/auth.php';
     <meta name="description" content="">
     <meta name="author" content="">
     <title>SB Admin 2 - Dashboard</title>
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
-    <link href="../css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="../../css/sb-admin-2.min.css" rel="stylesheet">
 </head>
 
 <body id="page-top">
     <!-- Page Wrapper -->
     <div id="wrapper">
-        <?php include 'structure/sidebar.php'; ?>
+        <?php include '../structure/sidebar.php'; ?>
 
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
             <!-- Main Content -->
             <div id="content">
-                <?php include 'structure/navbar.php'; ?>
+                <?php include '../structure/navbar.php'; ?>
 
                 <!-- Contenido -->
                 <div class="container-fluid">
@@ -303,10 +326,10 @@ include '../php/auth.php';
         </div>
 
         <!-- Bootstrap core JavaScript-->
-        <script src="vendor/jquery/jquery.min.js"></script>
-        <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-        <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-        <script src="js/sb-admin-2.min.js"></script>
+        <script src="../vendor/jquery/jquery.min.js"></script>
+        <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+        <script src="../js/sb-admin-2.min.js"></script>
 </body>
 
 </html>
