@@ -135,41 +135,37 @@ $data = json_decode($row['table_content'], true); // Decodificar JSON a un array
 
 
                         <!-- Planta Inicio -->
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <label for="start_plant" class="form-label">Planta Inicio</label>
-                                <select class="form-control" id="start_plant" name="start_plant" required>
-                                    <option value="">Seleccione una opción</option> <!-- Opción por defecto -->
-                                    <option value="Zacapu"
-                                        <?php echo (isset($row['start_plant']) && $row['start_plant'] === 'Zacapu') ? 'selected' : ''; ?>>
-                                        Zacapu</option>
-                                    <option value="Tlaquepaque"
-                                        <?php echo (isset($row['start_plant']) && $row['start_plant'] === 'Tlaquepaque') ? 'selected' : ''; ?>>
-                                        Tlaquepaque</option>
-                                    <option value="Tultitlán"
-                                        <?php echo (isset($row['start_plant']) && $row['start_plant'] === 'Tultitlán') ? 'selected' : ''; ?>>
-                                        Tultitlán</option>
-                                </select>
-                            </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="start_plant" class="form-label">Planta Inicio</label>
+                            <select class="form-control" id="start_plant" name="start_plant" required>
+                                <option value="">Seleccione una opción</option> <!-- Opción por defecto -->
+                                <option value="Zacapu"
+                                    <?php echo (isset($row['start_plant']) && $row['start_plant'] === 'Zacapu') ? 'selected' : ''; ?>>
+                                    Zacapu</option>
+                                <option value="Tlaquepaque"
+                                    <?php echo (isset($row['start_plant']) && $row['start_plant'] === 'Tlaquepaque') ? 'selected' : ''; ?>>
+                                    Tlaquepaque</option>
+                                <option value="Tultitlán"
+                                    <?php echo (isset($row['start_plant']) && $row['start_plant'] === 'Tultitlán') ? 'selected' : ''; ?>>
+                                    Tultitlán</option>
+                            </select>
                         </div>
 
                         <!-- Planta Fin -->
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <label for="end_plant" class="form-label">Planta Fin</label>
-                                <select class="form-control" id="end_plant" name="end_plant" required>
-                                    <option value="">Seleccione una opción</option> <!-- Opción por defecto -->
-                                    <option value="Zacapu"
-                                        <?php echo (isset($row['end_plant']) && $row['end_plant'] === 'Zacapu') ? 'selected' : ''; ?>>
-                                        Zacapu</option>
-                                    <option value="Tlaquepaque"
-                                        <?php echo (isset($row['end_plant']) && $row['end_plant'] === 'Tlaquepaque') ? 'selected' : ''; ?>>
-                                        Tlaquepaque</option>
-                                    <option value="Tultitlán"
-                                        <?php echo (isset($row['end_plant']) && $row['end_plant'] === 'Tultitlán') ? 'selected' : ''; ?>>
-                                        Tultitlán</option>
-                                </select>
-                            </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="end_plant" class="form-label">Planta Fin</label>
+                            <select class="form-control" id="end_plant" name="end_plant" required>
+                                <option value="">Seleccione una opción</option> <!-- Opción por defecto -->
+                                <option value="Zacapu"
+                                    <?php echo (isset($row['end_plant']) && $row['end_plant'] === 'Zacapu') ? 'selected' : ''; ?>>
+                                    Zacapu</option>
+                                <option value="Tlaquepaque"
+                                    <?php echo (isset($row['end_plant']) && $row['end_plant'] === 'Tlaquepaque') ? 'selected' : ''; ?>>
+                                    Tlaquepaque</option>
+                                <option value="Tultitlán"
+                                    <?php echo (isset($row['end_plant']) && $row['end_plant'] === 'Tultitlán') ? 'selected' : ''; ?>>
+                                    Tultitlán</option>
+                            </select>
                         </div>
                         <!-- TASK RAY -->
                         <div class="col-md-3 mb-3">
@@ -280,123 +276,254 @@ $data = json_decode($row['table_content'], true); // Decodificar JSON a un array
                             <thead>
                                 <tr>
                                     <th>Caracteristica</th>
-                                    <th>UNID</th>
+                                    <th>Unidad</th>
                                     <th>VALOR NOMINAL</th>
                                     <th>Tolerancia</th>
                                     <th>Notas</th>
                                 </tr>
                             </thead>
-                            <tbody id="calidadBody">
+                            <tbody id="tableBody">
                                 <tr>
-                                    <td><input type="text" name= "feature1"class="form-control" value="<?php echo htmlspecialchars($data[0]["feature"] ?? 'GRAMA44JE'); ?>" required></td>
-                                    <td><input type="text" class="form-control" value="g/m2"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td><input type="text" class="form-control"></td>
+                                    <td><input type="text" name="feature1  " class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["feature"  ] ?? 'Gramage'); ?>"
+                                            textonly></td>
+                                    <td><input type="text" name="unit1     " class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["unit"     ] ?? 'g/m2'   ); ?>"
+                                            textonly></td>
+                                    <td><input type="text" name="value1    " class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["value"    ] ?? ''       ); ?>"
+                                            required></td>
+                                    <td><input type="text" name="tolerance1" class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["tolerance"] ?? ''       ); ?>"
+                                            required></td>
+                                    <td><input type="text" name="notes1    " class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["notes"    ] ?? ''       ); ?>"
+                                            required></td>
                                 </tr>
                                 <tr>
-                                    <td><input type="text" class="form-control" value="CALIBRE"></td>
-                                    <td><input type="text" class="form-control" value="micras"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td><input type="text" class="form-control"></td>
+                                    <td><input type="text" name="feature2  " class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["feature"  ] ?? 'Calibre'); ?>"
+                                            textonly></td>
+                                    <td><input type="text" name="unit2     " class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["unit"     ] ?? 'Micras' ); ?>"
+                                            textonly></td>
+                                    <td><input type="text" name="value2    " class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["value"    ] ?? ''       ); ?>"
+                                            required></td>
+                                    <td><input type="text" name="tolerance2" class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["tolerance"] ?? ''       ); ?>"
+                                            required></td>
+                                    <td><input type="text" name="notes2    " class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["notes"    ] ?? ''       ); ?>"
+                                            required></td>
                                 </tr>
                                 <tr>
-                                    <td><input type="text" class="form-control" value="COF ext/ext"></td>
-                                    <td><input type="text" class="form-control" value="-"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td><input type="text" class="form-control"></td>
+                                    <td><input type="text" name="feature3  " class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["feature"  ] ?? 'COF ext/ext'); ?>"
+                                            textonly></td>
+                                    <td><input type="text" name="unit3     " class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["unit"     ] ?? '-'      ); ?>"
+                                            textonly></td>
+                                    <td><input type="text" name="value3    " class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["value"    ] ?? ''       ); ?>"
+                                            required></td>
+                                    <td><input type="text" name="tolerance3" class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["tolerance"] ?? ''       ); ?>"
+                                            required></td>
+                                    <td><input type="text" name="notes3    " class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["notes"    ] ?? ''       ); ?>"
+                                            required></td>
                                 </tr>
                                 <tr>
-                                    <td><input type="text" class="form-control" value="COF int/int"></td>
-                                    <td><input type="text" class="form-control" value="-"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td><input type="text" class="form-control"></td>
+                                    <td><input type="text" name="feature4  " class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["feature"  ] ?? 'COF int/int'); ?>"
+                                            textonly></td>
+                                    <td><input type="text" name="unit4     " class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["unit"     ] ?? '-'      ); ?>"
+                                            textonly></td>
+                                    <td><input type="text" name="value4    " class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["value"    ] ?? ''       ); ?>"
+                                            required></td>
+                                    <td><input type="text" name="tolerance4" class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["tolerance"] ?? ''       ); ?>"
+                                            required></td>
+                                    <td><input type="text" name="notes4    " class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["notes"    ] ?? ''       ); ?>"
+                                            required></td>
                                 </tr>
                                 <tr>
-                                    <td><input type="text" class="form-control" value="FUERZA DE SELLADO"></td>
-                                    <td><input type="text" class="form-control" value="g/25 mm"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td><input type="text" class="form-control"></td>
+                                    <td><input type="text" name="featur5   " class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["feature"  ] ?? 'Fuerza de sellado'); ?>"
+                                            textonly></td>
+                                    <td><input type="text" name="unit5     " class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["unit"     ] ?? 'g/25 mm'); ?>"
+                                            textonly></td>
+                                    <td><input type="text" name="value5    " class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["value"    ] ?? ''       ); ?>"
+                                            required></td>
+                                    <td><input type="text" name="tolerance5" class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["tolerance"] ?? ''       ); ?>"
+                                            required></td>
+                                    <td><input type="text" name="notes5    " class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["notes"    ] ?? ''       ); ?>"
+                                            required></td>
                                 </tr>
                                 <tr>
-                                    <td><input type="text" class="form-control" value="FUERZA DE ADHERENCIA 1ra lam">
-                                    </td>
-                                    <td><input type="text" class="form-control" value="g/25 mm"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td><input type="text" class="form-control"></td>
+                                    <td><input type="text" name="feature6  " class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["feature"  ] ?? 'Fuerza Dde Adherencia 1ra Lam'); ?>"
+                                            textonly></td>
+                                    <td><input type="text" name="unit6     " class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["unit"     ] ?? 'g/25 mm'); ?>"
+                                            textonly></td>
+                                    <td><input type="text" name="value6    " class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["value"    ] ?? ''       ); ?>"
+                                            required></td>
+                                    <td><input type="text" name="tolerance6" class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["tolerance"] ?? ''       ); ?>"
+                                            required></td>
+                                    <td><input type="text" name="notes6    " class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["notes"    ] ?? ''       ); ?>"
+                                            required></td>
                                 </tr>
                                 <tr>
-                                    <td><input type="text" class="form-control" value="FUERZA DE ADHERENCIA 2da Lam">
-                                    </td>
-                                    <td><input type="text" class="form-control" value="g/25 mm"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td><input type="text" class="form-control"></td>
+                                    <td><input type="text" name="feature7  " class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["feature"  ] ?? 'Fuerza Dde Adherencia 2da Lam'); ?>"
+                                            textonly></td>
+                                    <td><input type="text" name="unit7     " class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["unit"     ] ?? 'g/25 mm'); ?>"
+                                            textonly></td>
+                                    <td><input type="text" name="value7    " class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["value"    ] ?? ''       ); ?>"
+                                            required></td>
+                                    <td><input type="text" name="tolerance7" class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["tolerance"] ?? ''       ); ?>"
+                                            required></td>
+                                    <td><input type="text" name="notes7    " class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["notes"    ] ?? ''       ); ?>"
+                                            required></td>
                                 </tr>
                                 <tr>
-                                    <td><input type="text" class="form-control" value="SOLVENTES RETENIDOS">
-                                    </td>
-                                    <td><input type="text" class="form-control" value="mg/m2"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td><input type="text" class="form-control"></td>
+                                    <td><input type="text" name="feature8  " class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["feature"  ] ?? 'Solventes Retenidos'); ?>"
+                                            textonly></td>
+                                    <td><input type="text" name="unit8     " class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["unit"     ] ?? 'mg/m2'  ); ?>"
+                                            textonly></td>
+                                    <td><input type="text" name="value8    " class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["value"    ] ?? ''       ); ?>"
+                                            required></td>
+                                    <td><input type="text" name="tolerance8" class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["tolerance"] ?? ''       ); ?>"
+                                            required></td>
+                                    <td><input type="text" name="notes8    " class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["notes"    ] ?? ''       ); ?>"
+                                            required></td>
                                 </tr>
                                 <tr>
-                                    <td><input type="text" class="form-control" value="DUREZA"></td>
-                                    <td><input type="text" class="form-control" value="kN"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td><input type="text" class="form-control"></td>
+                                    <td><input type="text" name="feature9  " class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["feature"  ] ?? 'Dureza' ); ?>"
+                                            textonly></td>
+                                    <td><input type="text" name="unit9     " class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["unit"     ] ?? 'kN'     ); ?>"
+                                            textonly></td>
+                                    <td><input type="text" name="value9    " class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["value"    ] ?? ''       ); ?>"
+                                            required></td>
+                                    <td><input type="text" name="tolerance9" class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["tolerance"] ?? ''       ); ?>"
+                                            required></td>
+                                    <td><input type="text" name="notes9    " class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["notes"    ] ?? ''       ); ?>"
+                                            required></td>
                                 </tr>
                                 <tr>
-                                    <td><input type="text" class="form-control"
-                                            value="RESISTENCIA TERMICA(180°C-1 SEG-40PSI)">
-                                    </td>
-                                    <td><input type="text" class="form-control" value="-"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td><input type="text" class="form-control"></td>
+                                    <td><input type="text" name="feature10  " class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["feature"  ] ?? 'Resistencia Termica(180°C-1 SEG-40PSI)'); ?>"
+                                            textonly></td>
+                                    <td><input type="text" name="unit10     " class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["unit"     ] ?? '-'      ); ?>"
+                                            textonly></td>
+                                    <td><input type="text" name="value10    " class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["value"    ] ?? ''       ); ?>"
+                                            required></td>
+                                    <td><input type="text" name="tolerance10" class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["tolerance"] ?? ''       ); ?>"
+                                            required></td>
+                                    <td><input type="text" name="notes10    " class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["notes"    ] ?? ''       ); ?>"
+                                            required></td>
                                 </tr>
                                 <tr>
-                                    <td><input type="text" class="form-control" value="CHOQUE TÉRMICO"></td>
-                                    <td><input type="text" class="form-control" value="-"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td><input type="text" class="form-control"></td>
+                                    <td><input type="text" name="feature11  " class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["feature"  ] ?? 'Choque Térmico'); ?>"
+                                            textonly></td>
+                                    <td><input type="text" name="unit11     " class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["unit"     ] ?? '-'      ); ?>"
+                                            textonly></td>
+                                    <td><input type="text" name="value11    " class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["value"    ] ?? ''       ); ?>"
+                                            required></td>
+                                    <td><input type="text" name="tolerance11" class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["tolerance"] ?? ''       ); ?>"
+                                            required></td>
+                                    <td><input type="text" name="notes11    " class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["notes"    ] ?? ''       ); ?>"
+                                            required></td>
                                 </tr>
                                 <tr>
-                                    <td><input type="text" class="form-control" value="TRANSMISION DE VAPOR DE AGUA">
-                                    </td>
-                                    <td><input type="text" class="form-control" value="g/m2 día"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td><input type="text" class="form-control"></td>
+                                    <td><input type="text" name="feature12  " class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["feature"  ] ?? 'Transmision de vapor de agua'); ?>"
+                                            textonly></td>
+                                    <td><input type="text" name="unit12     " class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["unit"     ] ?? 'g / m2 día'); ?>"
+                                            textonly></td>
+                                    <td><input type="text" name="value12    " class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["value"    ] ?? ''       ); ?>"
+                                            required></td>
+                                    <td><input type="text" name="tolerance12" class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["tolerance"] ?? ''       ); ?>"
+                                            required></td>
+                                    <td><input type="text" name="notes12    " class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["notes"    ] ?? ''       ); ?>"
+                                            required></td>
                                 </tr>
                                 <tr>
-                                    <td><input type="text" class="form-control" value="TRANSMISION DE OXIGENO">
-                                    </td>
-                                    <td><input type="text" class="form-control" value="cc/m2 día"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td><input type="text" class="form-control"></td>
+                                    <td><input type="text" name="feature4  " class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["feature"  ] ?? 'Transmision de oxigeno'); ?>"
+                                            textonly></td>
+                                    <td><input type="text" name="unit4     " class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["unit"     ] ?? 'cc / m2 día'      ); ?>"
+                                            textonly></td>
+                                    <td><input type="text" name="value4    " class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["value"    ] ?? ''       ); ?>"
+                                            required></td>
+                                    <td><input type="text" name="tolerance4" class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["tolerance"] ?? ''       ); ?>"
+                                            required></td>
+                                    <td><input type="text" name="notes4    " class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["notes"    ] ?? ''       ); ?>"
+                                            required></td>
                                 </tr>
                                 <tr>
-                                    <td><input type="text" class="form-control" value="Resistencia al ROCE-tinta">
-                                    </td>
-                                    <td><input type="text" class="form-control" value="Ciclos, peso, probetas">
-                                    </td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                <tr>
-                                    <td><button type="button" class="btn btn-primary" onclick="agregarFila()">Agregar
-                                            fila</button>
-                                    </td>
+                                    <td><input type="text" name="feature4  " class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["feature"  ] ?? 'Resistencia al ROCE-tinta'); ?>"
+                                            textonly></td>
+                                    <td><input type="text" name="unit4     " class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["unit"     ] ?? 'Ciclos, peso, probetas'); ?>"
+                                            textonly></td>
+                                    <td><input type="text" name="value4    " class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["value"    ] ?? ''       ); ?>"
+                                            required></td>
+                                    <td><input type="text" name="tolerance4" class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["tolerance"] ?? ''       ); ?>"
+                                            required></td>
+                                    <td><input type="text" name="notes4    " class="form-control"
+                                            value="<?php echo htmlspecialchars($data[0]["notes"    ] ?? ''       ); ?>"
+                                            required></td>
+                                </tr>
+                                <td><button type="button" class="btn btn-primary" onclick="agregarFila()">Agregar
+                                        fila</button>
+                                </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -404,85 +531,199 @@ $data = json_decode($row['table_content'], true); // Decodificar JSON a un array
 
                         <!-- Sección de Datos adicionales de Impresión -->
 
-                        <div class="text-center">
+                        <div class="col-md-12 mb-3" class="text-center">
                             <h4 class="mt-5">Datos adicionales de Impresión</h4>
                         </div>
 
-                        <!-- Spot ancho (cm) -->
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <label for="spot_width" class="form-label">Spot ancho (cm) </label>
-                                <input type="text" class="form-control" id="spot_width" name="spot_width"
-                                    value="<?php echo $id_formulario ? htmlspecialchars($form_data['spot_width']) : ''; ?>"
-                                    required>
-                            </div>
-                        </div>
-                        <tr>
-                            <th colspan="2">SPOT LARGO (cm)</th>
-                            <td><input type="text" class="form-control"></td>
-                        </tr>
-                        <tr>
-                            <th colspan="2" style="background-color: yellow">REPETICIÓN (cm)</th>
-                            <td><input type="text" class="form-control" style="background-color: yellow;">
-                            </td>
-                        </tr>
-                        <tr>
-                            <th colspan="2" style="background-color: yellow;">REPETICIÓN ACUMULADA 1 M
-                            </th>
-                            <td><input type="text" class="form-control" style="background-color: yellow;">
-                            </td>
-                        </tr>
-                        <tr>
-                            <th colspan="2">REPETICIÓN REAL (cm)</th>
-                            <td><input type="text" class="form-control"></td>
-                        </tr>
-                        <tr>
-                            <th colspan="2">REP. FOTOGRÁFICA (cm)</th>
-                            <td><input type="text" class="form-control"></td>
-                        </tr>
-                        <tr>
-                            <th colspan="2">CILINDRO/ MANGA (cm)</th>
-                            <td><input type="text" class="form-control"></td>
-                        </tr>
-                        <tr>
-                            <th colspan="2">NUM DE REPETICIONES</th>
-                            <td><input type="text" class="form-control"></td>
-                        </tr>
-                        <tr>
-                            <th colspan="2">NUM DE BOBINAS</th>
-                            <td><input type="text" class="form-control"></td>
-                        </tr>
-                        <tr>
-                            <th colspan="2">PONER LÍNEA DE CORTE</th>
-                            <td><input type="text" class="form-control"></td>
-                        </tr>
+                        <!-- Tabla para especificaciones de medidas del proyecto -->
+                        <table class="table table-bordered">
+
+                            <!-- Spot ancho (cm) -->
+                            <tr>
+                                <th style="width: 21%;">
+                                    <label for="spot_width">SPOT ANCHO (cm)</label>
+                                </th>
+                                <td>
+                                    <input type="text" class="form-control" id="spot_width" name="spot_width"
+                                        value="<?php echo htmlspecialchars($row['spot_width'] ?? ''); ?>">
+                                </td>
+                            </tr>
+
+                            <!-- Spot largo (cm) -->
+                            <tr>
+                                <th style="width: 21%;">
+                                    <label for="spot_length">SPOT LARGO (cm)</label>
+                                </th>
+                                <td>
+                                    <input type="text" class="form-control" id="spot_length" name="spot_length"
+                                        value="<?php echo htmlspecialchars($row['spot_length'] ?? ''); ?>">
+                                </td>
+                            </tr>
+                            <!-- Repetición (cm) -->
+                            <tr>
+                                <th style="width: 21%; background-color: yellow;">
+                                    <label for="repeat_cm">REPETICIÓN (cm)</label>
+                                </th>
+                                <td>
+                                    <input type="text" class="form-control" id="repeat_cm" name="repeat_cm"
+                                        style="background-color: yellow;"
+                                        value="<?php echo htmlspecialchars($row['repeat_cm'] ?? ''); ?>">
+                                </td>
+                            </tr>
+                            <!-- Repetición acumulada en 1 metro -->
+                            <tr>
+                                <th style="width: 21%; background-color: yellow;">
+                                    <label for="accumulative_repeat">REPETICIÓN ACUMULADA 1 M</label>
+                                </th>
+                                <td>
+                                    <input type="text" class="form-control" id="accumulative_repeat"
+                                        name="accumulative_repeat" style="background-color: yellow;"
+                                        value="<?php echo htmlspecialchars($row['accumulative_repeat'] ?? ''); ?>">
+                                </td>
+                            </tr>
+                            <!-- Repetición real (cm) -->
+                            <tr>
+                                <th style="width: 21%;">
+                                    <label for="actual_repeat">REPETICIÓN REAL (cm)</label>
+                                </th>
+                                <td>
+                                    <input type="text" class="form-control" id="actual_repeat" name="actual_repeat"
+                                        value="<?php echo htmlspecialchars($row['actual_repeat'] ?? ''); ?>">
+                                </td>
+                            </tr>
+                            <!-- Repetición fotográfica (cm) -->
+                            <tr>
+                                <th style="width: 21%;">
+                                    <label for="photographic_rep">REP. FOTOGRÁFICA (cm)</label>
+                                </th>
+                                <td>
+                                    <input type="text" class="form-control" id="photographic_rep"
+                                        name="photographic_rep"
+                                        value="<?php echo htmlspecialchars($row['photographic_rep'] ?? ''); ?>">
+                                </td>
+                            </tr>
+                            <!-- Cilindro/Manga (cm) -->
+                            <tr>
+                                <th style="width: 21%;">
+                                    <label for="cylinder_sleeve">CILINDRO/ MANGA (cm)</label>
+                                </th>
+                                <td>
+                                    <input type="text" class="form-control" id="cylinder_sleeve" name="cylinder_sleeve"
+                                        value="<?php echo htmlspecialchars($row['cylinder_sleeve'] ?? ''); ?>">
+                                </td>
+                            </tr>
+                            <!-- Número de repeticiones -->
+                            <tr>
+                                <th style="width: 21%;">
+                                    <label for="n_repetitions">NUM DE REPETICIONES</label>
+                                </th>
+                                <td>
+                                    <input type="text" class="form-control" id="n_repetitions" name="n_repetitions"
+                                        value="<?php echo htmlspecialchars($row['n_repetitions'] ?? ''); ?>">
+                                </td>
+                            </tr>
+                            <!-- Número de bobinas -->
+                            <tr>
+                                <th style="width: 21%;">
+                                    <label for="n_reels">NUM DE BOBINAS</label>
+                                </th>
+                                <td>
+                                    <input type="text" class="form-control" id="n_reels" name="n_reels"
+                                        value="<?php echo htmlspecialchars($row['n_reels'] ?? ''); ?>">
+                                </td>
+                            </tr>
+                            <!-- Poner línea de corte -->
+                            <tr>
+                                <th style="width: 21%;">
+                                    <label for="cut_line">PONER LÍNEA DE CORTE</label>
+                                </th>
+                                <td>
+                                    <input type="text" class="form-control" id="cut_line" name="cut_line"
+                                        value="<?php echo htmlspecialchars($row['cut_line'] ?? ''); ?>">
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- Tabla para especificaciones de medidas del proyecto -->
+                        <table class="table table-bordered">
+
+                            <!-- COLOR SPOT -->
+                            <tr>
+                                <th style="width: 21%;">
+                                    <label for="spot_width">COLOR SPOT</label>
+                                </th>
+                                <td>
+                                    <input type="text" class="form-control" id="spot_width" name="spot_width"
+                                        value="NEGRO">
+                                </td>
+                            </tr>
+
+                            <!-- Area m2 -->
+                            <tr>
+                                <th style="width: 21%;">
+                                    <label for="area">Area m2</label>
+                                </th>
+                                <td>
+                                    <input type="text" class="form-control" id="area" name="area"
+                                        value="<?php echo htmlspecialchars($row['area'] ?? ''); ?>">
+                                </td>
+                            </tr>
+                            <!-- Impresión x m2 -->
+                            <tr>
+                                <th style="width: 21%; background-color: yellow;">
+                                    <label for="repeat_cm">Impresión x m2</label>
+                                </th>
+                                <td>
+                                    <input type="text" class="form-control" id="repeat_cm" name="repeat_cm"
+                                        style="background-color: yellow;"
+                                        value="<?php echo htmlspecialchars($row['repeat_cm'] ?? ''); ?>">
+                                </td>
+                            </tr>
+                            <!-- Impresión x m lineal -->
+                            <tr>
+                                <th style="width: 21%; background-color: yellow;">
+                                    <label for="print_linear">Impresión x m lineal</label>
+                                </th>
+                                <td>
+                                    <input type="text" class="form-control" id="print_linear" name="print_linear"
+                                        style="background-color: yellow;"
+                                        value="<?php echo htmlspecialchars($row['print_linear'] ?? ''); ?>">
+                                </td>
+                            </tr>
+                        </table>
 
                         <!-- Sección de Descripción del Proyecto -->
                         <h4 class="mt-5">Descripción del Proyecto</h4>
+
                         <div class="col-md-12">
                             <div class="mb-3">
-                                <label>Descripción del Proyecto (Procesos, Sistema de impresión, Tintas especiales,
-                                    etc):</label>
-                                <textarea class="form-control" rows="3"
-                                    placeholder="Describa el proyecto..."></textarea>
+                                <label for="descripcion-proyecto">Descripción del Proyecto (Procesos, Sistema de
+                                    impresión, Tintas especiales, etc):</label>
+                                <textarea id="descripcion-proyecto" name="descripcion_proyecto" class="form-control"
+                                    rows="3" placeholder="Describa el proyecto..."
+                                    required><?php echo htmlspecialchars($data['descripcion_proyecto'] ?? ''); ?></textarea>
                             </div>
                         </div>
 
                         <div class="col-md-12">
                             <div class="mb-3">
-                                <label>Descripción del Proyecto Arte:</label>
-                                <textarea class="form-control" rows="3"
-                                    placeholder="Describa el proyecto arte..."></textarea>
+                                <label for="descripcion-proyecto-arte">Descripción del Proyecto Arte:</label>
+                                <textarea id="descripcion-proyecto-arte" name="descripcion_proyecto_arte"
+                                    class="form-control" rows="3" placeholder="Describa el proyecto arte..."
+                                    required><?php echo htmlspecialchars($data['descripcion_proyecto_arte'] ?? ''); ?></textarea>
                             </div>
                         </div>
 
                         <div class="col-md-12">
                             <div class="mb-3">
-                                <label>Especificaciones especiales (uniones, empaque, ID):</label>
-                                <textarea class="form-control" rows="3"
-                                    placeholder="Ingrese especificaciones especiales..."></textarea>
+                                <label for="especificaciones-especiales">Especificaciones especiales (uniones, empaque,
+                                    ID):</label>
+                                <textarea id="especificaciones-especiales" name="especificaciones_especiales"
+                                    class="form-control" rows="3" placeholder="Ingrese especificaciones especiales..."
+                                    required><?php echo htmlspecialchars($data['especificaciones_especiales'] ?? ''); ?></textarea>
                             </div>
                         </div>
+
                     </div>
                 </div>
                 <!-- End of Content -->
