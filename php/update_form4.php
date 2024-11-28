@@ -39,25 +39,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $counter = 1;
     while (isset($_POST["feature$counter"])) {
         $updatedData[] = [
-            "feature"      => htmlspecialchars($_POST["feature$counter"]),
-            "unit" => htmlspecialchars($_POST["unit$counter"]),
-            "value"  => htmlspecialchars($_POST["value$counter"]),
-            "tolerance"     => htmlspecialchars($_POST["tolerance$counter"]),
-            "notes"  => htmlspecialchars($_POST["notes$counter"])
+            "feature"  => htmlspecialchars($_POST["feature$counter"]),
+            "unit"     => htmlspecialchars($_POST["unit$counter"]),
+            "value"    => htmlspecialchars($_POST["value$counter"]),
+            "tolerance"=> htmlspecialchars($_POST["tolerance$counter"]),
+            "notes"    => htmlspecialchars($_POST["notes$counter"])
         ];
         $counter++;
     }
-
-    $jsonData = json_encode($updatedData);
-
+    $project_name = 
+    $jsonData     = json_encode($updatedData);
     // Recoger valores de los pasos
-    $steps = [];
-    for ($step = 1; $step <= 6; $step++) {
-        $steps["step_$step"] = htmlspecialchars($_POST["proceso$step"] ?? '');
-    }
-
-    $status = 'En Proceso'; // Establecer el estado como 'En Proceso'
-    $created_at = date("y-m-d H:i:s");
+    $status       = 'En Proceso'; // Establecer el estado como 'En Proceso'
+    $created_at   = date("y-m-d H:i:s");
+    $project_name = 
 
     // Actualizar en la base de datos usando prepared statement
     $sql = "UPDATE form4 SET 
