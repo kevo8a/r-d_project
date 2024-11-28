@@ -41,75 +41,70 @@ $data = json_decode($row['table_content'], true); // Decodificar JSON a un array
                         <h1 class="text-center mb-4">Editar Formulario de Cotización</h1>
                         <form id="form-estructure" method="POST" enctype="multipart/form-data">
                             <div class="row">
-                                <div class="row">
-                                    <!-- Sección de campos -->
-                                    <div class="col-md-3 mb-3">
-                                        <label for="solicitante" class="form-label">Solicitante</label>
-                                        <input type="text" class="form-control" id="solicitante" name="solicitante"
-                                            value="<?php echo htmlspecialchars($row['name_user'] ?? ''); ?>" disabled>
-                                    </div>
-                                    <div class="col-md-3 mb-3">
-                                        <label for="project_name" class="form-label">Nombre del
-                                            Proyecto/Producto</label>
-                                        <input type="text" class="form-control" id="project_name" name="project_name"
-                                            value="<?php echo htmlspecialchars($row['project_name'] ?? ''); ?>"
-                                            disabled>
-                                    </div>
-                                    <div class="col-md-3 mb-3">
-                                        <label for="site" class="form-label">Site</label>
-                                        <input type="text" class="form-control" id="site" name="site"
-                                            value="<?php echo htmlspecialchars($row['site_user'] ?? ''); ?>" disabled>
-                                    </div>
-                                    <div class="col-md-3 mb-3">
-                                        <label for="folio" class="form-label">Folio</label>
-                                        <input type="text" class="form-control" id="folio" name="folio"
-                                            value="<?php echo htmlspecialchars($row['id_form2'] ?? ''); ?>" disabled>
-                                    </div>
-                                    <div class="col-md-3 mb-3">
-                                        <label for="id_user" class="form-label">ID del Usuario</label>
-                                        <input type="text" class="form-control" id="id_user" name="id_user"
-                                            value="<?php echo htmlspecialchars($row['id_user'] ?? ''); ?>" disabled>
-                                    </div>
-                                    <div class="col-md-3 mb-3">
-                                        <label for="qualified_by" class="form-label">Calificado por</label>
-                                        <input type="text" class="form-control" id="qualified_by" name="qualified_by"
-                                            value="<?php echo htmlspecialchars($row['qualified_by'] ?? ''); ?>"
-                                            disabled>
-                                    </div>
-                                    <div class="col-md-3 mb-3">
-                                        <label for="created_at" class="form-label">Fecha de creación</label>
-                                        <input type="text" class="form-control" id="created_at" name="created_at"
-                                            value="<?php echo htmlspecialchars($row['created_at'] ?? ''); ?>" disabled>
-                                    </div>
-                                    <div class="col-md-3 mb-3">
-                                        <label for="completed_at" class="form-label">Fecha de finalización</label>
-                                        <input type="text" class="form-control" id="completed_at" name="completed_at"
-                                            value="<?php echo htmlspecialchars($row['completed_at'] ?? ''); ?>"
-                                            disabled>
-                                    </div>
-                                    <div class="col-md-3 mb-3">
-                                        <label for="client" class="form-label">Cliente</label>
-                                        <input type="text" class="form-control" id="client" name="client"
-                                            value="<?php echo htmlspecialchars($row['name_client'] ?? ''); ?>" disabled>
-                                    </div>
-                                    <div class="col-md-3 mb-3">
-                                        <label for="status" class="form-label">Estatus</label>
-                                        <input type="text" class="form-control" id="status" name="status"
-                                            value="<?php echo htmlspecialchars($row['status_form2'] ?? ''); ?>"
-                                            disabled>
-                                    </div>
-                                    <table class="table table-bordered" id="materialTable">
-                                        <thead class="table-warning">
-                                            <tr>
-                                                <th>MTL</th>
-                                                <th>Material</th>
-                                                <th>Calibre</th>
-                                                <th>Peso</th>
-                                                <th>Sólidos</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="tableBody">
-                                            <?php
+                                <!-- Sección de campos -->
+                                <div class="col-md-3 mb-3">
+                                    <label for="solicitante" class="form-label">Solicitante</label>
+                                    <input type="text" class="form-control" id="solicitante" name="solicitante"
+                                        value="<?php echo htmlspecialchars($row['name_user'] ?? ''); ?>" disabled>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label for="project_name" class="form-label">Nombre del
+                                        Proyecto/Producto</label>
+                                    <input type="text" class="form-control" id="project_name" name="project_name"
+                                        value="<?php echo htmlspecialchars($row['project_name'] ?? ''); ?>" disabled>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label for="site" class="form-label">Site</label>
+                                    <input type="text" class="form-control" id="site" name="site"
+                                        value="<?php echo htmlspecialchars($row['site_user'] ?? ''); ?>" disabled>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label for="folio" class="form-label">Folio</label>
+                                    <input type="text" class="form-control" id="folio" name="folio"
+                                        value="<?php echo htmlspecialchars($row['id_form2'] ?? ''); ?>" disabled>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label for="id_user" class="form-label">ID del Usuario</label>
+                                    <input type="text" class="form-control" id="id_user" name="id_user"
+                                        value="<?php echo htmlspecialchars($row['id_user'] ?? ''); ?>" disabled>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label for="qualified_by" class="form-label">Calificado por</label>
+                                    <input type="text" class="form-control" id="qualified_by" name="qualified_by"
+                                        value="<?php echo htmlspecialchars($row['qualified_by'] ?? ''); ?>" disabled>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label for="created_at" class="form-label">Fecha de creación</label>
+                                    <input type="text" class="form-control" id="created_at" name="created_at"
+                                        value="<?php echo htmlspecialchars($row['created_at'] ?? ''); ?>" disabled>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label for="completed_at" class="form-label">Fecha de finalización</label>
+                                    <input type="text" class="form-control" id="completed_at" name="completed_at"
+                                        value="<?php echo htmlspecialchars($row['completed_at'] ?? ''); ?>" disabled>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label for="client" class="form-label">Cliente</label>
+                                    <input type="text" class="form-control" id="client" name="client"
+                                        value="<?php echo htmlspecialchars($row['name_client'] ?? ''); ?>" disabled>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label for="status" class="form-label">Estatus</label>
+                                    <input type="text" class="form-control" id="status" name="status"
+                                        value="<?php echo htmlspecialchars($row['status_form2'] ?? ''); ?>" disabled>
+                                </div>
+                                <table class="table table-bordered" id="materialTable">
+                                    <thead class="table-warning">
+                                        <tr>
+                                            <th>MTL</th>
+                                            <th>Material</th>
+                                            <th>Calibre</th>
+                                            <th>Peso</th>
+                                            <th>Sólidos</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tableBody">
+                                        <?php
                                             $counter = 1;
                                             foreach ($data as $item) {
                                                 echo '<tr>';
@@ -122,49 +117,47 @@ $data = json_decode($row['table_content'], true); // Decodificar JSON a un array
                                                 $counter++;
                                             }
                                             ?>
-                                        </tbody>
-                                        <!-- Fila de Totales -->
-                                        <tr>
-                                            <td colspan="2" class="text-right"><strong>Total:</strong></td>
-                                            <td><input type="text" id="totalCalibre" class="form-control" disabled></td>
-                                            <td><input type="text" id="totalPeso" class="form-control" disabled></td>
-                                            <td></td>
-                                        </tr>
-                                        <!-- Botón para agregar fila dentro de la tabla -->
-
-                                    </table>
-                                    <!-- Botón para agregar fila fuera de la tabla -->
+                                    </tbody>
+                                    <!-- Fila de Totales -->
                                     <tr>
-                                        <td colspan="">
-                                            <button type="button" class="btn btn-success btn-block"
-                                                onclick="addRow()">Agregar Fila</button>
-                                            <button type="button" class="btn btn-danger btn-block"
-                                                onclick="removeLastRow()">Eliminar Última Fila</button>
-                                        </td>
+                                        <td colspan="2" class="text-right"><strong>Total:</strong></td>
+                                        <td><input type="text" id="totalCalibre" class="form-control" disabled></td>
+                                        <td><input type="text" id="totalPeso" class="form-control" disabled></td>
+                                        <td></td>
                                     </tr>
-                                    <!-- Campos adicionales de procesos -->
-                                    <?php for ($step = 1; $step <= 6; $step++): ?>
-                                    <div class="col-md-12 mb-3">
-                                        <label for="proceso<?php echo $step; ?>" class="form-label">Paso
-                                            <?php echo $step; ?></label>
-                                        <input type="text" class="form-control" id="proceso<?php echo $step; ?>"
-                                            name="proceso<?php echo $step; ?>"
-                                            value="<?php echo htmlspecialchars($row['step_' . $step] ?? ''); ?>">
-                                    </div>
-                                    <?php endfor; ?>
-                                    <!-- Comentarios -->
-                                    <div class="col-md-12">
-                                        <label for="comentarios" class="form-label">Comentarios</label>
-                                        <input type="text" class="form-control" id="comentarios" name="comentarios"
-                                            value="<?php echo $row ? htmlspecialchars($row['comments']) : ''; 
+                                    <!-- Botón para agregar fila dentro de la tabla -->
+
+                                </table>
+                                <!-- Botón para agregar fila fuera de la tabla -->
+                                <tr>
+                                    <td colspan="">
+                                        <button type="button" class="btn btn-success btn-block"
+                                            onclick="addRow()">Agregar Fila</button>
+                                        <button type="button" class="btn btn-danger btn-block"
+                                            onclick="removeLastRow()">Eliminar Última Fila</button>
+                                    </td>
+                                </tr>
+                                <!-- Campos adicionales de procesos -->
+                                <?php for ($step = 1; $step <= 6; $step++): ?>
+                                <div class="col-md-12 mb-3">
+                                    <label for="proceso<?php echo $step; ?>" class="form-label">Paso
+                                        <?php echo $step; ?></label>
+                                    <input type="text" class="form-control" id="proceso<?php echo $step; ?>"
+                                        name="proceso<?php echo $step; ?>"
+                                        value="<?php echo htmlspecialchars($row['step_' . $step] ?? ''); ?>">
+                                </div>
+                                <?php endfor; ?>
+                                <!-- Comentarios -->
+                                <div class="col-md-12">
+                                    <label for="comentarios" class="form-label">Comentarios</label>
+                                    <input type="text" class="form-control" id="comentarios" name="comentarios" value="<?php echo $row ? htmlspecialchars($row['comments']) : ''; 
                                                 ?>" disabled>
-                                    </div>
-                                    <!-- Campos del formulario de envío -->
-                                    <div class="col-md-12 text-center mt-3">
-                                        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-                                        <button type="button" class="btn btn-secondary"
-                                            onclick="window.history.back()">Cancelar</button>
-                                    </div>
+                                </div>
+                                <!-- Campos del formulario de envío -->
+                                <div class="col-md-12 text-center mt-3">
+                                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                                    <button type="button" class="btn btn-secondary"
+                                        onclick="window.history.back()">Cancelar</button>
                                 </div>
                             </div>
                         </form>

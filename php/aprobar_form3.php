@@ -22,7 +22,21 @@ if (isset($_POST['id'])) {
         // Asignar valores para la inserción en form4
         $id_form4          = $form3_data['id_form3'];
         $id_user           = $form3_data['id_user'];
-        $table_content     = '[]';  // Representación JSON vacía
+        $table_content     = 
+        '[{"feature":"Gramaje"                               ,"unit":"g/m2"                  ,"value":"","tolerance":"","notes":""},
+          {"feature":"Calibre"                               ,"unit":"micras"                ,"value":"","tolerance":"","notes":""},
+          {"feature":"COF ext/ext"                           ,"unit":"-"                     ,"value":"","tolerance":"","notes":""},
+          {"feature":"COF int/int"                           ,"unit":"-"                     ,"value":"","tolerance":"","notes":""},
+          {"feature":"FUERZA DE SELLADO "                    ,"unit":"g/25 mm"               ,"value":"","tolerance":"","notes":""},
+          {"feature":"FUERZA DE ADHERENCIA 1ra lam"          ,"unit":"g/25 mm"               ,"value":"","tolerance":"","notes":""},
+          {"feature":"FUERZA DE ADHERENCIA 2da Lam"          ,"unit":"g/25 mm"               ,"value":"","tolerance":"","notes":""},
+          {"feature":"SOLVENTES  RETENIDOS"                  ,"unit":"mg/m2"                 ,"value":"","tolerance":"","notes":""},
+          {"feature":"DUREZA"                                ,"unit":"kN"                    ,"value":"","tolerance":"","notes":""},
+          {"feature":"RESISTENCIA TERMICA(180°C-1 SEG-40PSI)","unit":"-"                     ,"value":"","tolerance":"","notes":""},
+          {"feature":"CHOQUE TÉRMICO"                        ,"unit":"-"                     ,"value":"","tolerance":"","notes":""},
+          {"feature":"TRANSMISION DE VAPOR DE AGUA"          ,"unit":"g / m2 día"            ,"value":"","tolerance":"","notes":""},
+          {"feature":"TRANSMISION DE OXIGENO"                ,"unit":"cc / m2 día"           ,"value":"","tolerance":"","notes":""},
+          {"feature":"Resistencia al ROCE-tinta "            ,"unit":"Ciclos, peso, probetas","value":"","tolerance":"","notes":""}]';  // Representación JSON 
         $name_user         = $form3_data['name_user'];
         $site_user         = $form3_data['site_user'];
         $name_client       = $form3_data['name_client'];

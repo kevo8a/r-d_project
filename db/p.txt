@@ -200,6 +200,9 @@ CREATE TABLE form4 (
     area FLOAT,  -- Área en m2
     print_m2 FLOAT,  -- Impresión por m2
     print_linear FLOAT,  -- Impresión por metro lineal
+    description VARCHAR(255),  -- Descripcion del proyecto
+    description_art VARCHAR(255),  -- Descripcion del proyecto
+    specs VARCHAR(255),  -- Especificaciones especiales
     comments VARCHAR(255)  -- Comentarios generales
 );
 
