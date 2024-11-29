@@ -2,28 +2,19 @@
 include '../../php/db_connection.php';
 include '../../php/auth.php';
 
-// Obtener el ID del formulario de la URL (para editar)
-$id_formulario = isset($_GET['id']) ? $_GET['id'] : null;
-$form_data = [];
+// Obtener ID del registro a editar
+$id = $_GET['id'];
 
-// Si hay un ID, consultar los datos del formulario por su ID
-if ($id_formulario) {
-    $sql = "SELECT * FROM form4 WHERE id = ?";
-    $stmt = mysqli_prepare($conn, $sql);
-    mysqli_stmt_bind_param($stmt, "i", $id_formulario);
-    mysqli_stmt_execute($stmt);
-    $result = mysqli_stmt_get_result($stmt);
-
-    // Verificar si se encontró el formulario
-    if ($result->num_rows === 0) {
-        die('Formulario no encontrado.');
-    }
-    // Obtener los datos del formulario
-    $form_data = mysqli_fetch_assoc($result);
-}
-
-mysqli_close($conn);
+// Obtener datos del registro
+$sql = "SELECT * FROM form4 WHERE id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $id);
+$stmt->execute();
+$result = $stmt->get_result();
+$row = $result->fetch_assoc();
+$data = json_decode($row['table_content'], true); // Decodificar JSON a un array
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -55,281 +46,447 @@ mysqli_close($conn);
 
                 <!-- Contenido -->
                 <div class="container-fluid">
-                    <div class="container mt-5">
-                        <h2 class="mb-4">Formulario de Proyecto</h2>
 
-                        <!-- Datos del Proyecto -->
-                        <div class="row mb-3">
-                            <div class="col-md-4">
-                                <label>Nombre del Proyecto/Producto:</label>
-                                <input type="text" class="form-control" placeholder="Ingrese el nombre del proyecto">
+                    <h1 class="text-center mb-4">Formulario Articulo Muestra</h1>
+                    <form id="form-article" method="POST" enctype="multipart/form-data">
+                        <div class="row">
+                            <!-- Solicitante -->
+                            <div class="col-md-3 mb-3">
+                                <label for="name_user" class="form-label">Solicitante</label>
+                                <input type="text" class="form-control" id="solicitante" name="name_user"
+                                    value="<?php echo htmlspecialchars($row['name_user'] ?? ''); ?>" disabled>
                             </div>
-                            <div class="col-md-4">
-                                <label>Proyecto:</label>
-                                <input type="text" class="form-control" placeholder="Ingrese el proyecto">
+                            <!-- Site -->
+                            <div class="col-md-3 mb-3">
+                                <label for="site_user" class="form-label">Sitio</label>
+                                <input type="text" class="form-control" id="site_user" name="site_user"
+                                    value="<?php echo htmlspecialchars($row['site_user'] ?? ''); ?>" disabled>
                             </div>
-                            <div class="col-md-4">
-                                <label>PLANTA INICIO:</label>
-                                <input type="text" class="form-control" placeholder="Ingrese Planta Inicio">
+                            <!-- ID Usuario -->
+                            <div class="col-md-3 mb-3">
+                                <label for="id_user" class="form-label">ID del Usuario</label>
+                                <input type="text" class="form-control" id="id_user" name="id_user"
+                                    value="<?php echo htmlspecialchars($row['id_user'] ?? ''); ?>" disabled>
                             </div>
-                        </div>
+                            <!-- Calificado por -->
+                            <div class="col-md-3 mb-3">
+                                <label for="qualified_by" class="form-label">Calificado por</label>
+                                <input type="text" class="form-control" id="qualified_by" name="qualified_by"
+                                    value="<?php echo htmlspecialchars($row['qualified_by'] ?? ''); ?>" disabled>
+                            </div>
+                            <!-- Fecha de creación -->
+                            <div class="col-md-3 mb-3">
+                                <label for="created_at" class="form-label">Fecha de creación</label>
+                                <input type="text" class="form-control" id="created_at" name="created_at"
+                                    value="<?php echo htmlspecialchars($row['created_at'] ?? ''); ?>" disabled>
+                            </div>
+                            <!-- Fecha de finalización -->
+                            <div class="col-md-3 mb-3">
+                                <label for="completed_at" class="form-label">Fecha de finalización</label>
+                                <input type="text" class="form-control" id="completed_at" name="completed_at"
+                                    value="<?php echo htmlspecialchars($row['completed_at'] ?? ''); ?>" disabled>
+                            </div>
+                            <!-- Estatus -->
+                            <div class="col-md-3 mb-3">
+                                <label for="status" class="form-label">Estatus</label>
+                                <input type="text" class="form-control" id="status" name="status"
+                                    value="<?php echo htmlspecialchars($row['status_form4'] ?? ''); ?>" disabled>
+                            </div>
+                            <!-- folio -->
+                            <div class="col-md-3 mb-3">
+                                <label for="folio" class="form-label">Folio</label>
+                                <input type="text" class="form-control" id="folio" name="folio"
+                                    value="<?php echo htmlspecialchars($row['id_form4'] ?? ''); ?>" disabled>
+                            </div>
+                            <!-- Cliente -->
+                            <div class="col-md-3 mb-3">
+                                <label for="client" class="form-label">Cliente</label>
+                                <input type="text" class="form-control" id="client" name="client"
+                                    value="<?php echo htmlspecialchars($row['name_client'] ?? ''); ?>" disabled>
+                            </div>
+                            <!-- Nombre de proyecto -->
+                            <div class="col-md-3 mb-3">
+                                <label for="project_name" class="form-label">Nombre del
+                                    Proyecto/Producto</label>
+                                <input type="text" class="form-control" id="project_name" name="project_name"
+                                    value="<?php echo htmlspecialchars($row['project_name'] ?? ''); ?>" disabled>
+                            </div>
+                            <!-- Tipo de proyecto -->
+                            <div class="col-md-3 mb-3">
+                                <label for="type_project" class="form-label">Tipo de proyecto</label>
+                                <select class="form-control" id="type_project" name="type_project"disabled>
+                                    <option value="">Seleccione una opción</option> <!-- Opción por defecto -->
+                                    <option value="Muestra"
+                                        <?php echo (isset($row['type_project']) && $row['type_project'] === 'Muestra') ? 'selected' : ''; ?>>
+                                        Muestra</option>
+                                    <option value="Escalamiento/OE"
+                                        <?php echo (isset($row['type_project']) && $row['type_project'] === 'Escalamiento/OE') ? 'selected' : ''; ?>>
+                                        Escalamiento/OE</option>
+                                </select>
+                            </div>
+                            <!-- Planta Inicio -->
+                            <div class="col-md-3 mb-3">
+                                <label for="start_plant" class="form-label">Planta Inicio</label>
+                                <select class="form-control" id="start_plant" name="start_plant" disabled>
+                                    <option value="">Seleccione una opción</option> <!-- Opción por defecto -->
+                                    <option value="Zacapu"
+                                        <?php echo (isset($row['start_plant']) && $row['start_plant'] === 'Zacapu') ? 'selected' : ''; ?>>
+                                        Zacapu</option>
+                                    <option value="Tlaquepaque"
+                                        <?php echo (isset($row['start_plant']) && $row['start_plant'] === 'Tlaquepaque') ? 'selected' : ''; ?>>
+                                        Tlaquepaque</option>
+                                    <option value="Tultitlán"
+                                        <?php echo (isset($row['start_plant']) && $row['start_plant'] === 'Tultitlán') ? 'selected' : ''; ?>>
+                                        Tultitlán</option>
+                                </select>
+                            </div>
+                            <!-- Planta Fin -->
+                            <div class="col-md-3 mb-3">
+                                <label for="end_plant" class="form-label">Planta Fin</label>
+                                <select class="form-control" id="end_plant" name="end_plant" disabled>
+                                    <option value="">Seleccione una opción</option> <!-- Opción por defecto -->
+                                    <option value="Zacapu"
+                                        <?php echo (isset($row['end_plant']) && $row['end_plant'] === 'Zacapu') ? 'selected' : ''; ?>>
+                                        Zacapu</option>
+                                    <option value="Tlaquepaque"
+                                        <?php echo (isset($row['end_plant']) && $row['end_plant'] === 'Tlaquepaque') ? 'selected' : ''; ?>>
+                                        Tlaquepaque</option>
+                                    <option value="Tultitlán"
+                                        <?php echo (isset($row['end_plant']) && $row['end_plant'] === 'Tultitlán') ? 'selected' : ''; ?>>
+                                        Tultitlán</option>
+                                </select>
+                            </div>
+                            <!-- TASK RAY -->
+                            <div class="col-md-3 mb-3">
+                                <label for="task_ray" class="form-label">Rayo de tarea</label>
+                                <input type="text" class="form-control" id="task_ray" name="task_ray"
+                                    value="<?php echo htmlspecialchars($row['task_ray'] ?? ''); ?>" disabled>
+                            </div>
+                            <!-- Tipo de envío -->
+                            <div class="col-md-3">
+                                <div class="mb-3">
+                                    <label for="shipping_type" class="form-label">Tipo de envío</label>
+                                    <select class="form-control" id="shipping_type" name="shipping_type" disabled>
+                                        <option value="">Seleccione una opción</option> <!-- Opción por defecto -->
+                                        <option value="Nacional"
+                                            <?php echo (isset($row['shipping_type']) && $row['shipping_type'] === 'Nacional') ? 'selected' : ''; ?>>
+                                            Nacional</option>
+                                        <option value="Exportación"
+                                            <?php echo (isset($row['shipping_type']) && $row['shipping_type'] === 'Exportación') ? 'selected' : ''; ?>>
+                                            Exportación</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- Tipo de proceso -->
+                            <div class="col-md-3">
+                                <div class="mb-3">
+                                    <label for="procces_type" class="form-label"> Tipo de proceso</label>
+                                    <select class="form-control" id="procces_type" name="procces_type" disabled>
+                                        <option value="">Seleccione una opción</option> <!-- Opción por defecto -->
+                                        <option value="Standard trials"
+                                            <?php echo (isset($row['procces_type']) && $row['procces_type'] === 'Standard trials') ? 'selected' : ''; ?>>
+                                            Standard trials</option>
+                                        <option value="Non-Standard trials"
+                                            <?php echo (isset($row['procces_type']) && $row['procces_type'] === 'Non-Standard trials') ? 'selected' : ''; ?>>
+                                            Non-Standard trials</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- #Task Ray -->
+                            <div class="col-md-3 mb-3">
+                                <label for="n_task" class="form-label">#Task Ray</label>
+                                <input type="number" class="form-control" id="n_task" name="n_task"
+                                    value="<?php echo htmlspecialchars($row['n_task'] ?? ''); ?>" disabled>
+                            </div>
+                            <!-- TCH -->
+                            <div class="col-md-3 mb-3">
+                                <label for="TCH" class="form-label">TCH</label>
+                                <input type="text" class="form-control" id="TCH" name="TCH"
+                                    value="<?php echo htmlspecialchars($row['TCH'] ?? ''); ?>" disabled>
+                            </div>
+                            <!-- Sistema de impresíon -->
+                            <div class="col-md-3">
+                                <div class="mb-3">
+                                    <label for="printing_system" class="form-label">Sistema de impresión</label>
+                                    <select class="form-control" id="printing_system" name="printing_system" disabled>
+                                        <option value="">Seleccione una opción</option> <!-- Opción por defecto -->
+                                        <option value="Rotograbado"
+                                            <?php echo (isset($row['printing_system']) && strpos($row['printing_system'], 'Rotograbado') !== false) ? 'selected' : ''; ?>>
+                                            Rotograbado</option>
+                                        <option value="Flexografía"
+                                            <?php echo (isset($row['printing_system']) && strpos($row['printing_system'], 'Flexografía') !== false) ? 'selected' : ''; ?>>
+                                            Flexografía</option>
+                                        <option value="Sin impresión"
+                                            <?php echo (isset($row['printing_system']) && strpos($row['printing_system'], 'Sin impresión') !== false) ? 'selected' : ''; ?>>
+                                            Sin impresión</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- Tipo de impresíon -->
+                            <div class="col-md-3">
+                                <div class="mb-3">
+                                    <label for="printing_type" class="form-label">Tipo de impresión</label>
+                                    <select class="form-control" id="printing_type" name="printing_type" disabled>
+                                        <option value="">Seleccione una opción</option> <!-- Opción por defecto -->
+                                        <option value="Interna"
+                                            <?php echo (isset($row['printing_type']) && $row['printing_type'] === 'Interna') ? 'selected' : ''; ?>>
+                                            Interna</option>
+                                        <option value="Externa"
+                                            <?php echo (isset($row['printing_type']) && $row['printing_type'] === 'Externa') ? 'selected' : ''; ?>>
+                                            Externa</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- Número de colores -->
+                            <div class="col-md-3 mb-3">
+                                <label for="num_colors" class="form-label">Número de colores</label>
+                                <input type="text" class="form-control" id="num_colors" name="num_colors"
+                                    value="<?php echo htmlspecialchars($row['num_colors'] ?? ''); ?>" disabled>
+                            </div>
+                            <!-- Número de colores -->
+                            <div class="col-md-9 mb-3">
+                                <label for="photocell_colors">Colores</label>
+                                <textarea id="photocell_colors" name="photocell_colors" class="form-control" rows="1"
+                                    placeholder="Ingrese colores..." disabled><?php echo htmlspecialchars($row['photocell_colors'] ?? ''); ?></textarea>
+                            </div>
 
-                        <div class="row mb-3">
-                            <div class="col-md-4">
-                                <label>PLANTA FIN (SI ES DIFERENTE):</label>
-                                <input type="text" class="form-control" placeholder="Planta Fin (si es diferente)">
-                            </div>
-                            <div class="col-md-4">
-                                <label>TASK RAY:</label>
-                                <input type="text" class="form-control" placeholder="Ingrese Task Ray">
-                            </div>
-                            <div class="col-md-4">
-                                <label>TIPO DE ENVÍO:</label>
-                                <input type="text" class="form-control" placeholder="Ingrese el tipo de envío">
-                            </div>
-                        </div>
+                            <!-- Características de Calidad de Producto Terminado -->
+                            <table class="table table-bordered" id="materialTable">
+                                <thead class="table-warning">
+                                    <tr>
+                                        <th>Característica</th>
+                                        <th>Unidad</th>
+                                        <th>Valor Nominal</th>
+                                        <th>Tolerancia</th>
+                                        <th>Notas</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tableBody">
+                                    <?php
+                                        $counter = 1;
+                                        $dataCount = count($data);
+                                        $rowsToDisplay = max(14, $dataCount); // Garantiza al menos 14 filas iniciales
 
-                        <div class="row mb-3">
-                            <div class="col-md-4">
-                                <label>TIPO DE PROCESO:</label>
-                                <input type="text" class="form-control" placeholder="Tipo de proceso">
-                            </div>
-                            <div class="col-md-4">
-                                <label>#Task Ray:</label>
-                                <input type="text" class="form-control" placeholder="#Task Ray">
-                            </div>
-                            <div class="col-md-4">
-                                <label>TCH:</label>
-                                <input type="text" class="form-control" placeholder="TCH">
-                            </div>
-                        </div>
+                                        for ($i = 0; $i < $rowsToDisplay; $i++) {
+                                        $item = $i < $dataCount ? $data[$i] : ["feature" => "", "unit" => "", "value" => "", "tolerance" => "", "notes" => ""];
 
-                        <div class="row mb-3">
-                            <div class="col-md-4">
-                                <label>Sistema de Impresión:</label>
-                                <input type="text" class="form-control" placeholder="Sistema de Impresión">
+                                        // Verificar si la fila está dentro de las primeras 14
+                                        $isReadOnly = $i < 14 ? 'readonly' : ''; 
+                                        echo '<tr>';
+                                        echo '<td><input type="text" name="feature'  . $counter . '" class="form-control" value="' . htmlspecialchars($item["feature"])   . '"readonly></td>';
+                                        echo '<td><input type="text" name="unit'     . $counter . '" class="form-control" value="' . htmlspecialchars($item["unit"])      . '"readonly></td>';
+                                        echo '<td><input type="text" name="value'    . $counter . '" class="form-control" value="' . htmlspecialchars($item["value"])     . '"readonly></td>';
+                                        echo '<td><input type="text" name="tolerance'. $counter . '" class="form-control" value="' . htmlspecialchars($item["tolerance"]) . '"readonly></td>';
+                                        echo '<td><input type="text" name="notes'    . $counter . '" class="form-control" value="' . htmlspecialchars($item["notes"])     . '"readonly></td>';
+                                        echo '</tr>';
+                                        $counter++;
+                                        }
+                                    ?>
+                                </tbody>
+                            </table>
+                            <!-- Sección de Datos adicionales de Impresión -->
+                            <div class="col-md-12 mb-3" class="text-center">
+                                <h4 class="mt-5">Datos adicionales de Impresión</h4>
                             </div>
-                            <div class="col-md-4">
-                                <label>Tipo de Impresión:</label>
-                                <input type="text" class="form-control" placeholder="Tipo de Impresión">
-                            </div>
-                            <div class="col-md-4">
-                                <label>#Colores:</label>
-                                <input type="number" class="form-control" placeholder="#Colores">
-                            </div>
-                        </div>
-
-                        <h4 class="mt-5">Características de Calidad de Producto Terminado</h4>
-
-                        <!-- Características de Calidad de Producto Terminado -->
-                        <table class="table table-bordered">
-                            <thead>
+                            <!-- Tabla para especificaciones de medidas del proyecto -->
+                            <table class="table table-bordered">
+                                <!-- Spot ancho (cm) -->
                                 <tr>
-                                    <th>CARACTERÍSTICA</th>
-                                    <th>UNID</th>
-                                    <th>VALOR NOMINAL</th>
-                                    <th>Tolerancia</th>
-                                    <th>Notas</th>
-                                </tr>
-                            </thead>
-                            <tbody id="calidadBody">
-                                <tr>
-                                    <td><input type="text" class="form-control" value="GRAMAJE"></td>
-                                    <td><input type="text" class="form-control" value="g/m2"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                </tr>
-                                <tr>
-                                    <td><input type="text" class="form-control" value="CALIBRE"></td>
-                                    <td><input type="text" class="form-control" value="micras"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                </tr>
-                                <tr>
-                                    <td><input type="text" class="form-control" value="COF ext/ext"></td>
-                                    <td><input type="text" class="form-control" value="-"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                </tr>
-                                <tr>
-                                    <td><input type="text" class="form-control" value="COF int/int"></td>
-                                    <td><input type="text" class="form-control" value="-"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                </tr>
-                                <tr>
-                                    <td><input type="text" class="form-control" value="FUERZA DE SELLADO"></td>
-                                    <td><input type="text" class="form-control" value="g/25 mm"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                </tr>
-                                <tr>
-                                    <td><input type="text" class="form-control" value="FUERZA DE ADHERENCIA 1ra lam">
+                                    <th style="width: 21%;">
+                                        <label for="spot_width">SPOT ANCHO (cm)</label>
+                                    </th>
+                                    <td>
+                                        <input type="number" class="form-control" id="spot_width" name="spot_width"
+                                            value="<?php echo htmlspecialchars($row['spot_width'] ?? ''); ?>" disabled>
                                     </td>
-                                    <td><input type="text" class="form-control" value="g/25 mm"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td><input type="text" class="form-control"></td>
                                 </tr>
+                                <!-- Spot largo (cm) -->
                                 <tr>
-                                    <td><input type="text" class="form-control" value="FUERZA DE ADHERENCIA 2da Lam">
+                                    <th style="width: 21%;">
+                                        <label for="spot_length">SPOT LARGO (cm)</label>
+                                    </th>
+                                    <td>
+                                        <input type="number" class="form-control" id="spot_length" name="spot_length"
+                                            value="<?php echo htmlspecialchars($row['spot_length'] ?? ''); ?>" disabled>
                                     </td>
-                                    <td><input type="text" class="form-control" value="g/25 mm"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td><input type="text" class="form-control"></td>
                                 </tr>
+                                <!-- Repetición (cm) -->
                                 <tr>
-                                    <td><input type="text" class="form-control" value="SOLVENTES RETENIDOS"></td>
-                                    <td><input type="text" class="form-control" value="mg/m2"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                </tr>
-                                <tr>
-                                    <td><input type="text" class="form-control" value="DUREZA"></td>
-                                    <td><input type="text" class="form-control" value="kN"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                </tr>
-                                <tr>
-                                    <td><input type="text" class="form-control"
-                                            value="RESISTENCIA TERMICA(180°C-1 SEG-40PSI)"></td>
-                                    <td><input type="text" class="form-control" value="-"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                </tr>
-                                <tr>
-                                    <td><input type="text" class="form-control" value="CHOQUE TÉRMICO"></td>
-                                    <td><input type="text" class="form-control" value="-"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                </tr>
-                                <tr>
-                                    <td><input type="text" class="form-control" value="TRANSMISION DE VAPOR DE AGUA">
+                                    <th style="width: 21%; background-color: yellow;">
+                                        <label for="repeat_cm">REPETICIÓN (cm)</label>
+                                    </th>
+                                    <td>
+                                        <input type="number" class="form-control" id="repeat_cm" name="repeat_cm"
+                                            style="background-color: yellow;"
+                                            value="<?php echo htmlspecialchars($row['repeat_cm'] ?? ''); ?>" disabled>
                                     </td>
-                                    <td><input type="text" class="form-control" value="g/m2 día"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td><input type="text" class="form-control"></td>
                                 </tr>
+                                <!-- Repetición acumulada en 1 metro -->
                                 <tr>
-                                    <td><input type="text" class="form-control" value="TRANSMISION DE OXIGENO"></td>
-                                    <td><input type="text" class="form-control" value="cc/m2 día"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td><input type="text" class="form-control"></td>
+                                    <th style="width: 21%; background-color: yellow;">
+                                        <label for="accumulative_repeat">REPETICIÓN ACUMULADA 1
+                                            M</label>
+                                    </th>
+                                    <td>
+                                        <input type="number" class="form-control" id="accumulative_repeat"
+                                            name="accumulative_repeat" style="background-color: yellow;"
+                                            value="<?php echo htmlspecialchars($row['accumulative_repeat'] ?? ''); ?>" disabled>
+                                    </td>
                                 </tr>
+                                <!-- Repetición real (cm) -->
                                 <tr>
-                                    <td><input type="text" class="form-control" value="Resistencia al ROCE-tinta"></td>
-                                    <td><input type="text" class="form-control" value="Ciclos, peso, probetas"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td><input type="text" class="form-control"></td>
+                                    <th style="width: 21%;">
+                                        <label for="actual_repeat">REPETICIÓN REAL (cm)</label>
+                                    </th>
+                                    <td>
+                                        <input type="number" class="form-control" id="actual_repeat"
+                                            name="actual_repeat"
+                                            value="<?php echo htmlspecialchars($row['actual_repeat'] ?? ''); ?>" disabled>
+                                    </td>
                                 </tr>
-                            </tbody>
-                        </table>
-
-                        <!-- Botón para agregar fila -->
-                        <button type="button" class="btn btn-primary" onclick="agregarFila()">Agregar fila</button>
-
-                        <h4 class="mt-5">Datos adicionales de Impresión</h4>
-
-                        <!-- Sección de Datos adicionales de Impresión -->
-                        <h4 class="mt-5">Datos adicionales de Impresión</h4>
-                        <table class="table table-bordered">
-                            <thead>
+                                <!-- Repetición fotográfica (cm) -->
                                 <tr>
-                                    <th colspan="2">SPOT ANCHO (cm)</th>
-                                    <td><input type="text" class="form-control"></td>
+                                    <th style="width: 21%;">
+                                        <label for="photographic_rep">REP. FOTOGRÁFICA (cm)</label>
+                                    </th>
+                                    <td>
+                                        <input type="number" class="form-control" id="photographic_rep"
+                                            name="photographic_rep"
+                                            value="<?php echo htmlspecialchars($row['photographic_rep'] ?? ''); ?>" disabled>
+                                    </td>
                                 </tr>
+                                <!-- Cilindro/Manga (cm) -->
                                 <tr>
-                                    <th colspan="2">SPOT LARGO (cm)</th>
-                                    <td><input type="text" class="form-control"></td>
+                                    <th style="width: 21%;">
+                                        <label for="cylinder_sleeve">CILINDRO/ MANGA (cm)</label>
+                                    </th>
+                                    <td>
+                                        <input type="number" class="form-control" id="cylinder_sleeve"
+                                            name="cylinder_sleeve"
+                                            value="<?php echo htmlspecialchars($row['cylinder_sleeve'] ?? ''); ?>" disabled>
+                                    </td>
                                 </tr>
+                                <!-- Número de repeticiones -->
                                 <tr>
-                                    <th colspan="2" style="background-color: yellow">REPETICIÓN (cm)</th>
-                                    <td><input type="text" class="form-control" style="background-color: yellow;"></td>
+                                    <th style="width: 21%;">
+                                        <label for="n_repetitions">NUM DE REPETICIONES</label>
+                                    </th>
+                                    <td>
+                                        <input type="number" class="form-control" id="n_repetitions"
+                                            name="n_repetitions"
+                                            value="<?php echo htmlspecialchars($row['n_repetitions'] ?? ''); ?>" disabled>
+                                    </td>
                                 </tr>
+                                <!-- Número de bobinas -->
                                 <tr>
-                                    <th colspan="2" style="background-color: yellow;">REPETICIÓN ACUMULADA 1 M</th>
-                                    <td><input type="text" class="form-control" style="background-color: yellow;"></td>
+                                    <th style="width: 21%;">
+                                        <label for="n_reels">NUM DE BOBINAS</label>
+                                    </th>
+                                    <td>
+                                        <input type="number" class="form-control" id="n_reels" name="n_reels"
+                                            value="<?php echo htmlspecialchars($row['n_reels'] ?? ''); ?>" disabled>
+                                    </td>
                                 </tr>
+                                <!-- Poner línea de corte -->
                                 <tr>
-                                    <th colspan="2">REPETICIÓN REAL (cm)</th>
-                                    <td><input type="text" class="form-control"></td>
+                                    <th style="width: 21%;">
+                                        <label for="cut_line">PONER LÍNEA DE CORTE</label>
+                                    </th>
+                                    <td>
+                                        <input type="number" class="form-control" id="cut_line" name="cut_line"
+                                            value="<?php echo htmlspecialchars($row['cut_line'] ?? ''); ?>" disabled>
+                                    </td>
                                 </tr>
+                            </table>
+                            <!-- Tabla para especificaciones de medidas del proyecto -->
+                            <table class="table table-bordered">
+                                <!-- COLOR SPOT -->
                                 <tr>
-                                    <th colspan="2">REP. FOTOGRÁFICA (cm)</th>
-                                    <td><input type="text" class="form-control"></td>
+                                    <th style="width: 21%;">
+                                        <label for="spot_width">COLOR SPOT</label>
+                                    </th>
+                                    <td>
+                                        <input type="text" class="form-control" id="spot_width" name="spot_width"
+                                            value="NEGRO" disabled>
+                                    </td>
                                 </tr>
+                                <!-- Area m2 -->
                                 <tr>
-                                    <th colspan="2">CILINDRO/ MANGA (cm)</th>
-                                    <td><input type="text" class="form-control"></td>
+                                    <th style="width: 21%;">
+                                        <label for="area">Area m2</label>
+                                    </th>
+                                    <td>
+                                        <input type="number" class="form-control" id="area" name="area"
+                                            value="<?php echo htmlspecialchars($row['area'] ?? ''); ?>" disabled>
+                                    </td>
                                 </tr>
+                                <!-- Impresión x m2 -->
                                 <tr>
-                                    <th colspan="2">NUM DE REPETICIONES</th>
-                                    <td><input type="text" class="form-control"></td>
+                                    <th style="width: 21%; background-color: yellow;">
+                                        <label for="repeat_cm">Impresión x m2</label>
+                                    </th>
+                                    <td>
+                                        <input type="number" class="form-control" id="repeat_cm" name="repeat_cm"
+                                            style="background-color: yellow;"
+                                            value="<?php echo htmlspecialchars($row['repeat_cm'] ?? ''); ?>" disabled>
+                                    </td>
                                 </tr>
+                                <!-- Impresión x m lineal -->
                                 <tr>
-                                    <th colspan="2">NUM DE BOBINAS</th>
-                                    <td><input type="text" class="form-control"></td>
+                                    <th style="width: 21%; background-color: yellow;">
+                                        <label for="print_linear">Impresión x m lineal</label>
+                                    </th>
+                                    <td>
+                                        <input type="text" class="form-control" id="print_linear" name="print_linear"
+                                            style="background-color: yellow;"
+                                            value="<?php echo htmlspecialchars($row['print_linear'] ?? ''); ?>" disabled>
+                                    </td>
                                 </tr>
-                                <tr>
-                                    <th colspan="2">PONER LÍNEA DE CORTE</th>
-                                    <td><input type="text" class="form-control"></td>
-                                </tr>
-                            </thead>
-                        </table>
-
-                        <!-- Sección de Descripción del Proyecto -->
-                        <h4 class="mt-5">Descripción del Proyecto</h4>
-                        <div class="row mb-3">
-                            <div class="col-md-12">
-                                <label>Descripción del Proyecto (Procesos, Sistema de impresión, Tintas especiales,
-                                    etc):</label>
-                                <textarea class="form-control" rows="3"
-                                    placeholder="Describa el proyecto..."></textarea>
+                            </table>
+                            <!-- Sección de Descripción del Proyecto -->
+                            <h4 class="mt-5">Descripción del Proyecto</h4>
+                            <!-- Descripción del Proyecto -->
+                            <div class="col-md-12 mb-3">
+                                <label for="description">Descripción del Proyecto (Procesos, Sistema de
+                                    impresión, Tintas especiales, etc):</label>
+                                <textarea id="description" name="description" class="form-control" rows="3"
+                                    placeholder="Describa el proyecto..." disabled><?php echo htmlspecialchars($row['description'] ?? ''); ?></textarea>
+                            </div>
+                            <!-- Sección de Descripción del Proyecto Arte-->
+                            <div class="col-md-12 mb-3">
+                                <label for="description_art">Descripción del Proyecto Arte:</label>
+                                <textarea id="description_art" name="description_art" class="form-control" rows="3"
+                                    placeholder="Describa el proyecto arte..." disabled><?php echo htmlspecialchars($row['description_art'] ?? ''); ?></textarea>
+                            </div>
+                            <!-- Especificaciones especiales -->
+                            <div class="col-md-12 mb-3">
+                                <label for="specs">Especificaciones especiales (uniones, empaque,
+                                    ID):</label>
+                                <textarea id="specs" name="specs" class="form-control" rows="3"
+                                    placeholder="Ingrese especificaciones especiales..." disabled><?php echo htmlspecialchars($row['specs'] ?? ''); ?></textarea>
+                            </div>
+                            <!-- Campos del formulario de envío -->
+                            <div class="col-md-12 text-center mt-3">
+                                <button type="button" class="btn btn-secondary"
+                                    onclick="window.history.back()">Regresar</button>
                             </div>
                         </div>
-
-                        <div class="row mb-3">
-                            <div class="col-md-12">
-                                <label>Descripción del Proyecto Arte:</label>
-                                <textarea class="form-control" rows="3"
-                                    placeholder="Describa el proyecto arte..."></textarea>
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <div class="col-md-12">
-                                <label>Especificaciones especiales (uniones, empaque, ID):</label>
-                                <textarea class="form-control" rows="3"
-                                    placeholder="Ingrese especificaciones especiales..."></textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End of Content -->
-
+                    </form>
                 </div>
-                <!-- End of Main Content -->
+                <!-- End of Content -->
 
             </div>
-        </div>
+            <!-- End of Main Content -->
 
-        <!-- Bootstrap core JavaScript-->
-        <script src="../vendor/jquery/jquery.min.js"></script>
-        <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-        <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
-        <script src="../js/sb-admin-2.min.js"></script>
+        </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="../vendor/jquery/jquery.min.js"></script>
+    <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="../js/sb-admin-2.min.js"></script>
+
 </body>
 
 </html>

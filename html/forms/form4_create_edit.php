@@ -195,7 +195,7 @@ $data = json_decode($row['table_content'], true); // Decodificar JSON a un array
                             <!-- #Task Ray -->
                             <div class="col-md-3 mb-3">
                                 <label for="n_task" class="form-label">#Task Ray</label>
-                                <input type="text" class="form-control" id="n_task" name="n_task"
+                                <input type="number" class="form-control" id="n_task" name="n_task"
                                     value="<?php echo htmlspecialchars($row['n_task'] ?? ''); ?>">
                             </div>
                             <!-- TCH -->
@@ -243,22 +243,20 @@ $data = json_decode($row['table_content'], true); // Decodificar JSON a un array
                                 <input type="text" class="form-control" id="num_colors" name="num_colors"
                                     value="<?php echo htmlspecialchars($row['num_colors'] ?? ''); ?>">
                             </div>
-                            <!-- Colores -->
-                            <div class="col-md-3">
-                                <div class="mb-3">
-                                    <label for="photocell_colors" class="form-label">Colores</label>
-                                    <input type="text" class="form-control" id="photocell_colors"
-                                        name="photocell_colors"
-                                        value="<?php echo $id_formulario ? htmlspecialchars($form_data['photocell_colors']) : ''; ?>">
-                                </div>
+                            <!-- Número de colores -->
+                            <div class="col-md-9 mb-3">
+                                <label for="photocell_colors">Colores</label>
+                                <textarea id="photocell_colors" name="photocell_colors" class="form-control" rows="1"
+                                    placeholder="Ingrese colores..."><?php echo htmlspecialchars($row['photocell_colors'] ?? ''); ?></textarea>
                             </div>
+
                             <!-- Características de Calidad de Producto Terminado -->
                             <table class="table table-bordered" id="materialTable">
-                                <thead>
+                                <thead class="table-warning">
                                     <tr>
-                                        <th>Caracteristica</th>
+                                        <th>Característica</th>
                                         <th>Unidad</th>
-                                        <th>VALOR NOMINAL</th>
+                                        <th>Valor Nominal</th>
                                         <th>Tolerancia</th>
                                         <th>Notas</th>
                                     </tr>
@@ -267,24 +265,33 @@ $data = json_decode($row['table_content'], true); // Decodificar JSON a un array
                                     <?php
                                         $counter = 1;
                                         $dataCount = count($data);
-                                        $rowsToDisplay = max(14, $dataCount); // Asegura que al menos 3 filas se muestren
+                                        $rowsToDisplay = max(14, $dataCount); // Garantiza al menos 14 filas iniciales
 
                                         for ($i = 0; $i < $rowsToDisplay; $i++) {
-                                            // Si no hay suficiente datos, se asignan valores vacíos
-                                            $item = $i < $dataCount ? $data[$i] : ["feature" => "", "unit" => "", "value" => "", "tolerance" => "", "notes" => ""];
+                                        $item = $i < $dataCount ? $data[$i] : ["feature" => "", "unit" => "", "value" => "", "tolerance" => "", "notes" => ""];
 
-                                            echo '<tr>';
-                                            echo '<td><input type="text" name="feature'. $counter . '" class="form-control" value="' . htmlspecialchars($item["feature"]) . '" readonly ></td>';
-                                            echo '<td><input type="text" name="unit' . $counter . '" class="form-control" value="' . htmlspecialchars($item["unit"]) . '" readonly></td>';
-                                            echo '<td><input type="text" name="value'. $counter . '" class="form-control" value="' . htmlspecialchars($item["value"]) . '" ></td>';
-                                            echo '<td><input type="text" name="tolerance'. $counter . '" class="form-control" value="' . htmlspecialchars($item["tolerance"])     . '" ></td>';
-                                            echo '<td><input type="text" name="notes'. $counter . '" class="form-control" value="' . htmlspecialchars($item["notes"]) . '" ></td>';
-                                            echo '</tr>';
-                                            $counter++;
+                                        // Verificar si la fila está dentro de las primeras 14
+                                        $isReadOnly = $i < 14 ? 'readonly' : ''; 
+                                        echo '<tr>';
+                                        echo '<td><input type="text" name="feature'  . $counter . '" class="form-control" value="' . htmlspecialchars($item["feature"]) . '" ' . $isReadOnly . '></td>';
+                                        echo '<td><input type="text" name="unit'     . $counter . '" class="form-control" value="' . htmlspecialchars($item["unit"]) . '" ' . $isReadOnly . '></td>';
+                                        echo '<td><input type="text" name="value'    . $counter . '" class="form-control" value="' . htmlspecialchars($item["value"]) . '"></td>';
+                                        echo '<td><input type="text" name="tolerance'. $counter . '" class="form-control" value="' . htmlspecialchars($item["tolerance"]) . '"></td>';
+                                        echo '<td><input type="text" name="notes'    . $counter . '" class="form-control" value="' . htmlspecialchars($item["notes"]) . '"></td>';
+                                        echo '</tr>';
+                                        $counter++;
                                         }
                                     ?>
                                 </tbody>
                             </table>
+
+                            <div>
+                                <button id="addRowBtn" type="button" class="btn btn-success">Agregar
+                                    Fila</button>
+                                <button id="removeRowBtn" type="button" class="btn btn-danger">Eliminar
+                                    Fila</button>
+                            </div>
+
 
                             <!-- Sección de Datos adicionales de Impresión -->
                             <div class="col-md-12 mb-3" class="text-center">
@@ -298,7 +305,7 @@ $data = json_decode($row['table_content'], true); // Decodificar JSON a un array
                                         <label for="spot_width">SPOT ANCHO (cm)</label>
                                     </th>
                                     <td>
-                                        <input type="text" class="form-control" id="spot_width" name="spot_width"
+                                        <input type="number" class="form-control" id="spot_width" name="spot_width"
                                             value="<?php echo htmlspecialchars($row['spot_width'] ?? ''); ?>">
                                     </td>
                                 </tr>
@@ -308,7 +315,7 @@ $data = json_decode($row['table_content'], true); // Decodificar JSON a un array
                                         <label for="spot_length">SPOT LARGO (cm)</label>
                                     </th>
                                     <td>
-                                        <input type="text" class="form-control" id="spot_length" name="spot_length"
+                                        <input type="number" class="form-control" id="spot_length" name="spot_length"
                                             value="<?php echo htmlspecialchars($row['spot_length'] ?? ''); ?>">
                                     </td>
                                 </tr>
@@ -318,7 +325,7 @@ $data = json_decode($row['table_content'], true); // Decodificar JSON a un array
                                         <label for="repeat_cm">REPETICIÓN (cm)</label>
                                     </th>
                                     <td>
-                                        <input type="text" class="form-control" id="repeat_cm" name="repeat_cm"
+                                        <input type="number" class="form-control" id="repeat_cm" name="repeat_cm"
                                             style="background-color: yellow;"
                                             value="<?php echo htmlspecialchars($row['repeat_cm'] ?? ''); ?>">
                                     </td>
@@ -326,10 +333,11 @@ $data = json_decode($row['table_content'], true); // Decodificar JSON a un array
                                 <!-- Repetición acumulada en 1 metro -->
                                 <tr>
                                     <th style="width: 21%; background-color: yellow;">
-                                        <label for="accumulative_repeat">REPETICIÓN ACUMULADA 1 M</label>
+                                        <label for="accumulative_repeat">REPETICIÓN ACUMULADA 1
+                                            M</label>
                                     </th>
                                     <td>
-                                        <input type="text" class="form-control" id="accumulative_repeat"
+                                        <input type="number" class="form-control" id="accumulative_repeat"
                                             name="accumulative_repeat" style="background-color: yellow;"
                                             value="<?php echo htmlspecialchars($row['accumulative_repeat'] ?? ''); ?>">
                                     </td>
@@ -340,7 +348,8 @@ $data = json_decode($row['table_content'], true); // Decodificar JSON a un array
                                         <label for="actual_repeat">REPETICIÓN REAL (cm)</label>
                                     </th>
                                     <td>
-                                        <input type="text" class="form-control" id="actual_repeat" name="actual_repeat"
+                                        <input type="number" class="form-control" id="actual_repeat"
+                                            name="actual_repeat"
                                             value="<?php echo htmlspecialchars($row['actual_repeat'] ?? ''); ?>">
                                     </td>
                                 </tr>
@@ -350,7 +359,7 @@ $data = json_decode($row['table_content'], true); // Decodificar JSON a un array
                                         <label for="photographic_rep">REP. FOTOGRÁFICA (cm)</label>
                                     </th>
                                     <td>
-                                        <input type="text" class="form-control" id="photographic_rep"
+                                        <input type="number" class="form-control" id="photographic_rep"
                                             name="photographic_rep"
                                             value="<?php echo htmlspecialchars($row['photographic_rep'] ?? ''); ?>">
                                     </td>
@@ -361,7 +370,7 @@ $data = json_decode($row['table_content'], true); // Decodificar JSON a un array
                                         <label for="cylinder_sleeve">CILINDRO/ MANGA (cm)</label>
                                     </th>
                                     <td>
-                                        <input type="text" class="form-control" id="cylinder_sleeve"
+                                        <input type="number" class="form-control" id="cylinder_sleeve"
                                             name="cylinder_sleeve"
                                             value="<?php echo htmlspecialchars($row['cylinder_sleeve'] ?? ''); ?>">
                                     </td>
@@ -372,7 +381,8 @@ $data = json_decode($row['table_content'], true); // Decodificar JSON a un array
                                         <label for="n_repetitions">NUM DE REPETICIONES</label>
                                     </th>
                                     <td>
-                                        <input type="text" class="form-control" id="n_repetitions" name="n_repetitions"
+                                        <input type="number" class="form-control" id="n_repetitions"
+                                            name="n_repetitions"
                                             value="<?php echo htmlspecialchars($row['n_repetitions'] ?? ''); ?>">
                                     </td>
                                 </tr>
@@ -382,7 +392,7 @@ $data = json_decode($row['table_content'], true); // Decodificar JSON a un array
                                         <label for="n_reels">NUM DE BOBINAS</label>
                                     </th>
                                     <td>
-                                        <input type="text" class="form-control" id="n_reels" name="n_reels"
+                                        <input type="number" class="form-control" id="n_reels" name="n_reels"
                                             value="<?php echo htmlspecialchars($row['n_reels'] ?? ''); ?>">
                                     </td>
                                 </tr>
@@ -392,7 +402,7 @@ $data = json_decode($row['table_content'], true); // Decodificar JSON a un array
                                         <label for="cut_line">PONER LÍNEA DE CORTE</label>
                                     </th>
                                     <td>
-                                        <input type="text" class="form-control" id="cut_line" name="cut_line"
+                                        <input type="number" class="form-control" id="cut_line" name="cut_line"
                                             value="<?php echo htmlspecialchars($row['cut_line'] ?? ''); ?>">
                                     </td>
                                 </tr>
@@ -415,7 +425,7 @@ $data = json_decode($row['table_content'], true); // Decodificar JSON a un array
                                         <label for="area">Area m2</label>
                                     </th>
                                     <td>
-                                        <input type="text" class="form-control" id="area" name="area"
+                                        <input type="number" class="form-control" id="area" name="area"
                                             value="<?php echo htmlspecialchars($row['area'] ?? ''); ?>">
                                     </td>
                                 </tr>
@@ -425,7 +435,7 @@ $data = json_decode($row['table_content'], true); // Decodificar JSON a un array
                                         <label for="repeat_cm">Impresión x m2</label>
                                     </th>
                                     <td>
-                                        <input type="text" class="form-control" id="repeat_cm" name="repeat_cm"
+                                        <input type="number" class="form-control" id="repeat_cm" name="repeat_cm"
                                             style="background-color: yellow;"
                                             value="<?php echo htmlspecialchars($row['repeat_cm'] ?? ''); ?>">
                                     </td>
@@ -445,30 +455,24 @@ $data = json_decode($row['table_content'], true); // Decodificar JSON a un array
                             <!-- Sección de Descripción del Proyecto -->
                             <h4 class="mt-5">Descripción del Proyecto</h4>
                             <!-- Descripción del Proyecto -->
-                            <div class="col-md-12">
-                                <div class="mb-3">
-                                    <label for="description">Descripción del Proyecto (Procesos, Sistema de
-                                        impresión, Tintas especiales, etc):</label>
-                                    <textarea id="description" name="description" class="form-control" rows="3"
-                                        placeholder="Describa el proyecto..."><?php echo htmlspecialchars($row['description'] ?? ''); ?></textarea>
-                                </div>
+                            <div class="col-md-12 mb-3">
+                                <label for="description">Descripción del Proyecto (Procesos, Sistema de
+                                    impresión, Tintas especiales, etc):</label>
+                                <textarea id="description" name="description" class="form-control" rows="3"
+                                    placeholder="Describa el proyecto..."><?php echo htmlspecialchars($row['description'] ?? ''); ?></textarea>
                             </div>
                             <!-- Sección de Descripción del Proyecto Arte-->
-                            <div class="col-md-12">
-                                <div class="mb-3">
-                                    <label for="description_art">Descripción del Proyecto Arte:</label>
-                                    <textarea id="description_art" name="description_art" class="form-control" rows="3"
-                                        placeholder="Describa el proyecto arte..."><?php echo htmlspecialchars($row['description_art'] ?? ''); ?></textarea>
-                                </div>
+                            <div class="col-md-12 mb-3">
+                                <label for="description_art">Descripción del Proyecto Arte:</label>
+                                <textarea id="description_art" name="description_art" class="form-control" rows="3"
+                                    placeholder="Describa el proyecto arte..."><?php echo htmlspecialchars($row['description_art'] ?? ''); ?></textarea>
                             </div>
                             <!-- Especificaciones especiales -->
-                            <div class="col-md-12">
-                                <div class="mb-3">
-                                    <label for="specs">Especificaciones especiales (uniones, empaque,
-                                        ID):</label>
-                                    <textarea id="specs" name="specs" class="form-control" rows="3"
-                                        placeholder="Ingrese especificaciones especiales..."><?php echo htmlspecialchars($row['specs'] ?? ''); ?></textarea>
-                                </div>
+                            <div class="col-md-12 mb-3">
+                                <label for="specs">Especificaciones especiales (uniones, empaque,
+                                    ID):</label>
+                                <textarea id="specs" name="specs" class="form-control" rows="3"
+                                    placeholder="Ingrese especificaciones especiales..."><?php echo htmlspecialchars($row['specs'] ?? ''); ?></textarea>
                             </div>
                             <!-- Campos del formulario de envío -->
                             <div class="col-md-12 text-center mt-3">
@@ -506,17 +510,18 @@ $data = json_decode($row['table_content'], true); // Decodificar JSON a un array
 
             $.ajax({
                 url: '../../php/update_form4.php?id=' +
-                <?php echo $_GET['id']; ?>, // Asegúrate de que el ID esté en la URL
+                    <?php echo $_GET['id']; ?>, // Asegúrate de que el ID esté en la URL
                 type: 'POST',
                 data: formData,
                 processData: false, // No procesar los datos
                 contentType: false, // No establecer el tipo de contenido
                 success: function(response) {
-                    var result = JSON.parse(response); // Parsear la respuesta del servidor
+                    var result = JSON.parse(
+                        response); // Parsear la respuesta del servidor
                     if (result.success) {
                         alert(result.message); // Mostrar mensaje de éxito
                         window.location.href =
-                        '/r&d/html/index.php'; // Redirigir después de éxito
+                            '/r&d/html/index.php'; // Redirigir después de éxito
                     } else {
                         alert(result.message); // Mostrar mensaje de error
                     }
@@ -528,7 +533,43 @@ $data = json_decode($row['table_content'], true); // Decodificar JSON a un array
         });
     });
     </script>
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const tableBody = document.getElementById("tableBody");
+        const addRowBtn = document.getElementById("addRowBtn");
+        const removeRowBtn = document.getElementById("removeRowBtn");
 
+        const predefRowsCount = 14; // Número de filas iniciales que no se pueden eliminar
+
+        // Función para agregar una nueva fila
+        addRowBtn.addEventListener("click", () => {
+            const rowCount = tableBody.rows.length + 1; // Contar filas actuales
+            const newRow = document.createElement("tr");
+
+            newRow.innerHTML = `
+                <td><input type="text" name="feature${rowCount}" class="form-control" value=""></td>
+                <td><input type="text" name="unit${rowCount}" class="form-control" value=""></td>
+                <td><input type="text" name="value${rowCount}" class="form-control" value=""></td>
+                <td><input type="text" name="tolerance${rowCount}" class="form-control" value=""></td>
+                <td><input type="text" name="notes${rowCount}" class="form-control" value=""></td>
+            `;
+            tableBody.appendChild(newRow);
+        });
+
+        // Función para eliminar la última fila, pero sin permitir que se eliminen las predefinidas
+        removeRowBtn.addEventListener("click", () => {
+            const currentRowCount = tableBody.rows.length;
+
+            if (currentRowCount > predefRowsCount) {
+                tableBody.deleteRow(-1); // Eliminar la última fila
+            } else {
+                alert(
+                    "No puedes eliminar las filas predefinidas."
+                ); // Mensaje al intentar eliminar las iniciales
+            }
+        });
+    });
+    </script>
 </body>
 
 </html>

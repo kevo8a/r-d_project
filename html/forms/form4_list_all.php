@@ -45,7 +45,7 @@ $result = $conn->query($sql);
                 <?php include '../structure/navbar.php'; ?>
 
                 <div class="container mt-5">
-                    <h1 class="text-center">Solicitud Muestra</h1>
+                    <h1 class="text-center">Articulo Muestra</h1>
                     <table class="table table-striped mt-4">
                         <thead>
                             <tr>

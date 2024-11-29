@@ -69,7 +69,7 @@ $result = $stmt->get_result();
 
                 <!-- Main Content -->
                 <div class="container mt-5">
-                    <h1 class="text-center">Formularios de Solicitud Muestra</h1>
+                    <h1 class="text-center">Formularios de Articulo Muestra</h1>
                     <table class="table table-striped mt-4">
                         <thead>
                             <tr>
