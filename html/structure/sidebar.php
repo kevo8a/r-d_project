@@ -65,7 +65,7 @@
                     <a class="collapse-item text-primary" href="/r&d/html/forms/form4_list.php">Ver mis forms 4</a>
                 </div>
 
-                
+
 
             </div>
         </div>
@@ -105,6 +105,24 @@
                 <h6 class="collapse-header">Opciones de Usuarios:</h6>
                 <a class="collapse-item" href="/r&d/html/users/form_user.php">Crear Usuario</a>
                 <a class="collapse-item" href="/r&d/html/users/user_list.php">Editar Usuario</a>
+            </div>
+        </div>
+    </li>
+    <?php endif; ?>
+
+    <!-- Opciones de Usuarios (Solo rol 1) -->
+    <?php if ($role == 1): ?>
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseClients" aria-expanded="true"
+            aria-controls="collapseClients">
+            <i class="fas fa-fw fa-user"></i>
+            <span>Clientes</span>
+        </a>
+        <div id="collapseClients" class="collapse" aria-labelledby="headingUsers" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Opciones de Clientes:</h6>
+                <a class="collapse-item" href="/r&d/html/clients/form_client.php">Crear Cliente</a>
+                <a class="collapse-item" href="/r&d/html/clients/client_list.php">Editar Cliente</a>
             </div>
         </div>
     </li>

@@ -254,11 +254,11 @@ $data = json_decode($row['table_content'], true); // Decodificar JSON a un array
                             <table class="table table-bordered" id="materialTable">
                                 <thead class="table-warning">
                                     <tr>
-                                        <th>Característica</th>
-                                        <th>Unidad</th>
-                                        <th>Valor Nominal</th>
-                                        <th>Tolerancia</th>
-                                        <th>Notas</th>
+                                        <th style="width: 30%;">Característica</th>
+                                        <th style="width: 13.333%;">Unidad</th>
+                                        <th style="width: 13.33%;">Valor Nominal</th>
+                                        <th style="width: 13.33%;">Tolerancia</th>
+                                        <th style="width: 30%;">Notas</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tableBody">

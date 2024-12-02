@@ -25,8 +25,13 @@ CREATE TABLE users (
 CREATE TABLE client (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(255) UNIQUE,  -- Added UNIQUE constraint
-    email VARCHAR(255)
+    email VARCHAR(255),
+    representative VARCHAR(255),
+    lada VARCHAR(3),
+    tel VARCHAR(10)
+
 );
+
 
 -- Table 'form1'
 CREATE TABLE form1 (
