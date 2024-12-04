@@ -6,7 +6,7 @@ require 'db_connection.php';
 
 header('Content-Type: application/json');
 
-$sql = "SELECT name FROM client";
+$sql = "SELECT name_client FROM client";
 $result = $mysqli->query($sql);
 
 $clients = [];

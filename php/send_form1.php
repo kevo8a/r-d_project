@@ -60,11 +60,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Configurar la ruta del archivo
         $extension = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
         $nombreArchivo = $id_form1 . '.' . $extension; // Cambiar el nombre del archivo
-        $rutaArchivo = 'C:/xampp/htdocs/r&d/files/' . $nombreArchivo;
+        $rutaArchivo = 'C:/xampp/htdocs/files/' . $nombreArchivo;
 
         // Verificar si la carpeta existe, si no, crearla
-        if (!file_exists('C:/xampp/htdocs/r&d/files/')) {
-            mkdir('C:/xampp/htdocs/r&d/files/', 0777, true);
+        if (!file_exists('C:/xampp/htdocs/files/')) {
+            mkdir('C:/xampp/htdocs/files/', 0777, true);
         }
 
         // Si se está actualizando, eliminar el archivo anterior

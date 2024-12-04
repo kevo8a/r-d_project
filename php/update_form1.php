@@ -6,8 +6,10 @@ include 'auth.php';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Retrieve the form data
     $id_formulario             = isset($_POST['id_formulario'])            ? $_POST['id_formulario'] : null;
+    $id_form1                  = isset($_POST['folio'])                 ? $_POST['folio'] : '';
     $cliente                   = isset($_POST['cliente'])                  ? $_POST['cliente'] : '';
     $nombre_proyecto           = isset($_POST['nombre_proyecto'])          ? $_POST['nombre_proyecto'] : '';
+    $id_user                   = isset($_POST['id_user'])                  ? $_POST['id_user'] : '';
     $numero_rfq                = isset($_POST['numero_rfq'])               ? $_POST['numero_rfq'] : '';
     $estatus                   = 'En Proceso';
     $numero_rfq                = isset($_POST['numero_rfq'])               ? $_POST['numero_rfq'] : '';
@@ -43,6 +45,57 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $pdf_arte                  = isset($_POST['pdf_arte'])                 ? 1 : 0;
     $created_at                = date("y-m-d H:i");
 
+    // Validar datos obligatorios
+    if (empty($id_user)) {
+        echo "El campo id_user es obligatorio.";
+        exit;
+    }
+
+    // Variables para el archivo subido
+    $rutaArchivo               = null;
+    $nombreArchivo             = null;
+
+    // Manejo de archivo subido
+    if (isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
+        $extension = strtolower(pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION));
+        $nombreArchivo = $id_form1 . '.' . $extension;
+        $rutaArchivo = 'C:/xampp/htdocs/files/' . $nombreArchivo;
+
+        // Verificar si la carpeta existe, si no, crearla
+        if (!file_exists('C:/xampp/htdocs/files/')) {
+            mkdir('C:/xampp/htdocs/files/', 0777, true);
+        }
+
+        // Si se está actualizando, eliminar el archivo anterior
+        if (isset($_POST['old_file']) && file_exists($_POST['old_file'])) {
+            unlink($_POST['old_file']);
+        }
+
+        // Mover el archivo subido a la ruta especificada
+        if (!move_uploaded_file($_FILES['file']['tmp_name'], $rutaArchivo)) {
+            echo "Error al subir el archivo.";
+            exit;
+        }
+    } else {
+        // Captura el error específico
+        switch ($_FILES['file']['error']) {
+            case UPLOAD_ERR_INI_SIZE:
+            case UPLOAD_ERR_FORM_SIZE:
+                echo "El archivo es demasiado grande.";
+                break;
+            case UPLOAD_ERR_PARTIAL:
+                echo "El archivo fue subido parcialmente.";
+                break;
+            case UPLOAD_ERR_NO_FILE:
+                echo "No se seleccionó ningún archivo.";
+                break;
+            default:
+                echo "Error al subir el archivo.";
+                break;
+        }
+        exit;
+    }
+
 
     // Prepare the SQL query to update the record
     $sql = "UPDATE form1 SET 
@@ -57,13 +110,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     continuous_check             =?, length_mm                          =?, length_tolerance_mm         =?,
     gusset_mm                    =?, gusset_tolerance_mm                =?, overlap_mm                  =?,
     overlap_tolerance_mm         =?, technical_sheet                    =?, physical_sample             =?, 
-    mechanical_plan              =?, pdf_art                            =?, created_at                  =?
+    mechanical_plan              =?, pdf_art                            =?, created_at                  =?,
+    file_rute                    =?, file_name                          =?
     WHERE id = ?";
     $stmt = mysqli_prepare($conn, $sql);
 
     if ($stmt) {
         // Bind the parameters to the prepared statement
-        mysqli_stmt_bind_param($stmt, "ssisissssssiisiiiiiiiiiiiiiiiiiiiiisi", 
+        mysqli_stmt_bind_param($stmt, "ssisissssssiisiiiiiiiiiiiiiiiiiiiiisssi", 
         $cliente                  ,$nombre_proyecto        , $numero_rfq        ,
         $estatus                  , $numero_rfq            , $formato_entrega   ,
         $formato_empaque          , $elemento_conveniencia , $proceso_llenado   ,
@@ -76,6 +130,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $fuelle                   , $tolerancia_fuelle     , $traslape          , 
         $tolerancia_traslape      , $ficha_tecnica         , $muestra_fisica    ,
         $plano_mecanico           , $pdf_arte              , $created_at        ,
+        $rutaArchivo              , $nombreArchivo         ,
         $id_formulario);
 
         // Execute the query

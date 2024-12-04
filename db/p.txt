@@ -24,7 +24,7 @@ CREATE TABLE users (
 -- Table 'client'
 CREATE TABLE client (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(255) UNIQUE,  -- Added UNIQUE constraint
+    name_client VARCHAR(255),  
     email VARCHAR(255),
     representative VARCHAR(255),
     lada VARCHAR(3),
@@ -79,9 +79,7 @@ CREATE TABLE form1 (
     pdf_art BOOLEAN,
     comments VARCHAR(255),
     file_rute VARCHAR(255),
-    file_name VARCHAR(255),
-    FOREIGN KEY (id_user) REFERENCES users(id_user),
-    FOREIGN KEY (name_client) REFERENCES client(name)
+    file_name VARCHAR(255)
 );
 
 CREATE TABLE form2 (
@@ -229,7 +227,7 @@ VALUES
 (3328, 'Mauricio', 'Calderon', 'mauricio.calderon@amcor.com', 'password123', 1, 'Tlaquepaque');
 
 -- Insert sample values into 'client'
-INSERT INTO client (name, email) VALUES 
+INSERT INTO client (name_client, email) VALUES 
 ('Acme Corp', 'contact@acme.com'),
 ('Globex', 'info@globex.com');
 

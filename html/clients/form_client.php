@@ -70,9 +70,9 @@ mysqli_close($conn);
                         <?php endif; ?>
 
                         <div class="mb-3">
-                            <label for="name" class="form-label">Nombre de la empresa</label>
-                            <input type="text" class="form-control" id="name" name="name"
-                                value="<?php echo $id_formulario ? htmlspecialchars($form_data['name']) : ''; ?>"
+                            <label for="name_client" class="form-label">Nombre de la empresa</label>
+                            <input type="text" class="form-control" id="name_client" name="name_client"
+                                value="<?php echo $id_formulario ? htmlspecialchars($form_data['name_client']) : ''; ?>"
                                 required>
                         </div>
 

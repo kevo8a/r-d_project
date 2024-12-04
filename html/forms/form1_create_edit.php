@@ -181,14 +181,14 @@ mysqli_close($conn);
                                         <?php
                                         require '../../php/db_connection.php';
 
-                                        $sql_clientes = "SELECT name FROM client";
+                                        $sql_clientes = "SELECT name_client FROM client";
                                         $result_clientes = mysqli_query($conn, $sql_clientes);
 
                                         if ($result_clientes) {
                                             while ($row_cliente = mysqli_fetch_assoc($result_clientes)) {
                                                 // Selecciona el cliente actual del formulario si se está editando
-                                                $selected = ($id_formulario && $row_cliente['name'] == $form_data['name_client']) ? 'selected' : '';
-                                                echo '<option value="' . htmlspecialchars($row_cliente['name']) . '" ' . $selected . '>' . htmlspecialchars($row_cliente['name']) . '</option>';
+                                                $selected = ($id_formulario && $row_cliente['name_client'] == $form_data['name_client']) ? 'selected' : '';
+                                                echo '<option value="' . htmlspecialchars($row_cliente['name_client']) . '" ' . $selected . '>' . htmlspecialchars($row_cliente['name_client']) . '</option>';
                                             }
                                         }
                                         mysqli_close($conn);
@@ -642,7 +642,7 @@ mysqli_close($conn);
                             </div>
 
                             <!-- Subir Archivo -->
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <div class="mb-3">
                                     <label for="file" class="form-label">Subir Archivo</label>
                                     <input type="file" class="form-control" id="file" name="file"
@@ -650,11 +650,11 @@ mysqli_close($conn);
 
                                     <?php if ($id_formulario && isset($form_data['file_name']) && !empty($form_data['file_name'])): ?>
                                     <!-- Muestra el archivo actual como enlace si está disponible -->
-                                    <small class="form-text text-muted">
+                                    <p class="form-text" style="font-size: 25px; color: #6c757d; margin: 10px 0;">
+                                        El archivo que tienes es:
                                         <?php echo htmlspecialchars($form_data['file_name']); ?>
-                                    </small>
+                                    </p>
                                     <?php endif; ?>
-
                                     <small class="form-text text-muted">Por favor, selecciona un archivo para subir.
                                         (Formato permitido: .pdf, .docx, .jpg)</small>
                                 </div>

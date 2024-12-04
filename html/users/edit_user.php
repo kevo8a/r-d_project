@@ -69,10 +69,8 @@ $user = mysqli_fetch_assoc($result);
                             <!-- Email -->
                             <div class="col-md-3">
                                 <div class="mb-3">
-                                    <label for="email" class="form-label">Email</label>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" id="email" name="email" value="<?php echo substr($user['email'], 0, strpos($user['email'], '@')); ?>" required>
-                                    </div>
+                                    <label for="email" class="form-label">Correo</label>
+                                    <input type="email" class="form-control" id="email" name="email" value="<?php echo $user['email']; ?>" required>
                                 </div>
                             </div>
 
@@ -131,11 +129,10 @@ $(document).ready(function() {
 
         // Verifica si el correo ya tiene el dominio
         if (username && !username.endsWith('@amcor.com')) {
-            username += '@amcor.com'; // Solo agregar el dominio si no está presente
+            // Muestra un mensaje de error si el correo no tiene el dominio correcto
+            $('#error-message').removeClass('alert-success').addClass('alert-danger').text('El correo electrónico le falta el dominio @amcor.com').show();
+            return; // Detiene el envío del formulario
         }
-
-        $('#email').val(username); // Actualiza el campo de correo con el valor completo
-
         $.ajax({
             url: $(this).attr('action'), // Acción del formulario
             type: $(this).attr('method'), // Método del formulario

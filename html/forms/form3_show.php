@@ -182,7 +182,7 @@ mysqli_close($conn);
                                         <?php
                                         require '../../php/db_connection.php';
 
-                                        $sql_clientes = "SELECT name FROM client";
+                                        $sql_clientes = "SELECT name_client FROM client";
                                         $result_clientes = mysqli_query($conn, $sql_clientes);
 
                                         if ($result_clientes) {

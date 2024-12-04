@@ -4,7 +4,7 @@ include 'auth.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id = isset($_POST['id']) ? intval($_POST['id']) : null;
-    $name = $_POST['name'] ?? '';
+    $name_client = $_POST['name_client'] ?? '';
     $representative = $_POST['representative'] ?? '';
     $lada = $_POST['lada'] ?? '';
     $tel = $_POST['tel'] ?? '';
@@ -12,14 +12,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($id) {
         // Actualizar registro existente
-        $sql = "UPDATE client SET name = ?, representative = ?, lada = ?, tel = ?, email = ? WHERE id = ?";
+        $sql = "UPDATE client SET name_client = ?, representative = ?, lada = ?, tel = ?, email = ? WHERE id = ?";
         $stmt = mysqli_prepare($conn, $sql);
-        mysqli_stmt_bind_param($stmt, 'sssssi', $name, $representative, $lada, $tel, $email, $id);
+        mysqli_stmt_bind_param($stmt, 'sssssi', $name_client, $representative, $lada, $tel, $email, $id);
     } else {
         // Crear un nuevo registro
-        $sql = "INSERT INTO client (name, representative, lada, tel, email) VALUES (?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO client (name_client, representative, lada, tel, email) VALUES (?, ?, ?, ?, ?)";
         $stmt = mysqli_prepare($conn, $sql);
-        mysqli_stmt_bind_param($stmt, 'sssss', $name, $representative, $lada, $tel, $email);
+        mysqli_stmt_bind_param($stmt, 'sssss', $name_client, $representative, $lada, $tel, $email);
     }
 
     if ($stmt && mysqli_stmt_execute($stmt)) {

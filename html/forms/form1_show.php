@@ -78,32 +78,28 @@ mysqli_close($conn);
                             value="<?php echo htmlspecialchars($id_formulario); ?>">
                         <div class="row">
                             <!-- Solicitante -->
-                           <div class="col-md-3">
+                            <div class="col-md-3">
                                 <div class="mb-3">
                                     <label for="solicitante" class="form-label">Solicitante</label>
-                                    <input type="text" class="form-control" id="solicitante" name="solicitante"
-                                        value="<?php 
+                                    <input type="text" class="form-control" id="solicitante" name="solicitante" value="<?php 
                                             // Verifica si está en modo edición (si $form_data['name_user'] tiene un valor guardado)
                                             echo isset($form_data['name_user']) && !empty($form_data['name_user']) 
                                                 ? htmlspecialchars($form_data['name_user'], ENT_QUOTES, 'UTF-8') 
                                                 : ''; // Si no, deja el campo vacío
-                                        ?>"
-                                        readonly>
+                                        ?>" readonly>
                                 </div>
-                             </div>
+                            </div>
 
                             <!-- Site -->
                             <div class="col-md-3">
                                 <div class="mb-3">
                                     <label for="site" class="form-label">Site</label>
-                                    <input type="text" class="form-control" id="site" name="site_user"
-                                        value="<?php 
+                                    <input type="text" class="form-control" id="site" name="site_user" value="<?php 
                                             // Verifica si está en modo edición (si $form_data['site_user'] tiene un valor guardado en la base de datos)
                                             echo isset($form_data['site_user']) && !empty($form_data['site_user']) 
                                                 ? htmlspecialchars($form_data['site_user'], ENT_QUOTES, 'UTF-8') 
                                                 : ''; // Si no, deja el campo vacío o coloca un valor por defecto
-                                        ?>"
-                                        readonly>
+                                        ?>" readonly>
                                 </div>
                             </div>
 
@@ -111,14 +107,12 @@ mysqli_close($conn);
                             <div class="col-md-3">
                                 <div class="mb-3">
                                     <label for="id_user" class="form-label">ID del Usuario</label>
-                                    <input type="text" class="form-control" id="id_user" name="id_user"
-                                        value="<?php 
+                                    <input type="text" class="form-control" id="id_user" name="id_user" value="<?php 
                                             // Verifica si está en modo edición (si $form_data['id_user'] tiene un valor guardado)
                                             echo isset($form_data['id_user']) && !empty($form_data['id_user']) 
                                                 ? htmlspecialchars($form_data['id_user'], ENT_QUOTES, 'UTF-8') 
                                                 : ''; // Si no, deja el campo vacío
-                                        ?>"
-                                        readonly>
+                                        ?>" readonly>
                                 </div>
                             </div>
 
@@ -142,16 +136,16 @@ mysqli_close($conn);
                                             echo isset($form_data['created_at']) && !empty($form_data['created_at']) 
                                                 ? htmlspecialchars($form_data['created_at'], ENT_QUOTES, 'UTF-8') 
                                                 : ''; // Si no, deja el campo vacío
-                                        ?>"
-                                    >
+                                        ?>">
                                 </div>
-                            </div>  
+                            </div>
 
                             <!-- Fecha de finalización -->
                             <div class="col-md-3">
                                 <div class="mb-3">
                                     <label for="completed_at" class="form-label">Estatus</label>
-                                    <input type="text" class="form-control" id="completed_at" name="completed_at" readonly
+                                    <input type="text" class="form-control" id="completed_at" name="completed_at"
+                                        readonly
                                         value="<?php echo $id_formulario ? htmlspecialchars($form_data['completed_at']) : 'En Proceso'; ?>"
                                         readonly>
                                 </div>
@@ -186,7 +180,7 @@ mysqli_close($conn);
                                         <?php
                                         require '../../php/db_connection.php';
 
-                                        $sql_clientes = "SELECT name FROM client";
+                                        $sql_clientes = "SELECT name_client FROM client";
                                         $result_clientes = mysqli_query($conn, $sql_clientes);
 
                                         if ($result_clientes) {
@@ -430,7 +424,8 @@ mysqli_close($conn);
                                     <input class="form-check-input" type="checkbox" id="continuous_check"
                                         name="continuous_check" onchange="toggleFotodistancias()"
                                         <?php echo ($id_formulario && $form_data['continuous_check'] == 1) ? 'checked' : ''; ?>disabled>
-                                    <label class="form-check-continuous_check" for="continuous_check">Diseño Continuo</label>
+                                    <label class="form-check-continuous_check" for="continuous_check">Diseño
+                                        Continuo</label>
                                 </div>
                             </div>
 
@@ -504,7 +499,7 @@ mysqli_close($conn);
                                 </div>
                             </div>
 
-                             <!-- ¿Es Bolsa? -->
+                            <!-- ¿Es Bolsa? -->
                             <div class="col-md-6">
                                 <div class="mb-1">
                                     <label for="es_bolsa" class="form-label">¿Es Bolsa?</label>
@@ -512,7 +507,7 @@ mysqli_close($conn);
                                         <?php echo ($id_formulario && $form_data['bag_check'] == 1 ? 'checked' : ''); ?>>
                                     <label for="es_bolsa">Sí</label>
                                 </div>
-                            </div>   
+                            </div>
 
                             <!-- Dimensiones de la Bolsa -->
                             <div class="col-md-6"></div>
@@ -534,7 +529,8 @@ mysqli_close($conn);
                             <div class="col-md-6 bolsa_fields">
                                 <div class="mb-3">
                                     <label for="tolerancia_largo" class="form-label">Tolerancia Largo (mm)</label>
-                                    <input type="number" class="form-control" id="tolerancia_largo" name="tolerancia_largo"
+                                    <input type="number" class="form-control" id="tolerancia_largo"
+                                        name="tolerancia_largo"
                                         value="<?php echo $id_formulario ? htmlspecialchars($form_data['length_tolerance_mm']) : ''; ?>"
                                         step="any" readonly>
                                 </div>
@@ -554,7 +550,8 @@ mysqli_close($conn);
                             <div class="col-md-6 bolsa_fields">
                                 <div class="mb-3">
                                     <label for="tolerancia_fuelle" class="form-label">Tolerancia Fuelle (mm)</label>
-                                    <input type="number" class="form-control" id="tolerancia_fuelle" name="tolerancia_fuelle"
+                                    <input type="number" class="form-control" id="tolerancia_fuelle"
+                                        name="tolerancia_fuelle"
                                         value="<?php echo $id_formulario ? htmlspecialchars($form_data['gusset_tolerance_mm']) : ''; ?>"
                                         step="any" readonly>
                                 </div>
@@ -574,7 +571,8 @@ mysqli_close($conn);
                             <div class="col-md-6 bolsa_fields">
                                 <div class="mb-3">
                                     <label for="tolerancia_traslape" class="form-label">Tolerancia Traslape (mm)</label>
-                                    <input type="number" class="form-control" id="tolerancia_traslape" name="tolerancia_traslape"
+                                    <input type="number" class="form-control" id="tolerancia_traslape"
+                                        name="tolerancia_traslape"
                                         value="<?php echo $id_formulario ? htmlspecialchars($form_data['overlap_tolerance_mm']) : ''; ?>"
                                         step="any" readonly>
                                 </div>
@@ -624,18 +622,36 @@ mysqli_close($conn);
                                     <label class="form-check-label" for="pdf_arte">PDF del Arte</label>
                                 </div>
                             </div>
-
                             <!-- Subir Archivo -->
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <div class="mb-3">
                                     <label for="file" class="form-label">Subir Archivo</label>
-                                    <input type="file" class="form-control" id="file" name="file" <?php echo $id_formulario ? '' : 'required'; ?>>
-                                    <?php if ($id_formulario && isset($form_data['file_name'])): ?>
-                                        <small class="form-text text-muted">Archivo actual: <?php echo htmlspecialchars($form_data['file_name']); ?></small>
+                                    <input type="file" class="form-control" id="file" name="file"
+                                        <?php echo isset($form_data['file_rute']) && !empty($form_data['file_rute']) ? 'disabled' : 'required'; ?>>
+
+                                    <?php if (isset($form_data['file_rute']) && !empty($form_data['file_rute'])): ?>
+                                    <!-- Muestra el archivo actual como enlace de descarga si está disponible -->
+                                    <p class="form-text" style="font-size: 18px; color: #6c757d; margin: 10px 0;">
+                                        El archivo que tienes guardado es:
+                                        <!-- Ruta del archivo para descargar -->
+                                        <?php
+                                        // Extraemos la ruta relativa desde 'file_rute' (asumiendo que 'C:/xampp/htdocs/' es la raíz del servidor web)
+                                        $relative_path = str_replace('C:/xampp/htdocs/', '', $form_data['file_rute']);
+                                        
+                                        // Asegúrate de que la ruta sea válida en relación con el servidor
+                                        ?>
+                                        <a href="/<?php echo htmlspecialchars($relative_path); ?>" download>
+                                            <?php echo htmlspecialchars($form_data['file_name']); ?>
+                                        </a>
+                                    </p>
                                     <?php endif; ?>
-                                    <small class="form-text text-muted">Por favor, selecciona un archivo para subir. (Formato permitido: .pdf, .docx, .jpg)</small>
+
+                                    <small class="form-text text-muted">Por favor, selecciona un archivo para subir.
+                                        (Formato permitido: .pdf, .docx, .jpg)
+                                    </small>
                                 </div>
                             </div>
+
                             <!-- Alerta -->
                             <div class="col-md-12 text-center">
                                 <div class="alert alert-warning w-100" role="alert">

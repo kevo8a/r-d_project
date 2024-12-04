@@ -1,111 +1,110 @@
-<form id="form-article" method="POST" enctype="multipart/form-data">
-    <div class="row">
-        <!-- Características de Calidad de Producto Terminado -->
-        <table class="table table-bordered" id="materialTable">
-            <thead>
-                <tr>
-                    <th>Caracteristica</th>
-                    <th>Unidad</th>
-                    <th>VALOR NOMINAL</th>
-                    <th>Tolerancia</th>
-                    <th>Notas</th>
-                </tr>
-            </thead>
-            <tbody id="tableBody">
-                <?php
-                                        $counter = 1;
-                                        $dataCount = count($data);
-                                        $rowsToDisplay = max(14, $dataCount); // Asegura que al menos 3 filas se muestren
+<?php
+include '../../php/db_connection.php';
+include '../../php/auth.php';
 
-                                        for ($i = 0; $i < $rowsToDisplay; $i++) {
-                                            // Si no hay suficiente datos, se asignan valores vacíos
-                                            $item = $i < $dataCount ? $data[$i] : ["feature" => "", "unit" => "", "value" => "", "tolerance" => "", "notes" => ""];
 
-                                            echo '<tr>';
-                                            echo '<td><input type="text" name="feature'  . $counter . '" class="form-control" value="' . htmlspecialchars($item["feature"  ]) . '" readonly ></td>';
-                                            echo '<td><input type="text" name="unit'     . $counter . '" class="form-control" value="' . htmlspecialchars($item["unit"     ]) . '" readonly></td>';
-                                            echo '<td><input type="text" name="value'    . $counter . '" class="form-control" value="' . htmlspecialchars($item["value"    ]) . '" ></td>';
-                                            echo '<td><input type="text" name="tolerance'. $counter . '" class="form-control" value="' . htmlspecialchars($item["tolerance"]) . '" ></td>';
-                                            echo '<td><input type="text" name="notes'    . $counter . '" class="form-control" value="' . htmlspecialchars($item["notes"    ]) . '" ></td>';
-                                            echo '</tr>';
-                                            $counter++;
-                                        }
-                                    ?>
-            </tbody>
-        </table>
-        <div>
-            <!-- Cambiar type a "button" para evitar conflicto con el envío del formulario -->
-            <button id="addRowBtn" type="button" class="btn btn-success">Agregar Fila</button>
-            <button id="removeRowBtn" type="button" class="btn btn-danger">Eliminar Fila</button>
-        </div>
-        <div class="col-md-12 text-center mt-3">
-            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-            <button type="button" class="btn btn-secondary" onclick="window.history.back()">Cancelar</button>
-        </div>
-    </div>
-</form>
-<script>
-$(document).ready(function() {
-    $('#form-article').on('submit', function(e) {
-        e.preventDefault(); // Prevenir el envío normal del formulario
+// Obtener el ID del formulario de la URL (para editar)
+$id_formulario = isset($_GET['id']) && is_numeric($_GET['id']) ? intval($_GET['id']) : null;
 
-        var formData = new FormData(this); // Crear FormData con los datos del formulario
+// Si hay un ID, consultar los datos del formulario por su ID
+$form_data = [];
+if ($id_formulario) {
+    $sql = "SELECT * FROM client WHERE id = ?";
+    $stmt = mysqli_prepare($conn, $sql);
+    if ($stmt) {
+        mysqli_stmt_bind_param($stmt, "i", $id_formulario);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
 
-        // Ver los datos que estamos enviando con AJAX
-        for (var pair of formData.entries()) {
-            console.log(pair[0] + ": " + pair[1]);
+        // Verificar si se encontró el formulario
+        if ($result->num_rows === 0) {
+            die('Formulario no encontrado.');
         }
 
-        $.ajax({
-            url: '../../php/update_form4.php?id=' +
-                <?php echo $_GET['id']; ?>, // Asegúrate de que el ID esté en la URL
-            type: 'POST',
-            data: formData,
-            processData: false, // No procesar los datos
-            contentType: false, // No establecer el tipo de contenido
-            success: function(response) {
-                var result = JSON.parse(response); // Parsear la respuesta del servidor
-                if (result.success) {
-                    alert(result.message); // Mostrar mensaje de éxito
-                    window.location.href =
-                        '/r&d/html/index.php'; // Redirigir después de éxito
-                } else {
-                    alert(result.message); // Mostrar mensaje de error
+        // Obtener los datos del formulario
+        $form_data = mysqli_fetch_assoc($result);
+    } else {
+        die('Error al preparar la consulta.');
+    }
+}
+mysqli_close($conn);
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Amcor - Solicitud Muestra</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="text-center"><?php echo $id_formulario ? 'Editar' : 'Crear'; ?> Formulario</h1>
+        <form id="form-client" method="POST">
+            <?php if ($id_formulario): ?>
+                <input type="hidden" name="id" value="<?php echo htmlspecialchars($id_formulario); ?>">
+            <?php endif; ?>
+
+            <div class="mb-3">
+                <label for="name" class="form-label">Nombre de la empresa</label>
+                <input type="text" class="form-control" id="name" name="name" 
+                       value="<?php echo $id_formulario ? htmlspecialchars($form_data['name']) : ''; ?>" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="representative" class="form-label">Nombre del representante</label>
+                <input type="text" class="form-control" id="representative" name="representative"
+                       value="<?php echo $id_formulario ? htmlspecialchars($form_data['representative']) : ''; ?>" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="lada" class="form-label">Lada</label>
+                <input type="text" class="form-control" id="lada" name="lada" maxlength="3" 
+                       value="<?php echo $id_formulario ? htmlspecialchars($form_data['lada']) : ''; ?>" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="tel" class="form-label">Teléfono</label>
+                <input type="text" class="form-control" id="tel" name="tel" maxlength="10"
+                       value="<?php echo $id_formulario ? htmlspecialchars($form_data['tel']) : ''; ?>" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="email" class="form-label">Correo</label>
+                <input type="email" class="form-control" id="email" name="email"
+                       value="<?php echo $id_formulario ? htmlspecialchars($form_data['email']) : ''; ?>" required>
+            </div>
+
+            <button type="submit" id="submit-btn" class="btn btn-primary">Enviar</button>
+        </form>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        $('#form-client').submit(function(event) {
+            event.preventDefault();
+            const formData = $(this).serialize();
+            const action = "<?php echo $id_formulario ? '../../php/update_client.php' : '../../php/send_form3.php'; ?>";
+
+            $.post(action, formData, function(response) {
+                try {
+                    const jsonResponse = JSON.parse(response);
+                    if (jsonResponse.status === 'success') {
+                        alert(jsonResponse.message);
+                        window.location.href = "/r&d/html/index.php";
+                    } else {
+                        alert('Error: ' + jsonResponse.message);
+                    }
+                } catch (e) {
+                    alert('Error procesando la respuesta del servidor.');
                 }
-            },
-            error: function(xhr, status, error) {
-                alert("Hubo un error en la comunicación con el servidor.");
-            }
+            });
         });
     });
-});
-</script>
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-    const tableBody = document.getElementById("tableBody");
-    const addRowBtn = document.getElementById("addRowBtn");
-    const removeRowBtn = document.getElementById("removeRowBtn");
-
-    // Función para agregar una nueva fila
-    addRowBtn.addEventListener("click", () => {
-        const rowCount = tableBody.rows.length + 1; // Sumar una fila nueva
-        const newRow = document.createElement("tr");
-
-        newRow.innerHTML = `
-                <td><input type="text" name="feature${rowCount}" class="form-control" value=""></td>
-                <td><input type="text" name="unit${rowCount}" class="form-control" value=""></td>
-                <td><input type="text" name="value${rowCount}" class="form-control" value=""></td>
-                <td><input type="text" name="tolerance${rowCount}" class="form-control" value=""></td>
-                <td><input type="text" name="notes${rowCount}" class="form-control" value=""></td>
-            `;
-        tableBody.appendChild(newRow);
-    });
-
-    // Función para eliminar la última fila
-    removeRowBtn.addEventListener("click", () => {
-        if (tableBody.rows.length > 0) {
-            tableBody.deleteRow(-1); // Elimina la última fila
-        }
-    });
-});
-</script>
+    </script>
+</body>
+</html>

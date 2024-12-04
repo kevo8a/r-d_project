@@ -53,7 +53,7 @@ if (!$result || mysqli_num_rows($result) == 0) {
                         <tbody>
                             <?php while ($row = mysqli_fetch_assoc($result)) : ?>
                                 <tr>
-                                    <td><?php echo htmlspecialchars($row['name']); ?></td>
+                                    <td><?php echo htmlspecialchars($row['name_client']); ?></td>
                                     <td><?php echo htmlspecialchars($row['representative']); ?></td>
                                     <td><?php echo htmlspecialchars($row['lada']) . htmlspecialchars($row['tel']); ?></td>
                                     <td><?php echo htmlspecialchars($row['email']); ?></td>
